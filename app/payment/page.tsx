@@ -21,7 +21,7 @@ export default async function Payment() {
           email: 'test@email.com' // will use queried user data
         })
 
-        customerId = customer.id; // set queried
+        customerId = customer.id; // set customer ID to created customer ID
 
         //update database with customer.id
     }
@@ -43,9 +43,6 @@ export default async function Payment() {
         return_url:
             `http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}`,
     });
-
-    console.log("customerId: ", customerId);
-    console.log("session: ", session);
 
     const clientSecret: string = session.client_secret!;
 

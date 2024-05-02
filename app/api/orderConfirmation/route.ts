@@ -4,9 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-/** Webhook route that accepts API calls from Stripe to handle events.
+/** Webhook route that accepts API calls from Stripe to handle events. Currently
+ * console logs basic event data and does not handle any order fulfillment.
  *
  * This allows Stripe to provide information to us upon successful payment.
+ *
+ * Accepts: JSON stripe event data
+ * Returns: JSON {received: true} or { err }
  */
 export async function POST(req: NextRequest) {
 

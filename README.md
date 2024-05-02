@@ -47,3 +47,22 @@ Developers will have to:
 Now you can use the prisma client to made database queries. For syntax questions ping Max or Ben
 6. If you want to use prisma studio to easily see database records, run `npm run prisma:studio`
 7. Everytime the schema is updated, in order to update the database accordingly run `npm run migrate:add` followed by `your-migration-name` to describe the change in that format with hyphens between each word. For example, if the schema was updated to add a column called "firstName" to the database, you would run something like `npm run migrate:add add-first-name-column-to-user`
+
+## For setting up Stripe
+
+Setup to make Stripe embedded payment form functional:
+
+1. Include the following API keys in your .env.local: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
+
+Setting up the Stipe command line interface to listen for webhook events:
+
+Follow these steps in your terminal
+1. `brew install stripe/stripe-cli/stripe`
+2. `stripe login`
+3. Press <Enter> to open a stripe browser window
+4. Enter Stripe credentials
+5. Click “Allow Access” after checking the pairing code in the browser and terminal match.
+6. `stripe` in terminal to see available commands
+7. `stripe listen –forward-to localhost:3000/api/paymentConfirmation` to listen for webhook events at the specified URL
+8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
+
