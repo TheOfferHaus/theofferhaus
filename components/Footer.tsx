@@ -1,9 +1,4 @@
-/**
- * Footer: Component for footer.
- *
- *
- * Home -> footer
- */
+/**Component for footer.*/
 
 const Footer = () => {
   return (
