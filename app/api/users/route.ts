@@ -6,12 +6,13 @@ const prisma = new PrismaClient();
 
 /**POST request to api/users
  *
- * Adds user to the database using the Prisma Client
+ * When a user is created, Clerk sends a POST request via webhook to this API
+ * endpoint to insert the new user into the database
  */
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  console.log("In POST request");
+
   await prisma.user.create({
     data: {
       username: body.data.username,
