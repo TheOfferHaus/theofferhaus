@@ -29,7 +29,7 @@ type Document = {
 };
 
 type DocumentData = {
-  path: string,
+  path: string;
   pageCount: string;
 };
 
@@ -50,6 +50,165 @@ const DEFAULT_TEMPLATE_DATA: TemplateData = {
   },
 };
 
+class Template {
+  templateId: string;
+
+  constructor(templateId: string) {
+    this.templateId = templateId;
+  }
+
+  /**
+   * Creates a new envelope generation template.
+   *
+   * @param {string} baseApiPath The base path URL for the API.
+   * @param {string} accessToken The bearer token for authentication.
+   * @param {TemplateData} templateData
+   *
+   * The template includes details such as description, name, whether it's shared,
+   * subject of the email, status, and recipient information which specifies
+   * the role, recipient ID, and routing order.
+   *
+   * @returns {Promise<Template>} Returns a promise that resolves with the template.
+   */
+
+  static async createTemplate(
+    baseApiPath: string,
+    accessToken: string,
+    templateData: TemplateData = DEFAULT_TEMPLATE_DATA
+  ): Promise<Template> {
+    const response = await fetch(
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(templateData),
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (response.status > 201) {
+      throw new Error("Template creation failed");
+    }
+
+    return new Template(responseData.templateId);
+  }
+
+  /** Add documents to template.
+   *
+   * @param {string} baseApiPath The base path URL for the API.
+   * @param {string} accessToken The bearer token for authentication.
+   * @param {DocumentData} documentData Object containining data about to document to add to template.
+   *
+   * @returns {Promise<void>}
+   *
+   * Notes: currently this function only supports adding a single document
+   * to a template. this can be changed if needed.
+   */
+
+  async addDocument(
+    baseApiPath: string,
+    accessToken: string,
+    documentData: DocumentData
+  ): Promise<void> {
+    // Read and base64 encode the document
+    const documentBuffer = fs.readFileSync(documentData.path);
+    const documentBase64 = documentBuffer.toString("base64");
+    const documentName = Template._getDocumentName(documentData.path);
+
+    // Construct request JSON
+    const requestData = {
+      documents: [
+        {
+          documentBase64: documentBase64,
+          documentId: "1",
+          fileExtension: Template._getDocumentExtension(documentName),
+          order: "1",
+          pages: documentData.pageCount, //TODO: get num pages programmatically
+          name: documentName,
+        },
+      ],
+    };
+
+    const response = await fetch(
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.templateId}/documents/1`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    if (!response.ok) {
+      const respText = await response.text();
+      throw new Error(respText);
+    }
+  }
+
+  /** Add tabs to template.
+   *
+   * @param {string} baseApiPath The base path URL for the API.
+   * @param {string} accessToken The bearer token for authentication.
+   *
+   * @returns {void}
+   */
+
+  async addTab(accessToken: string, baseApiPath: string) {
+    const requestData = {
+      signHereTabs: [
+        {
+          anchorString: "sn1",
+          anchorUnits: "pixels",
+          anchorYOffset: "10",
+        },
+      ],
+    };
+
+    const response = await fetch(
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.templateId}/recipients/1/tabs`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    if (!response.ok) {
+      const responseText = await response.text();
+      throw new Error(responseText);
+    }
+  }
+
+  /** Takes document path and returns document name.
+   *
+   * @param {string} documentPath Path to document to add to template.
+   *
+   * @returns {string} name of file
+   */
+  static _getDocumentName(documentPath: string): string {
+    return documentPath.split("/").pop() || "";
+  }
+
+  /** Takes document name and returns file extension.
+   *
+   * @param {string} documentName Path to document to add to template.
+   *
+   * @returns {string} File extension.
+   */
+  static _getDocumentExtension(documentName: string): string {
+    return documentName.split(".").pop() || "";
+  }
+}
 
 /**
  * Retrieves an access token and the base URI from docusign API from an authentication
@@ -61,18 +220,19 @@ const DEFAULT_TEMPLATE_DATA: TemplateData = {
  * @returns {Promise<{token: string, baseUri: string}>} A promise that resolves with an object containing the `access_token`
  * and `base_uri` of the user's primary account. This information is used for further interactions with the API.
  * If either request fails, the function will throw an error with a detailed message based on the server's response.
-*/
+ */
 
 async function getAccessKeyAndBaseUri(authorizationCode: string) {
-
-  const encodedKeys = btoa(`${process.env.INTEGRATION_KEY}:${process.env.SECRET_KEY}`);
-  const tokenResp = await fetch('https://account-d.docusign.com/oauth/token', {
-    method: 'POST',
+  const encodedKeys = btoa(
+    `${process.env.INTEGRATION_KEY}:${process.env.SECRET_KEY}`
+  );
+  const tokenResp = await fetch("https://account-d.docusign.com/oauth/token", {
+    method: "POST",
     headers: {
-      'Authorization': `Basic ${encodedKeys}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
+      Authorization: `Basic ${encodedKeys}`,
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: `grant_type=authorization_code&code=${authorizationCode}`
+    body: `grant_type=authorization_code&code=${authorizationCode}`,
   });
 
   if (tokenResp.status > 201) {
@@ -81,12 +241,15 @@ async function getAccessKeyAndBaseUri(authorizationCode: string) {
 
   const tokenData = await tokenResp.json();
 
-  const baseUriResp = await fetch('https://account-d.docusign.com/oauth/userinfo', {
-    method: 'GET', // HTTP method
-    headers: {
-      'Authorization': `Bearer ${tokenData.access_token}` // Authorization header
+  const baseUriResp = await fetch(
+    "https://account-d.docusign.com/oauth/userinfo",
+    {
+      method: "GET", // HTTP method
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`, // Authorization header
+      },
     }
-  });
+  );
 
   if (baseUriResp.status > 201) {
     throw new Error("Getting base url failed");
@@ -96,164 +259,6 @@ async function getAccessKeyAndBaseUri(authorizationCode: string) {
 
   return {
     token: tokenData.access_token,
-    baseUri: baseUriData.accounts[0].base_uri
+    baseUri: baseUriData.accounts[0].base_uri,
   };
-}
-
-
-/**
- * Creates a new envelope generation template.
- *
- * @param {string} baseApiPath The base path URL for the API.
- * @param {string} accessToken The bearer token for authentication.
- * @param {TemplateData} templateData
- *
- * The template includes details such as description, name, whether it's shared,
- * subject of the email, status, and recipient information which specifies
- * the role, recipient ID, and routing order.
- *
- * @returns {Promise<Object>} Returns a promise that resolves with the template ID.
- */
-
-async function createTemplate(
-  baseApiPath: string,
-  accessToken: string,
-  templateData: TemplateData = DEFAULT_TEMPLATE_DATA
-): Promise<string> {
-
-  const response = await fetch(
-    `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(templateData),
-    }
-  );
-
-  const responseData = await response.json();
-
-  if (response.status > 201) {
-    throw new Error("Template creation failed");
-  }
-
-  return responseData.templateId;
-}
-
-
-/** Add documents to template.
- *
- * @param {string} baseApiPath The base path URL for the API.
- * @param {string} accessToken The bearer token for authentication.
- * @param {string} templateId The template ID of template to add documents to.
- * @param {DocumentData} documentData Object containining data about to document to add to template.
- *
- * @returns {void}
- *
- * Notes: currently this function only supports adding a single document
- * to a template. this can be changed if needed.
- */
-async function addDocumentToTemplate(
-  baseApiPath: string,
-  accessToken: string,
-  templateId: string,
-  documentData: DocumentData
-) {
-  // Read and base64 encode the document
-  const documentBuffer = fs.readFileSync(documentData.path);
-  const documentBase64 = documentBuffer.toString("base64");
-  const documentName = getDocumentName(documentData.path);
-
-  // Construct request JSON
-  const requestData = {
-    documents: [
-      {
-        documentBase64: documentBase64,
-        documentId: "1",
-        fileExtension: getDocumentExtension(documentName),
-        order: "1",
-        pages: documentData.pageCount, //TODO: get num pages programmatically
-        name: documentName,
-      },
-    ],
-  };
-
-  const response = await fetch(
-    `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${templateId}/documents/1`,
-    {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(requestData),
-    }
-  );
-
-  if (!response.ok) {
-    const respText = await response.text();
-    throw new Error(respText);
-  }
-}
-
-
-/** Add tabs to template.
- *
- * @param {string} templateId The template ID of template to add documents to.
- * @param {string} baseApiPath The base path URL for the API.
- * @param {string} accessToken The bearer token for authentication.
- *
- * @returns {void}
- */
-async function addTabs(accessToken: string, baseApiPath: string, templateId: string) {
-
-  const requestData = {
-    signHereTabs: [
-      {
-        anchorString: "sn1",
-        anchorUnits: "pixels",
-        anchorYOffset: "10",
-      },
-    ],
-  };
-
-  const response = await fetch(
-    `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${templateId}/recipients/1/tabs`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    }
-  );
-
-  if (!response.ok) {
-    const responseText = await response.text();
-    throw new Error(responseText);
-  }
-}
-
-/** Takes document path and returns document name.
- *
- * @param {string} documentPath Path to document to add to template.
- *
- * @returns {string} name of file
- */
-function getDocumentName(documentPath: string): string {
-  return documentPath.split("/").pop() || "";
-}
-
-/** Takes document name and returns file extension.
- *
- * @param {string} documentName Path to document to add to template.
- *
- * @returns {string} File extension.
- */
-function getDocumentExtension(documentName: string): string {
-  return documentName.split(".").pop() || "";
 }
