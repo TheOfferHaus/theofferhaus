@@ -1,3 +1,5 @@
+'use server';
+
 import { Envelope } from "./envelope";
 import { Template } from "./admin";
 

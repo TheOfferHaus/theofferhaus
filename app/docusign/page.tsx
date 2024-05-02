@@ -35,7 +35,7 @@ export default function DocusignPage() {
                 <button onClick={handleSendEnvelope}>Make and Send Envelope</button>
             </div>
             <div>
-                <button onClick={handleCreateTemplate}></button>
+                <button onClick={handleCreateTemplate}>Create Template</button>
             </div>
             <div>
                 {documentUrl && <Link href={documentUrl}>Sign document</Link>}
