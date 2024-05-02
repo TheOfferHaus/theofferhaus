@@ -3,20 +3,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-/**GET request to api/users
- *
- * Gets all users
- */
-
-export async function GET(request: NextRequest) {
-  console.log("In GET SPECIFIC USER request");
-  const users = await prisma.user.findMany({
-    orderBy: {
-      createdAt: 'asc'
-    }
-  });
-  return NextResponse.json({ users });
-}
 
 /**POST request to api/users
  *
