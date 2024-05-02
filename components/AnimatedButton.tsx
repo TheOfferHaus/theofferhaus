@@ -2,9 +2,6 @@ import Link from "next/link";
 
 /** AnimatedButton:  Component for displaying an animated button.
  *
- * state: None
- *
- * props: None
  *
  * Home -> AnimatedButton
  */

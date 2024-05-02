@@ -1,8 +1,6 @@
 /**
  * Footer: Component for footer.
  *
- * Props: none
- * State: none
  *
  * Home -> footer
  */

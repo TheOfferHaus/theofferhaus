@@ -5,9 +5,6 @@ import { TYPEFORM_FORM_ID } from '@/constants';
 
 /** FormWidget: Component for rendering a TypeForm widget (embeds the form)
  *
- * state: None
- *
- * props: None
  *
  * Quiz -> FormWidget
  */

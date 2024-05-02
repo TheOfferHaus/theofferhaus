@@ -3,8 +3,6 @@ import SleekCard from "@/components/SleekCard";
 /**
  * CardArea: Component for CardArea on landing page.
  *
- * State: none
- * Props: none
  *
  * Home -> CardArea -> SleekCard
  */
