@@ -1,6 +1,7 @@
 import React from 'react';
-import PaymentForm from './PaymentForm';
+import PaymentForm from '../../components/PaymentForm';
 import Stripe from 'stripe';
+import Footer from '@/components/Footer';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 /** Creates a Customer object and Checkout Session object for the user, providing
@@ -12,29 +13,39 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
  *
  * Payments -> PaymentForm
 */
-export default async function Payments() {
-    // const customer = await stripe.customers.create({
-    //   email: 'dav@id.com'
-    // })
+export default async function Payment() {
+    let customerId = "cus_Q28jd2XLv2Sfwy"; //will query from db once available
+
+    if (customerId === null) {
+        const customer = await stripe.customers.create({
+          email: 'test@email.com' // will use queried user data
+        })
+
+        customerId = customer.id; // set queried
+
+        //update database with customer.id
+    }
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
-        customer: "cus_Q1qfFUP3tx0BVj",
+        customer: customerId,
         ui_mode: 'embedded',
-        payment_intent_data: { setup_future_usage: 'off_session' },
         saved_payment_method_options: { payment_method_save: 'enabled' },
         line_items: [
             {
                 // Provide the exact Price ID (for example, pr_1234) of
                 // the product you want to sell
-                price: "price ID placeholder",
+                price: "price_1PC4LDRrTWD9lwhqkYBSUPmV",
                 quantity: 1,
             },
         ],
         mode: 'payment',
         return_url:
-            `http://localhost:3000/return?session_id={CHECKOUT_SESSION_ID}`,
+            `http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}`,
     });
+
+    console.log("customerId: ", customerId);
+    console.log("session: ", session);
 
     const clientSecret: string = session.client_secret!;
 
