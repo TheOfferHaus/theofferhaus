@@ -12,6 +12,7 @@
     "prisma:studio": "dotenv -e .env.local -- npx prisma studio"
   },
   "dependencies": {
+    "@typeform/embed-react": "^3.17.0",
     "@prisma/client": "^5.13.0",
     "@stripe/react-stripe-js": "^2.7.0",
     "@stripe/stripe-js": "^3.3.0",
