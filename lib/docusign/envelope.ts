@@ -204,7 +204,7 @@ class Envelope {
     accessToken: string,
     returnUrl: string,
     recipientData: SignerData
-  ) {
+  ): Promise<string> {
     const payload = {
       returnUrl: returnUrl,
       authenticationMethod: "none",
