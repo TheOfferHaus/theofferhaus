@@ -47,3 +47,10 @@ Developers will have to:
 Now you can use the prisma client to made database queries. For syntax questions ping Max or Ben
 6. If you want to use prisma studio to easily see database records, run `npm run prisma:studio`
 7. Everytime the schema is updated, in order to update the database accordingly run `npm run migrate:add` followed by `your-migration-name` to describe the change in that format with hyphens between each word. For example, if the schema was updated to add a column called "firstName" to the database, you would run something like `npm run migrate:add add-first-name-column-to-user`
+
+
+## Setting Up Users Seed
+
+1. Run `npm install`
+2. Run seed file: `npm run migrate:reset`
+3. Check database to see an admin user and regular user have been created.
