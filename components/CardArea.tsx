@@ -1,12 +1,6 @@
 import SleekCard from "@/components/SleekCard";
 
-/**
- * CardArea: Component for CardArea on landing page.
- *
- *
- * Home -> CardArea -> SleekCard
- */
-
+/** Component for CardArea on landing page.*/
 
 const CardArea = () => {
   return (

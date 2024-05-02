@@ -1,10 +1,6 @@
 import Link from "next/link";
 
-/** AnimatedButton:  Component for displaying an animated button.
- *
- *
- * Home -> AnimatedButton
- */
+/** Component for displaying an animated button. */
 
 const AnimatedButton = () => {
   return (
