@@ -1,6 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
+import StripeApi from '../utils/stripeApi';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -16,7 +17,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export default async function Return(data: { searchParams: { session_id: string; }; }) {
 
     const sessionId = data.searchParams.session_id;
-    const sessionData = await stripe.checkout.sessions.retrieve(sessionId);
+    const sessionData = await StripeApi.retrieveCheckoutSession(sessionId);
 
         return (
             sessionData!.status === 'complete'
