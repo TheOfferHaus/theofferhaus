@@ -16,11 +16,11 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
  *
  * Props: clientSecret, a string that works as a key to a unique Checkout Session
  *
- * Payment -> PaymentForm
+ * Payments -> PaymentForm
 */
-export default function PaymentForm({clientSecret}: {clientSecret: string}) {
-  const options = {clientSecret}
-return (
+export default function PaymentForm({ clientSecret }: { clientSecret: string; }) {
+  const options = { clientSecret };
+  return (
     <div id="checkout">
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
