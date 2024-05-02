@@ -51,10 +51,10 @@ const DEFAULT_TEMPLATE_DATA: TemplateData = {
 };
 
 class Template {
-  templateId: string;
+  id: string;
 
   constructor(templateId: string) {
-    this.templateId = templateId;
+    this.id = templateId;
   }
 
   /**
@@ -134,7 +134,7 @@ class Template {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.templateId}/documents/1`,
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
@@ -160,19 +160,22 @@ class Template {
    * @returns {void}
    */
 
-  async addTab(accessToken: string, baseApiPath: string) {
+  async addTabs(accessToken: string, baseApiPath: string) {
     const requestData = {
-      signHereTabs: [
-        {
-          anchorString: "sn1",
-          anchorUnits: "pixels",
-          anchorYOffset: "10",
-        },
-      ],
+      signHereTabs: [{
+        anchorString: "buyers_signature",
+        anchorUnits: "pixels",
+        anchorYOffset: "-20",
+      }],
+      dateSignedTabs: [{
+        anchorString: "sign_date2",
+        anchorUnits: "pixels",
+        anchorYOffset: "-20",
+      }]
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.templateId}/recipients/1/tabs`,
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {
@@ -262,3 +265,6 @@ async function getAccessKeyAndBaseUri(authorizationCode: string) {
     baseUri: baseUriData.accounts[0].base_uri,
   };
 }
+
+
+export { Template };

@@ -3,11 +3,6 @@ type SignerData = {
   name: string;
 };
 
-type RecipientData = {
-  email: string;
-  username: string;
-};
-
 class Envelope {
   envelopeId: string;
   templateId: string;
@@ -120,7 +115,7 @@ class Envelope {
     baseApiPath: string,
     accessToken: string,
     documentId: string,
-    dataToMerge: { [key: string]: string }
+    dataToMerge: { [key: string]: string; }
   ): Promise<void> {
     const docGenFormFieldList = Object.keys(dataToMerge).map((key) => ({
       name: key,
@@ -207,19 +202,18 @@ class Envelope {
   async getSigningUrl(
     baseApiPath: string,
     accessToken: string,
-    envelopeId: string,
     returnUrl: string,
-    recipientData: RecipientData
+    recipientData: SignerData
   ) {
     const payload = {
       returnUrl: returnUrl,
       authenticationMethod: "none",
       email: recipientData.email,
-      userName: recipientData.username,
+      userName: recipientData.name,
     };
 
     const signingUrlResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${envelopeId}/views/recipient`,
+      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
         headers: {
@@ -259,20 +253,20 @@ class Envelope {
     );
 
     const envelopesData = await envelopesResp.json();
-    const envelopes: { uri: string,  }[] = envelopesData.envelopes;
+    const envelopes: { uri: string, }[] = envelopesData.envelopes;
 
     return envelopes.map((e) => e.uri);
   }
 
-   /**
-   * Filters envelopes by envelope ID and retrieves document uris associated
-   * with them.
-   *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
-   *
-   * @returns {Promise<string>} Array of document uris for filtered envelopes.
-   */
+  /**
+  * Filters envelopes by envelope ID and retrieves document uris associated
+  * with them.
+  *
+  * @param {string} baseApiPath The base URL for the API.
+  * @param {string} accessToken The bearer token for authentication.
+  *
+  * @returns {Promise<string>} Array of document uris for filtered envelopes.
+  */
 
   static async getEnvelopeByIds(
     baseApiPath: string,
@@ -294,8 +288,10 @@ class Envelope {
     );
 
     const envelopesData = await envelopesResp.json();
-    const envelopes: { uri: string }[] = envelopesData.envelopes;
+    const envelopes: { uri: string; }[] = envelopesData.envelopes;
 
     return envelopes.map((e) => e.uri);
   }
 }
+
+export { Envelope };

@@ -1,4 +1,4 @@
-const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA: {[key: string] : string} = {
+const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA: { [key: string]: string; } = {
   buyer_email: "cooperspinelli@gmail.com",
   offer_made_on_date: "10-5-2025",
   buyers_name: "David Sapiro",
@@ -63,5 +63,6 @@ const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA: {[key: string] : string} = {
 // Possession of the Property will be delivered by Seller to Buyer by 5:00p.m on the date of Closing
 // If no and user filled out different time:
 // Possession of the Property will be delivered by Seller to Buyer by [filled out time] on the date of Closing
+
 
 export default RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA;
