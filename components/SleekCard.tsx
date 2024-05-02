@@ -1,6 +1,9 @@
+interface SleekCardProps {
+  title: string;
+  description: string;
+  color: string;
+}
 /** SleekCard:  Component for displaying a sleek card with a title, description, and customizable background color.
- *
- * state: None
  *
  * props:
  *  - title
@@ -10,11 +13,6 @@
  * {Home, TickingNumberCard} -> SleekCard
  */
 
-interface SleekCardProps {
-  title: string;
-  description: string;
-  color: string;
-}
 
 const SleekCard: React.FC<SleekCardProps> = ({ title, description, color }) => {
   return (
