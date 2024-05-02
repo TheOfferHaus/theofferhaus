@@ -1,8 +1,4 @@
-"use client";
-
-import React from "react";
 import SleekCard from "@/components/SleekCard";
-import TickingNumberCard from "@/components/TickingNumberCard";
 
 /**
  * CardArea: Component for CardArea on landing page.
@@ -10,7 +6,7 @@ import TickingNumberCard from "@/components/TickingNumberCard";
  * State: none
  * Props: none
  *
- * Home -> CardArea -> {SleekCard, TickingNumberCard}
+ * Home -> CardArea -> SleekCard
  */
 
 
@@ -39,12 +35,16 @@ const CardArea = () => {
           color="light-gray"
         />
         <div>
-        <TickingNumberCard color="subtle-yellow-green" />
-        <SleekCard
-          title={`10 minutes`}
-          description="to complete the application!"
-          color="stem-green"
-        />
+          <SleekCard
+            title="5+ years"
+            description="empowering buyers."
+            color="stem-green"
+          />
+          <SleekCard
+            title="10 minutes"
+            description="to complete the application!"
+            color="stem-green"
+          />
         </div>
         <SleekCard
           title="95%"

@@ -1,7 +1,3 @@
-"use client";
-
-import React from 'react';
-
 /** SleekCard:  Component for displaying a sleek card with a title, description, and customizable background color.
  *
  * state: None
@@ -20,7 +16,7 @@ interface SleekCardProps {
   color: string;
 }
 
-const SleekCard: React.FC<SleekCardProps> = ({ title, description, color = "custom-blue-light" }) => {
+const SleekCard: React.FC<SleekCardProps> = ({ title, description, color }) => {
   return (
     <div className={`max-w-sm rounded overflow-hidden shadow-xl bg-${color} m-4 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-120`}>
       <div className="px-6 py-4">

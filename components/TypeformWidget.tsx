@@ -1,6 +1,7 @@
 "use client";
 
 import { Widget } from '@typeform/embed-react';
+import { TYPEFORM_FORM_ID } from '@/constants';
 
 /** FormWidget: Component for rendering a TypeForm widget (embeds the form)
  *
@@ -12,7 +13,7 @@ import { Widget } from '@typeform/embed-react';
  */
 
 const FormWidget = () => {
-    return <Widget id="vBOEFE8R" className="fixed inset-0 overflow-auto bg-white" />;
+    return <Widget id={TYPEFORM_FORM_ID} className="fixed inset-0 overflow-auto bg-white" />;
 };
 
 export default FormWidget;

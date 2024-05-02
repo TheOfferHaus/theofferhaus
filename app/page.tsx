@@ -1,16 +1,7 @@
-"use client";
-
 import AnimatedButton from "@/components/AnimatedButton";
 import CardArea from "@/components/CardArea";
 import Footer from "@/components/Footer";
 
-/** Home:  Component for the home page of the OfferHaus website.
- *
- * Home -> {AnimatedButton, CardArea, Footer}
- *
- * Props: None
- * State: None
- */
 
 function Home() {
   return (

@@ -1,7 +1,5 @@
 /**
  * Webhook endpoint for receiving data from Typeform.
- *
- *
  */
 
 export async function POST(request: Request) {
