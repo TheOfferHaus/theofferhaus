@@ -30,15 +30,10 @@ export default function RootLayout({
           </header>
           <main>
             {children}
+            <Footer />
           </main>
         </body>
       </html>
     </ClerkProvider>
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Footer />
-      </body>
-    </html>
   );
 }
