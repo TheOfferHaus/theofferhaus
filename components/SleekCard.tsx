@@ -3,14 +3,12 @@ interface SleekCardProps {
   description: string;
   color: string;
 }
-/** SleekCard:  Component for displaying a sleek card with a title, description, and customizable background color.
+/** Component for displaying a sleek card with a title, description, and customizable background color.
  *
  * props:
  *  - title
  *  - description
- *  - background color (optional -- default to custom-light-blue)
- *
- * {Home, TickingNumberCard} -> SleekCard
+ *  - background color
  */
 
 
