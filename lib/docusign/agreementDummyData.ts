@@ -1,6 +1,9 @@
 const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA = {
   buyer_email: "cooperspinelli@gmail.com",
   offer_made_on_date: "10-5-2025",
+  num_buyers: 1,
+  num_buyers_words: "One",
+  deed_type: "Warranty Deed",
   buyers_name: "David Sapiro",
   current_buyer_address: "123 Hot St.",
   sellers_name: "Anissa Nishioka",
@@ -32,7 +35,8 @@ const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA = {
   contingent_on_appraisal: "not", // options are: "not", ""
   earnest_money_return_days_num: 10,
   lead_paint_disclosure: "not", // options are: "not", ""
-  realtor_information: "" // options are: "", "{{insert some realtor info}}"
+  realtor_information: "", // options are: "", "{{insert some realtor info}}"
+  possession_and_tenants: "Buyer will accept all tenants at Closing, and unless provided otherwise in this Agreement, all rents will be prorated as of Closing, and all deposits held on behalf of tenants by Seller will be transferred to Buyer through Escrow at Closing."
 };
 
 // Personal property not included:
@@ -53,3 +57,12 @@ const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA = {
 // Has loan false
 // No loan or financing of any kind is required in order to purchase the Property.
 
+
+// If yes to possession and yes to tenants remaining:
+// Buyer will accept all tenants at Closing, and unless provided otherwise in this Agreement, all rents will be prorated as of Closing, and all deposits held on behalf of tenants by Seller will be transferred to Buyer through Escrow at Closing.
+// If yes to possession and no to tenants reamining:
+// Seller will remove all tenants before Closing, pay any legally-required tenant relocation costs, and deliver possession to Buyer by 5:00 p.m. on the date of Closing.
+// If no
+// Possession of the Property will be delivered by Seller to Buyer by 5:00p.m on the date of Closing
+// If no and user filled out different time:
+// Possession of the Property will be delivered by Seller to Buyer by [filled out time] on the date of Closing
