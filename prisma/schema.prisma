@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  username     String      @id @unique
+  isAdmin      Boolean     @default(false) @map("is_admin")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt      @map("updated_at")
+  stripeId     String?                     @map("stripe_id")
+  offers       Offer[]
+
+  @@map("users")
+}
+
+model Offer {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())  @map("created_at")
+  updatedAt  DateTime   @updatedAt       @map("updated_at")
+  price      Int
+  buyer      User       @relation(fields: [buyerId], references: [username])
+  buyerId    String                      @map("buyer_id")
+  property   Property   @relation(fields: [propertyId], references: [id])
+  propertyId Int                         @map("property_id")
+  status     Status     @default(PENDING)
+
+  @@map("offers")
+}
+
+// id is currently set to autoincrementing but in the future, probably will be
+// maybe storing something from mls
+model Property {
+  id            Int        @id @default(autoincrement())
+  offers        Offer[]
+
+  @@map("properties")
+}
+
+enum Status {
+  REJECTED
+  ACCEPTED
+  PENDING
+}
