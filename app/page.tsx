@@ -1,6 +1,5 @@
 import AnimatedButton from "@/components/AnimatedButton";
 import CardArea from "@/components/CardArea";
-import Footer from "@/components/Footer";
 
 function Home() {
   return (
@@ -15,7 +14,6 @@ function Home() {
         <AnimatedButton />
       </div>
       <CardArea />
-      <Footer />
     </main>
   );
 }
