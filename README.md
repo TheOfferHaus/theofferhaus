@@ -41,7 +41,7 @@ Developers will have to:
 
 1. Run `npm install`
 2. Create new database called "offerhaus"
-3. Set up .env.local to have DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/offerhaus" with their relevant information passed in
+3. Set up .env.local to have `DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/offerhaus"` with their relevant information passed in
 4. If you are not on a Mac, password will have to be set by going into your database, running \password, and creating a new password.
 5. Run `npm run migrate:init`
 Now you can use the prisma client to made database queries. For syntax questions ping Max or Ben
