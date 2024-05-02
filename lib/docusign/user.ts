@@ -242,3 +242,49 @@ async function getSigningUrl(
   return signingUrlData.url;
 }
 
+async function getEnvelopes(
+  baseApiPath: string,
+  accessToken: string,
+): Promise<Array<String>> {
+
+  const envelopesResp = await fetch(
+    `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+       }
+    }
+  );
+
+  const envelopesData = await envelopesResp.json();
+  const envelopes : {uri: string}[] = envelopesData.envelopes;
+
+  return envelopes.map((e) => e.uri);
+}
+
+async function getEnvelopeByIds(
+  baseApiPath: string,
+  accessToken: string,
+  envelopeIds: string[]
+): Promise<Array<String>> {
+
+  const q = new URLSearchParams({
+    envelopeIds: envelopeIds.join(',')
+  })
+
+  const envelopesResp = await fetch(
+    `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes?${q}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+       }
+    }
+  );
+
+  const envelopesData = await envelopesResp.json();
+  const envelopes : {uri: string}[] = envelopesData.envelopes;
+
+  return envelopes.map((e) => e.uri);
+}
