@@ -27,7 +27,7 @@ Now you can use the prisma client to made database queries. For syntax questions
 ## Setting Up Users Seed Data and Clerk
 
 1. Run `npm install`
-2. Run seed file: `npm run migrate:reset`
-3. Check database to see an admin user and regular user have been created
+2. Run `npm run migrate:reset`. This drops the database, recreates it, and then runs the seed file
+3. Check database to confirm that an admin user and regular user have been created
 4. For Clerk, update .env.local to include the keys added to .env.example
 5. Keys and signin info for both users will be provided by auth team
