@@ -77,7 +77,7 @@ class Template {
     templateData: TemplateData = DEFAULT_TEMPLATE_DATA
   ): Promise<Template> {
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
         method: "POST",
         headers: {
@@ -93,6 +93,8 @@ class Template {
     if (response.status > 201) {
       throw new Error("Template creation failed");
     }
+
+    console.log(responseData.templateId);
 
     return new Template(responseData.templateId);
   }
@@ -134,7 +136,7 @@ class Template {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.id}/documents/1`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
@@ -150,6 +152,9 @@ class Template {
       const respText = await response.text();
       throw new Error(respText);
     }
+
+    console.log('add doc response:', await response.json());
+    console.log('successfully added document!');
   }
 
   /** Add tabs to template.
@@ -160,7 +165,7 @@ class Template {
    * @returns {void}
    */
 
-  async addTabs(accessToken: string, baseApiPath: string) {
+  async addTabs(baseApiPath: string, accessToken: string) {
     const requestData = {
       signHereTabs: [{
         anchorString: "buyers_signature",
@@ -175,7 +180,7 @@ class Template {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {
@@ -185,6 +190,8 @@ class Template {
         body: JSON.stringify(requestData),
       }
     );
+
+    console.log(await response.json());
 
     if (!response.ok) {
       const responseText = await response.text();
@@ -227,7 +234,7 @@ class Template {
 
 async function getAccessKeyAndBaseUri(authorizationCode: string) {
   const encodedKeys = btoa(
-    `${process.env.INTEGRATION_KEY}:${process.env.SECRET_KEY}`
+    `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
   );
   const tokenResp = await fetch("https://account-d.docusign.com/oauth/token", {
     method: "POST",

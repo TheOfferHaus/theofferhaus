@@ -48,7 +48,7 @@ class Envelope {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
       {
         method: "POST",
         headers: {
@@ -81,7 +81,7 @@ class Envelope {
 
   async getDocGenFormFields(baseApiPath: string, accessToken: string) {
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
       {
         method: "GET",
         headers: {
@@ -131,8 +131,10 @@ class Envelope {
       ],
     };
 
+    console.log(requestData);
+
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
       {
         method: "PUT",
         headers: {
@@ -166,7 +168,7 @@ class Envelope {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${this.envelopeId}`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
       {
         method: "PUT",
         headers: {
@@ -213,7 +215,7 @@ class Envelope {
     };
 
     const signingUrlResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
         headers: {
@@ -242,7 +244,7 @@ class Envelope {
     accessToken: string
   ): Promise<Array<string>> {
     const envelopesResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -278,7 +280,7 @@ class Envelope {
     });
 
     const envelopesResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.ACCOUNT_ID}/envelopes?${q}`,
+      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
