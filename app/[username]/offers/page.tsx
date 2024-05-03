@@ -61,7 +61,7 @@ export default async function Offers({ params }: { params: { username: string; }
               focus:ring-light-gray focus:ring-opacity-75 transition duration-300
               ease-in-out transform hover:-translate-y-1 hover:scale-100"
             >
-                <Link href="/quiz" passHref>
+                <Link href="/quiz">
                     <p className="hover:text-gray-300">Make new offer</p>
                 </Link>
             </button>
