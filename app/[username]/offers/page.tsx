@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
+import OfferCard from "@/components/OfferCard";
 
 const prisma = new PrismaClient();
 
@@ -33,31 +34,24 @@ export default async function Offers({ params }: { params: { username: string; }
         }
     });
 
+
+    // TODO: this array will be passed into a function (from docusign team) that gives us back an array of
+    // objects with each object having the envelopeId and the corresponding link
+    // to the docusign envelop
     const offerIds = user?.offers.map(o => ({
         id: o.id,
         envelopeId: o.envelopeId,
     }));
 
-    // this array will be passed into a function that gives us back an array of
-    // objects with each object having the envelopeId and the corresponding link
-    // to the docusign envelope
+    // TODO: when docusign team completes docusign class, this would ideally come from their
+    // method, in this exact shape.
+    const testOffers = [{ id: 2, envelopeId: "testgoogleid", docusignLink: "https://www.google.com" },
+    {id: 3, envelopeId: "testyoutubeid", docusignLink: "https://www.youtube.com"}];
 
-
-    const offers = [{ id: "id", envelopeId: "string", docusignLink: "link" }, {}];
-
-
-    // return statement would map through the offers array that now contains
-    // both offerId AND a link to the envelope, and would render a Offer display
-    // component for each one
 
     return (
         <div>
-            {offers.map(o => <OfferCard key={o.id} offer={o} />)}
+            {testOffers.map(o => <OfferCard key={o.id} offer={o} />)}
         </div>
     )
-
-
-    return (
-        <h1>Hello {username}</h1>
-    );
 }
