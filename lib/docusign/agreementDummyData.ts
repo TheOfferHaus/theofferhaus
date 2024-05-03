@@ -15,7 +15,7 @@ const RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA: { [key: string]: string; } = {
   offer_amount_in_words: "Five hundred and thirty thousand",
   has_loan: "Buyer Loan or Financing is required in order to purchase the Property.",
   verify_sufficient_funds_deadline_date: "10-6-2025", // Date
-  verify_sifficient_funds_deadline_time: "10-7-2025",
+  verify_sufficient_funds_deadline_time: "10-7-2025",
   verify_sufficient_funds_seller_days_num: "5",
   sale_contingent_on_other_sale: "", // options are: "not", ""
   contingent_address: "", // options are: "", Subject Property is Address {{address}}

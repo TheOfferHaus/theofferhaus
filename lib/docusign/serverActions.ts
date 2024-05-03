@@ -14,8 +14,11 @@ const RETURN_URL = "http://localhost:3000";
 async function makeAndSendEnvelope(formFields: { [key: string]: string; }, signerData: SignerData, templateId: string = DEFAULT_TEMPLATE_ID) {
   const envelope = await Envelope.createEnvelope(process.env.DOCUSIGN_BASE_API_PATH!, process.env.DOCUSIGN_ACCESS_TOKEN!, templateId, signerData);
   const documentData = await envelope.getDocGenFormFields(process.env.DOCUSIGN_BASE_API_PATH!, process.env.DOCUSIGN_ACCESS_TOKEN!);
+  console.log("Here");
   await envelope.mergeDataFields(process.env.DOCUSIGN_BASE_API_PATH!, process.env.DOCUSIGN_ACCESS_TOKEN!, documentData.docGenFormFields[0].documentId, formFields);
+  console.log("There");
   await envelope.sendSigningEmail(process.env.DOCUSIGN_BASE_API_PATH!, process.env.DOCUSIGN_ACCESS_TOKEN!);
+  console.log("everywhere");
   return await envelope.getSigningUrl(process.env.DOCUSIGN_BASE_API_PATH!, process.env.DOCUSIGN_ACCESS_TOKEN!, RETURN_URL, signerData);
 }
 

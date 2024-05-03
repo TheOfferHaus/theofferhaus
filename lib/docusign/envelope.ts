@@ -42,6 +42,7 @@ class Envelope {
           email: signerData.email,
           name: signerData.name,
           roleName: "signer",
+          clientUserId: "1000",
         },
       ],
       status: "created",
@@ -212,6 +213,7 @@ class Envelope {
       authenticationMethod: "none",
       email: recipientData.email,
       userName: recipientData.name,
+      clientUserId: 1000,
     };
 
     const signingUrlResp = await fetch(
@@ -227,6 +229,7 @@ class Envelope {
     );
 
     const signingUrlData = await signingUrlResp.json();
+    console.log(signingUrlData);
     return signingUrlData.url;
   }
 

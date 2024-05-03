@@ -20,6 +20,7 @@ export default function DocusignPage() {
 
         const signingUrl = await makeAndSendEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, signerData);
         setDocumentUrl(signingUrl);
+        console.log(signingUrl);
     }
 
     async function handleCreateTemplate(evt: FormEvent) {
