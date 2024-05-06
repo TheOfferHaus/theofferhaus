@@ -18,7 +18,7 @@ export default function DocusignPage() {
 
         const signerData = {
             name: `${user?.firstName} ${user?.lastName}`,
-            email: user?.emailAddresses[0].emailAddress
+            email: user?.emailAddresses[0].emailAddress!
         };
 
         const signingUrl = await makeAndSendEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, signerData);
