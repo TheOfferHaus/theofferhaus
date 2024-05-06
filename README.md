@@ -41,6 +41,16 @@ Follow these steps in your terminal
 7. `stripe listen –forward-to localhost:3000/api/paymentConfirmation` to listen for webhook events at the specified URL
 8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
 
+To make a test payment, you can use the following credit card info:
+
+Card number: 4242 4242 4242 4242
+MM/YY: any future date
+CVC: any three numbers
+Name: any
+Zip: any
+
+Additional test payment methods can be found here: https://docs.stripe.com/testing.
+
 
 ## Setting Up Users Seed Data and Clerk
 
