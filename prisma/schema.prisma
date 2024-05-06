@@ -26,6 +26,8 @@ model User {
 
 model Offer {
   id         Int        @id @default(autoincrement())
+  envelopeId String     @unique
+  typeformId String     @unique
   createdAt  DateTime   @default(now())  @map("created_at")
   updatedAt  DateTime   @updatedAt       @map("updated_at")
   price      Int
