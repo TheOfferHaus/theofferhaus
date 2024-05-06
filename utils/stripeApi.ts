@@ -76,11 +76,8 @@ class StripeApi {
    * If userData doesn't exist, an error is thrown.
    */
   static async getStripeCustomerId(user: User): Promise<string> {
-
-    const email = user.emailAddresses[0].emailAddress;
-    const name = user.fullName;
+    // query the database for user's stripe id
     const username = user.username as string;
-
     const userData = await prisma.user.findUnique({
       where: {
         username: username
@@ -90,14 +87,18 @@ class StripeApi {
       }
     });
 
-    if (!userData) throw new Error("User database information not found.");
+    // throw error if no user found
+    if (!userData) throw new Error("User does not exist.");
+
+    const email = user.emailAddresses[0].emailAddress as string;
+    const name = user.fullName as string;
 
     let stripeCustomerId: string;
 
     if (userData.stripeId) {
       stripeCustomerId = userData.stripeId;
     } else {
-      stripeCustomerId = await StripeApi.createCustomer(name as string, email as string);
+      stripeCustomerId = await StripeApi.createCustomer(name, email);
 
       const user = await prisma.user.update({
         where: { username: username },
