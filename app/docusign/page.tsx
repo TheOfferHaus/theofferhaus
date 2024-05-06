@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/clerk-react";
-import { makeAndSendEnvelope, createTemplate } from "@/lib/docusign/serverActions";
+import { makeAndSendEnvelope, createTemplate, getEnvelopeUrls } from "@/lib/docusign/serverActions";
 import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import Link from "next/link";
 import { useState } from "react";
@@ -31,6 +31,16 @@ export default function DocusignPage() {
         setTemplateId(newTemplateId);
     }
 
+    async function handleGetEnvelopes(evt: FormEvent) {
+        evt.preventDefault();
+        const signerData = {
+            name: `${user?.firstName} ${user?.lastName}`,
+            email: user?.emailAddresses[0].emailAddress!
+        };
+
+        console.log(await getEnvelopeUrls([{id: '1', envelopeId: '7ea3a636-a291-41ee-91fd-98f1c613c16f'}], signerData));
+    }
+
     if (!user) return <h1>Loading</h1>;
 
     return (
@@ -40,6 +50,9 @@ export default function DocusignPage() {
             </div>
             <div>
                 <button onClick={handleCreateTemplate}>Create Template</button>
+            </div>
+            <div>
+                <button onClick={handleGetEnvelopes}>Get Envelopes</button>
             </div>
             <div>
                 {documentUrl && <Link href={documentUrl}>Sign document</Link>}

@@ -5,13 +5,11 @@ type SignerData = {
 
 class Envelope {
   envelopeId: string;
-  templateId: string;
   status: string;
 
-  constructor(envelopeId: string, templateId: string) {
+  constructor(envelopeId: string, status:string='created') {
     this.envelopeId = envelopeId;
-    this.templateId = templateId;
-    this.status = "created";
+    this.status = status;
   }
 
   /**
@@ -68,7 +66,9 @@ class Envelope {
 
     const responseData = await response.json();
 
-    return new Envelope(responseData.envelopeId, templateId);
+    console.log('envelopeId: ', responseData.envelopeId);
+
+    return new Envelope(responseData.envelopeId);
   }
 
   /**
@@ -243,26 +243,26 @@ class Envelope {
    * @returns {Promise<string>} Array of document uris for all envelopes.
    */
 
-  static async getEnvelopes(
-    baseApiPath: string,
-    accessToken: string
-  ): Promise<Array<string>> {
-    const envelopesResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify('2017-05-02T01:44Z')
-      }
-    );
+  // static async getEnvelopes(
+  //   baseApiPath: string,
+  //   accessToken: string
+  // ): Promise<Array<string>> {
+  //   const envelopesResp = await fetch(
+  //     `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify('2017-05-02T01:44Z')
+  //     }
+  //   );
 
-    const envelopesData = await envelopesResp.json();
-    const envelopes: { uri: string, }[] = envelopesData.envelopes;
+  //   const envelopesData = await envelopesResp.json();
+  //   const envelopes: { uri: string, }[] = envelopesData.envelopes;
 
-    return envelopes.map((e) => e.uri);
-  }
+  //   return envelopes.map((e) => e.uri);
+  // }
 
   /**
   * Filters envelopes by envelope ID and retrieves document uris associated
@@ -274,30 +274,30 @@ class Envelope {
   * @returns {Promise<string>} Array of document uris for filtered envelopes.
   */
 
-  static async getEnvelopeByIds(
-    baseApiPath: string,
-    accessToken: string,
-    envelopeIds: string[]
-  ): Promise<Array<String>> {
-    const q = new URLSearchParams({
-      envelopeIds: envelopeIds.join(","),
-    });
+  // static async getEnvelopeByIds(
+  //   baseApiPath: string,
+  //   accessToken: string,
+  //   envelopeIds: string[]
+  // ): Promise<Array<String>> {
+  //   const q = new URLSearchParams({
+  //     envelopeIds: envelopeIds.join(","),
+  //   });
 
-    const envelopesResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  //   const envelopesResp = await fetch(
+  //     `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
 
-    const envelopesData = await envelopesResp.json();
-    const envelopes: { uri: string; }[] = envelopesData.envelopes;
+  //   const envelopesData = await envelopesResp.json();
+  //   const envelopes: { uri: string; }[] = envelopesData.envelopes;
 
-    return envelopes.map((e) => e.uri);
-  }
+  //   return envelopes.map((e) => e.uri);
+  // }
 }
 
 export { Envelope };
