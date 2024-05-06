@@ -38,8 +38,10 @@ Follow these steps in your terminal
 4. Enter Stripe credentials
 5. Click “Allow Access” after checking the pairing code in the browser and terminal match.
 6. `stripe` in terminal to see available commands
-7. `stripe listen –forward-to localhost:3000/api/paymentConfirmation` to listen for webhook events at the specified URL
+7. `stripe listen --forward-to localhost:3000/api/orderConfirmation` to listen for webhook events at the specified URL
 8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
+9. Run a test payment to trigger a webhook. Alternatively you can use the command `stripe trigger <event>` to trigger a specific event type.
+
 
 To make a test payment, you can use the following credit card info:
 

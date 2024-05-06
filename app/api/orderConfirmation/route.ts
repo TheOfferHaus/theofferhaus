@@ -1,8 +1,5 @@
-import Stripe from 'stripe';
 import { NextRequest, NextResponse } from 'next/server';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+import StripeApi from '@/app/utils/stripeApi';
 
 /** Webhook route that accepts API calls from Stripe to handle events. Currently
  * console logs basic event data and does not handle any order fulfillment.
@@ -11,29 +8,23 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
  *
  * Accepts: JSON stripe event data
  * Returns: JSON {received: true} or { err }
+ *
+ * Successful payment receives the following event types:
+ *  payment_intent.created
+ *  charge.succeeded
+ *  checkout.session.completed
+ *  payment_intent.succeeded
+ *  charge.updated
+ *
+ * Failed payment receives the following event types:
+ *  charge.failed
+ *  payment_intent.created
+ *  payment_intent.payment_failed
  */
 export async function POST(req: NextRequest) {
 
-  // creates a usable event from the req body
-  const buf = await req.text();
-  const signature = req.headers.get('stripe-signature')!;
-
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(
-      buf,
-      signature,
-      webhookSecret
-    );
-  } catch (err) {
-    // On error, log and return the error message.
-    console.log(`❌ Error message: ${err}`);
-    return NextResponse.json({ err }, { status: 400 });
-  }
-
-  // Successfully constructed event.
-  console.log('✅ Success:', event.id);
-
+  const event = await StripeApi.constructStripeEvent(req);
+  console.log("*********** event", event);
   // handles different event types
   switch (event.type) {
     case 'payment_intent.succeeded': {
