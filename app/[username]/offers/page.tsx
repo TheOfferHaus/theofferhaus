@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
 import OfferCard from "@/components/OfferCard";
 import Link from "next/link";
+import { SignIn } from "@clerk/nextjs";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,9 @@ export default async function Offers({ params }: { params: { username: string; }
     const { username } = params;
     const currUser = await currentUser();
 
-    if (username !== currUser!.username) redirect(`/${currUser!.username}/offers`);
+    if (!currUser) return <SignIn />
+
+    if (username !== currUser.username) redirect(`/${currUser.username}/offers`);
 
     const user = await prisma.user.findUnique({
         where: {
