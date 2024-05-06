@@ -5,11 +5,9 @@ type SignerData = {
 
 class Envelope {
   envelopeId: string;
-  status: string;
 
-  constructor(envelopeId: string, status:string='created') {
+  constructor(envelopeId: string) {
     this.envelopeId = envelopeId;
-    this.status = status;
   }
 
   /**
@@ -31,7 +29,7 @@ class Envelope {
     baseApiPath: string,
     accessToken: string,
     templateId: string,
-    signerData: SignerData
+    signerData: SignerData,
   ): Promise<Envelope> {
     const requestData = {
       templateId: templateId,
@@ -65,8 +63,6 @@ class Envelope {
     }
 
     const responseData = await response.json();
-
-    console.log('envelopeId: ', responseData.envelopeId);
 
     return new Envelope(responseData.envelopeId);
   }
@@ -133,8 +129,6 @@ class Envelope {
       ],
     };
 
-    console.log(requestData);
-
     const response = await fetch(
       `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
       {
@@ -148,9 +142,7 @@ class Envelope {
     );
 
     if (!response.ok) {
-      const respText = await response.text();
-      console.error("Failed to update docGenFormFields.", respText);
-      throw new Error(respText);
+      throw new Error(await response.text());
     }
   }
 
@@ -182,8 +174,7 @@ class Envelope {
     );
 
     if (!response.ok) {
-      const respText = await response.text();
-      throw new Error(respText);
+      throw new Error(await response.text());
     }
   }
 
@@ -230,7 +221,6 @@ class Envelope {
     );
 
     const signingUrlData = await signingUrlResp.json();
-    console.log(signingUrlData);
     return signingUrlData.url;
   }
 
