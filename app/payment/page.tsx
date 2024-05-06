@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation';
  *
  * Payment -> PaymentForm
 */
-export default async function Payment() {
+export default async function Payment(data: { searchParams: { price_id: string; }; }) {
     const user = await currentUser();
 
     if (!user) return redirect('/'); // will use forbidden page or other route protection methods
@@ -22,10 +22,10 @@ export default async function Payment() {
         return redirect('/'); // Database error -> will redirect to generic error page once built
     }
 
-    const priceId = "price_1PC4LDRrTWD9lwhqkYBSUPmV"; //will be received from a url param when called
+    const priceId = data.searchParams.price_id; //will be received from a url param when called
 
     // Create Checkout Sessions from body params.
-    const session = await StripeApi.createCheckoutSession(stripeCustomerId!, priceId);
+    const session = await StripeApi.createCheckoutSession(stripeCustomerId, priceId);
 
     return (
         <>

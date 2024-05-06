@@ -37,8 +37,7 @@ class StripeApi {
         },
       ],
       mode: 'payment',
-      return_url:
-        `http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: process.env.PAYMENT_RETURN_URL
     });
     return session.client_secret as string;
   }

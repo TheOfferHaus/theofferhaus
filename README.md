@@ -27,7 +27,12 @@ Now you can use the prisma client to made database queries. For syntax questions
 
 Setup to make Stripe embedded payment form functional:
 
-1. Include the following API keys in your .env.local: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
+1. Include the following API keys in your .env.local: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=... get from David & Sam
+STRIPE_SECRET_KEY=... get from David & Sam
+OFFER_PRICE_ID=price_1PC4LDRrTWD9lwhqkYBSUPmV
+FULL_PACKAGE_PRICE_ID=price_1PDYmLRrTWD9lwhqo9kMOWBi
+PAYMENT_RETURN_URL=http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}
+STRIPE_WEBHOOK_SECRET=... see below on getting the value for this key
 
 Setting up the Stipe command line interface to listen for webhook events:
 
@@ -42,6 +47,7 @@ Follow these steps in your terminal
 8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
 9. Run a test payment to trigger a webhook. Alternatively you can use the command `stripe trigger <event>` to trigger a specific event type.
 
+Access the payment page at this URL: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
 
 To make a test payment, you can use the following credit card info:
 
