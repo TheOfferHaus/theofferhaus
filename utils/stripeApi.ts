@@ -1,5 +1,8 @@
 import Stripe from 'stripe';
 import type { NextRequest } from 'next/server';
+import type { User } from '@clerk/nextjs/server';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -61,6 +64,42 @@ class StripeApi {
     );
 
     return event;
+  }
+
+  /** Accepts a user object and returns a stripe Id. If the user already has an
+   * id in the database, that id is returned. If not, a new stripe customer is
+   * created and the new id is returned.
+   *
+   * If userData doesn't exist, an error is thrown.
+   */
+  static async getStripeCustomerId(user: User) {
+
+    const email = user.emailAddresses[0].emailAddress;
+    const name = user.fullName;
+    const username = user.username as string;
+
+    const userData = await prisma.user.findUnique({
+      where: {
+        username: username
+      },
+    });
+
+    if(!userData) throw new Error("User database information not found.");
+
+    let stripeCustomerId: string;
+
+    if (userData.stripeId) {
+      stripeCustomerId = userData.stripeId;
+    } else {
+      stripeCustomerId = await StripeApi.createCustomer(name as string, email as string);
+
+      const user = await prisma.user.update({
+        where: { username: username },
+        data: { stripeId: stripeCustomerId },
+      });
+    }
+
+    return stripeCustomerId;
   }
 }
 

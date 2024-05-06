@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import StripeApi from '@/app/utils/stripeApi';
+import StripeApi from '@/utils/stripeApi';
 
 /** Webhook route that accepts API calls from Stripe to handle events. Currently
  * console logs basic event data and does not handle any order fulfillment.

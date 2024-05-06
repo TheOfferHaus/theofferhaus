@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
-import StripeApi from '../utils/stripeApi';
+import StripeApi from '@/utils/stripeApi';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
