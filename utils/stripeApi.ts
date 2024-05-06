@@ -11,7 +11,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 class StripeApi {
   /** Creates a Customer object using a name and email, returns customer id */
-  static async createCustomer(name: string, email: string) {
+  static async createCustomer(name: string, email: string): Promise<string> {
     const customer = await stripe.customers.create({
       name, email
     });
@@ -21,7 +21,9 @@ class StripeApi {
 
   /** Creates a Checkout Session object using a customerId and priceId, returns
    * a client secret */
-  static async createCheckoutSession(customerId: string, priceId: string) {
+  static async createCheckoutSession(
+    customerId: string, priceId: string): Promise<string> {
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       ui_mode: 'embedded',
@@ -38,14 +40,16 @@ class StripeApi {
       return_url:
         `http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}`,
     });
-    return session.client_secret!;
+    return session.client_secret as string;
   }
 
 
   /** Retrieves a Checkout Session object using a session id, returns a
    * Checkout Session object
    */
-  static async retrieveCheckoutSession(sessionId: string) {
+  static async retrieveCheckoutSession(
+    sessionId: string): Promise<Stripe.Response<Stripe.Checkout.Session>> {
+
     const sessionData = await stripe.checkout.sessions.retrieve(sessionId);
     return sessionData;
   }
@@ -53,7 +57,7 @@ class StripeApi {
   /** Given an event request body received from Stipe, returns an event object
    * containing relevant event details.
    */
-  static async constructStripeEvent(request: NextRequest) {
+  static async constructStripeEvent(request: NextRequest): Promise<Stripe.Event> {
     const buffer = await request.text();
     const signature = request.headers.get('stripe-signature')!;
 
@@ -72,7 +76,7 @@ class StripeApi {
    *
    * If userData doesn't exist, an error is thrown.
    */
-  static async getStripeCustomerId(user: User) {
+  static async getStripeCustomerId(user: User): Promise<string> {
 
     const email = user.emailAddresses[0].emailAddress;
     const name = user.fullName;
@@ -84,7 +88,7 @@ class StripeApi {
       },
     });
 
-    if(!userData) throw new Error("User database information not found.");
+    if (!userData) throw new Error("User database information not found.");
 
     let stripeCustomerId: string;
 

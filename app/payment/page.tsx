@@ -7,16 +7,13 @@ import { redirect } from 'next/navigation';
 /** Creates a Customer object and Checkout Session object for the user, providing
  * a client secret to the PaymentForm component
  *
- * State: None
  *
- * Props: None
- *
- * Payments -> PaymentForm
+ * Payment -> PaymentForm
 */
 export default async function Payment() {
     const user = await currentUser();
 
-    if (!user) return redirect('/');
+    if (!user) return redirect('/'); // will use forbidden page or other route protection methods
 
     let stripeCustomerId: string;
     try {
@@ -31,8 +28,8 @@ export default async function Payment() {
     const session = await StripeApi.createCheckoutSession(stripeCustomerId!, priceId);
 
     return (
-        <div id="checkout">
+        <>
             <PaymentForm clientSecret={session} />
-        </div>
+        </>
     );
 }

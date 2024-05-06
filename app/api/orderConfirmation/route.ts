@@ -24,7 +24,7 @@ import StripeApi from '@/utils/stripeApi';
 export async function POST(req: NextRequest) {
 
   const event = await StripeApi.constructStripeEvent(req);
-  console.log("*********** event", event);
+
   // handles different event types
   switch (event.type) {
     case 'payment_intent.succeeded': {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     }
     case 'charge.succeeded': {
       const charge = event.data.object;
-      console.log(`Charge id:`, charge);
+      console.log(`Charge id:`, charge.id);
       break;
     }
     default: {

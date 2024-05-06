@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   EmbeddedCheckoutProvider,
@@ -12,11 +11,9 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 /** Rendering the pre-built Stripe checkout/payment form
  *
- * State: None
- *
  * Props: clientSecret, a string that works as a key to a unique Checkout Session
  *
- * Payments -> PaymentForm
+ * Payment -> PaymentForm
 */
 export default function PaymentForm({ clientSecret }: { clientSecret: string; }) {
   const options = { clientSecret };
