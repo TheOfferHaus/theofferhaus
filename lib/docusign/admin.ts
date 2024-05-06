@@ -1,4 +1,5 @@
 import fs from "fs";
+import { env } from "process";
 
 type Signer = {
   recipientId: string;
@@ -60,8 +61,6 @@ class Template {
   /**
    * Creates a new envelope generation template.
    *
-   * @param {string} baseApiPath The base path URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    * @param {TemplateData} templateData
    *
    * The template includes details such as description, name, whether it's shared,
@@ -72,16 +71,14 @@ class Template {
    */
 
   static async createTemplate(
-    baseApiPath: string,
-    accessToken: string,
     templateData: TemplateData = DEFAULT_TEMPLATE_DATA
   ): Promise<Template> {
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(templateData),
@@ -101,8 +98,6 @@ class Template {
 
   /** Add documents to template.
    *
-   * @param {string} baseApiPath The base path URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    * @param {DocumentData} documentData Object containining data about to document to add to template.
    *
    * @returns {Promise<void>}
@@ -112,8 +107,6 @@ class Template {
    */
 
   async addDocument(
-    baseApiPath: string,
-    accessToken: string,
     documentData: DocumentData
   ): Promise<void> {
     // Read and base64 encode the document
@@ -136,11 +129,11 @@ class Template {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
           Accept: "application/json",
         },
@@ -149,23 +142,17 @@ class Template {
     );
 
     if (!response.ok) {
-      const respText = await response.text();
-      throw new Error(respText);
+      throw new Error(await response.text());
     }
-
-    console.log('add doc response:', await response.json());
-    console.log('successfully added document!');
   }
 
   /** Add tabs to template.
    *
-   * @param {string} baseApiPath The base path URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    *
    * @returns {void}
    */
 
-  async addTabs(baseApiPath: string, accessToken: string) {
+  async addTabs() {
     const requestData = {
       signHereTabs: [{
         anchorString: "buyers_signature",
@@ -180,22 +167,19 @@ class Template {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
       }
     );
 
-    console.log(await response.json());
-
     if (!response.ok) {
-      const responseText = await response.text();
-      throw new Error(responseText);
+      throw new Error(await response.text());
     }
   }
 

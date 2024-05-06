@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/clerk-react";
-import { makeAndSendEnvelope, createTemplate, getEnvelopeUrls, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
+import { createTemplate, getEnvelopeUrls, getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
 import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import Link from "next/link";
 import { useState } from "react";
@@ -22,9 +22,13 @@ export default function DocusignPage() {
         };
 
         const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, signerData);
-        console.log("Done");
+        console.log("Created envelope");
+        console.log("Envelope Id: ", envelopeId);
         await sendEnvelopeEmail(envelopeId);
-        setDocumentUrl(envelopeId);
+        console.log("Sent evelope signing email");
+        const envelopeUrl = await getEnvelopeUrl(envelopeId, signerData);
+        console.log(envelopeUrl);
+        setDocumentUrl(envelopeUrl);
     }
 
     async function handleCreateTemplate(evt: FormEvent) {

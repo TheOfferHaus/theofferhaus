@@ -1,3 +1,5 @@
+import { env } from "process";
+
 type SignerData = {
   email: string;
   name: string;
@@ -13,8 +15,6 @@ class Envelope {
   /**
    * Creates a new envelope from a specified template
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    * @param {string} templateId The unique identifier for the template from which the envelope will be created.
    * @param {SignerData} signerData The data of the signer including their email and name.
    *
@@ -26,8 +26,6 @@ class Envelope {
    */
 
   static async createEnvelope(
-    baseApiPath: string,
-    accessToken: string,
     templateId: string,
     signerData: SignerData,
   ): Promise<Envelope> {
@@ -46,11 +44,11 @@ class Envelope {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -70,20 +68,17 @@ class Envelope {
   /**
    * Retrieves the document generation form fields for a specified envelope
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
-   *
    * @returns {Promise<any>} Returns a promise that resolves with the JSON-parsed form field data if the request is successful.
    * If the request fails, it throws an error containing the server's error message.
    */
 
-  async getDocGenFormFields(baseApiPath: string, accessToken: string) {
+  async getDocGenFormFields() {
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           Accept: "application/json",
         },
       }
@@ -101,8 +96,6 @@ class Envelope {
   /**
    * Updates document generation form fields for a given document within an envelope.
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    * @param {string} documentId The unique identifier for the document to update form fields within.
    *
    * @returns {Promise<void>} A promise that resolves if the update is successful, and throws an error with a detailed
@@ -110,8 +103,6 @@ class Envelope {
    */
 
   async mergeDataFields(
-    baseApiPath: string,
-    accessToken: string,
     documentId: string,
     dataToMerge: { [key: string]: string; }
   ): Promise<void> {
@@ -130,11 +121,11 @@ class Envelope {
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -149,24 +140,22 @@ class Envelope {
   /**
    * Sends a signature request email for a specified envelope
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    *
    * @returns {Promise<void>} A promise that resolves if the request is successful. If the request fails,
    * an error is thrown detailing the server's response.
    */
 
-  async sendSigningEmail(baseApiPath: string, accessToken: string) {
+  async sendSigningEmail() {
     const requestData = {
       status: "sent",
     };
 
     const response = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -181,8 +170,6 @@ class Envelope {
   /**
    * Retrieves a signing URL for a specified envelope and recipient.
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
    * @param {string} returnUrl The URL to which the user will be redirected after signing.
    * @param {RecipientData} recipientData The details of the recipient, including their email and username.
    *
@@ -195,8 +182,6 @@ class Envelope {
    */
 
   async getSigningUrl(
-    baseApiPath: string,
-    accessToken: string,
     returnUrl: string,
     recipientData: SignerData
   ): Promise<string> {
@@ -209,11 +194,11 @@ class Envelope {
     };
 
     const signingUrlResp = await fetch(
-      `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
+      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
@@ -221,27 +206,26 @@ class Envelope {
     );
 
     const signingUrlData = await signingUrlResp.json();
+    console.log(signingUrlData);
     return signingUrlData.url;
+
   }
 
   /**
    * Retrieves document uris associated with all envelopes that have been created.
    *
-   * @param {string} baseApiPath The base URL for the API.
-   * @param {string} accessToken The bearer token for authentication.
-   *
    * @returns {Promise<string>} Array of document uris for all envelopes.
    */
 
   // static async getEnvelopes(
-  //   baseApiPath: string,
-  //   accessToken: string
+  //   env.DOCUSIGN_BASE_API_PATH: string,
+  //   env.DOCUSIGN_ACCESS_TOKEN: string
   // ): Promise<Array<string>> {
   //   const envelopesResp = await fetch(
-  //     `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+  //     `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
   //     {
   //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
+  //         Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
   //         "Content-Type": "application/json",
   //       },
   //       body: JSON.stringify('2017-05-02T01:44Z')
@@ -258,15 +242,13 @@ class Envelope {
   * Filters envelopes by envelope ID and retrieves document uris associated
   * with them.
   *
-  * @param {string} baseApiPath The base URL for the API.
-  * @param {string} accessToken The bearer token for authentication.
   *
   * @returns {Promise<string>} Array of document uris for filtered envelopes.
   */
 
   // static async getEnvelopeByIds(
-  //   baseApiPath: string,
-  //   accessToken: string,
+  //   env.DOCUSIGN_BASE_API_PATH: string,
+  //   env.DOCUSIGN_ACCESS_TOKEN: string,
   //   envelopeIds: string[]
   // ): Promise<Array<String>> {
   //   const q = new URLSearchParams({
@@ -274,10 +256,10 @@ class Envelope {
   //   });
 
   //   const envelopesResp = await fetch(
-  //     `${baseApiPath}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
+  //     `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
   //     {
   //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
+  //         Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
   //         "Content-Type": "application/json",
   //       },
   //     }

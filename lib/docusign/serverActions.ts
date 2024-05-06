@@ -29,15 +29,15 @@ const RETURN_URL = "http://localhost:3000";
  * @returns {Promise<string>} The ID of the created template.
  */
 async function createTemplate(): Promise<string> {
-  const template = await Template.createTemplate(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!);
+  const template = await Template.createTemplate();
 
   const documentData = {
     path: process.cwd() + "/public/agreementTemplate.docx",
     pageCount: "7"
   };
 
-  await template.addDocument(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!, documentData);
-  await template.addTabs(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!);
+  await template.addDocument(documentData);
+  await template.addTabs();
   return template.id;
 }
 
@@ -54,9 +54,9 @@ async function makeEnvelope(
   signerData: SignerData,
   templateId: string = DEFAULT_TEMPLATE_ID
 ): Promise<string> {
-  const envelope = await Envelope.createEnvelope(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!, templateId, signerData);
-  const documentData = await envelope.getDocGenFormFields(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!);
-  await envelope.mergeDataFields(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!, documentData.docGenFormFields[0].documentId, formFields);
+  const envelope = await Envelope.createEnvelope(templateId, signerData);
+  const documentData = await envelope.getDocGenFormFields();
+  await envelope.mergeDataFields(documentData.docGenFormFields[0].documentId, formFields);
   return envelope.envelopeId;
 }
 
@@ -68,11 +68,13 @@ async function makeEnvelope(
  */
 async function sendEnvelopeEmail(envelopeId: string): Promise<void> {
   const envelope = new Envelope(envelopeId);
-  envelope.sendSigningEmail(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!);
+  await envelope.sendSigningEmail();
 }
 
 /**
  * Generates a signing URL for a signer in an existing envelope in DocuSign.
+ * IMPORTANT: THIS ONLY WORKS IF sendEnvelopeEmail HAS BEEN CALLED ON THE
+ * ENVELOPE ID ALREADY
  *
  * @param {string} envelopeId - The ID of the envelope to generate the signing URL for.
  * @param {SignerData} signerData - The data of the signer.
@@ -80,7 +82,7 @@ async function sendEnvelopeEmail(envelopeId: string): Promise<void> {
  */
 async function getEnvelopeUrl(envelopeId: string, signerData: SignerData): Promise<string> {
   const envelope = new Envelope(envelopeId);
-  return await envelope.getSigningUrl(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!, RETURN_URL, signerData);
+  return await envelope.getSigningUrl(RETURN_URL, signerData);
 }
 
 /**
@@ -93,7 +95,7 @@ async function getEnvelopeUrl(envelopeId: string, signerData: SignerData): Promi
 async function getEnvelopeUrls(offers: OfferData[], signerData: SignerData): Promise<EnvelopeData[]> {
   const envelopePromises = offers.map(o => {
     const envelope = new Envelope(o.envelopeId);
-    return envelope.getSigningUrl(env.DOCUSIGN_BASE_API_PATH!, env.DOCUSIGN_ACCESS_TOKEN!, RETURN_URL, signerData);
+    return envelope.getSigningUrl(RETURN_URL, signerData);
   });
 
   const envelopeUrls = await Promise.all(envelopePromises);
