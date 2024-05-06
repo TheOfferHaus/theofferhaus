@@ -42,7 +42,8 @@ class Envelope {
           email: signerData.email,
           name: signerData.name,
           roleName: "signer",
-          clientUserId: "1000",
+          clientUserId: 1005,
+          embeddedRecipientStartURL: "SIGN_AT_DOCUSIGN"
         },
       ],
       status: "created",
@@ -213,7 +214,7 @@ class Envelope {
       authenticationMethod: "none",
       email: recipientData.email,
       userName: recipientData.name,
-      clientUserId: 1000,
+      clientUserId: 1005,
     };
 
     const signingUrlResp = await fetch(
