@@ -47,7 +47,11 @@ Follow these steps in your terminal
 8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
 9. Run a test payment to trigger a webhook. Alternatively you can use the command `stripe trigger <event>` to trigger a specific event type.
 
-Access the payment page at this URL: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
+Access the payment page with the following URLs:
+
+Offer price: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
+
+Full package price: http://localhost:3000/payment?price_id=price_1PDYmLRrTWD9lwhqo9kMOWBi
 
 To make a test payment, you can use the following credit card info:
 

@@ -85,6 +85,9 @@ class StripeApi {
       where: {
         username: username
       },
+      select: {
+        stripeId: true
+      }
     });
 
     if (!userData) throw new Error("User database information not found.");
