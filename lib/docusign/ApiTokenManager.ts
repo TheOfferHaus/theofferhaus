@@ -4,6 +4,8 @@ const prisma = new PrismaClient();
 
 const SECS_PER_HOUR = 3600;
 
+type ApiAccessData = { accessToken: string, baseUri: string, refreshToken: string, expiresIn: number; };
+
 
 export default class ApiTokenManager {
   expirationTime: Date;
@@ -88,12 +90,12 @@ export default class ApiTokenManager {
  * @param {string} authorizationCode The authorization code received after submitting
  *  the consent form
  *
- * @returns {Promise<{accessToken: string, baseUri: string, refreshToken: string, expiresIn: number}>} A promise that resolves with an object containing the `access_token`
+ * @returns {Promise<ApiAccessData>} A promise that resolves with an object containing the `access_token`
  * and `base_uri` of the user's primary account. This information is used for further interactions with the API.
  * If either request fails, the function will throw an error with a detailed message based on the server's response.
  */
 
-  static async getAccessKeyAndBaseUri(authorizationCode: string) {
+  static async getAccessKeyAndBaseUri(authorizationCode: string): Promise<ApiAccessData> {
     const encodedKeys = btoa(
       `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
     );
@@ -136,13 +138,5 @@ export default class ApiTokenManager {
     };
   }
 
-
-
-
-
-
 }
-
-
-
 

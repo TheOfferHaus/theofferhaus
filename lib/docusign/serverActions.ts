@@ -1,7 +1,7 @@
 'use server';
 
-import { Envelope } from "./envelope";
-import { Template } from "./admin";
+import Envelope from "./Envelope";
+import Template from "./Template";
 import { env } from "process";
 
 type SignerData = {
