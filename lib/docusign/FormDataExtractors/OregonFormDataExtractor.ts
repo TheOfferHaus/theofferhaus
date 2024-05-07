@@ -9,36 +9,47 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
   additionalInfoExtractors: {
     [key: string]: (input: ExtractedAnswers) => string;
   } = {
-    earnest_money: (ans) => OregonFormDataExtractor.getEarnestMoneyText(ans.earnest_money as boolean),
-    purchase_property_tax_lot: (ans) => `${ans.purchase_property_tax_lot}`,
-    personal_property_included: (ans) => OregonFormDataExtractor.getPersonalPropertyText(ans),
-    sale_contingent_on_other_sale: (ans) =>
-      ans.sale_contingent_on_other_sale ? "" : "not",
-    contingent_address: (ans) =>
-      ans.sale_contingent_on_other_sale
-        ? ""
-        : `Subject Property is Address ${ans.contingent_address}`,
-    survey_problems_deadline_date: (ans) =>
-      `${ans.survey_problems_deadline_date}`,
-    survey_problems_fix_days_num: (ans) => `${ans.survey_problems_fix_days_num}`,
-    title_search_report_buyer_days_num: (ans) =>
-      `${ans.title_search_report_buyer_days_num}`,
-    title_search_report_seller_days_num: (ans) =>
-      `${ans.title_search_report_seller_days_num}`,
-    inspection_date: (ans) => `${ans.inspection_date}`,
-    property_disclosures_agreement_days_num: (ans) =>
-      `${ans.property_disclosures_agreement_days_num}`,
-    agreement_returned_deadline: (ans) => `${ans.agreement_returned_deadline}`,
-    closing_costs_responsibility: (ans) =>
-    OregonFormDataExtractor.getClosingCostResponsibility(ans.closing_costs_responsibility as string),
-    mineral_rights_yes_to_buyer: (ans) => ans.mineral_rights_yes_to_buyer ? '' : 'not',
-    contingent_on_appraisal: (ans) => ans.contingent_on_appraisal ? '' : 'not',
-    earnest_money_return_days_num: ans => `${ans.earnest_money_return_days_num}`,
-    lead_paint_disclosure: (ans) => ans.lead_paint_disclosure ? '' : 'not',
-    realtor_information: ans => ans.realtor_involved ? `${ans.realtor_information}` : '',
-    possession_and_tenants: ans => OregonFormDataExtractor.getPosessionAndTenants(ans),
-    has_loan: ans => OregonFormDataExtractor.getLoanText(ans.has_loan as boolean)
-  };
+      earnest_money: (ans) =>
+        OregonFormDataExtractor.getEarnestMoneyText(ans.earnest_money as boolean),
+      purchase_property_tax_lot: (ans) =>
+        `${ans.purchase_property_tax_lot}`,
+      personal_property_included: (ans) =>
+        OregonFormDataExtractor.getPersonalPropertyText(ans),
+      sale_contingent_on_other_sale: (ans) =>
+        ans.sale_contingent_on_other_sale ? "" : "not",
+      contingent_address: (ans) =>
+        ans.sale_contingent_on_other_sale
+          ? ""
+          : `Subject Property is Address ${ans.contingent_address}`,
+      survey_problems_deadline_date: (ans) =>
+        `${ans.survey_problems_deadline_date}`,
+      survey_problems_fix_days_num: (ans) => `${ans.survey_problems_fix_days_num}`,
+      title_search_report_buyer_days_num: (ans) =>
+        `${ans.title_search_report_buyer_days_num}`,
+      title_search_report_seller_days_num: (ans) =>
+        `${ans.title_search_report_seller_days_num}`,
+      inspection_date: (ans) => `${ans.inspection_date}`,
+      property_disclosures_agreement_days_num: (ans) =>
+        `${ans.property_disclosures_agreement_days_num}`,
+      agreement_returned_deadline: (ans) =>
+        `${ans.agreement_returned_deadline}`,
+      closing_costs_responsibility: (ans) =>
+        OregonFormDataExtractor.getClosingCostResponsibility(ans.closing_costs_responsibility as string),
+      mineral_rights_yes_to_buyer: (ans) =>
+        ans.mineral_rights_yes_to_buyer ? '' : 'not',
+      contingent_on_appraisal: (ans) =>
+        ans.contingent_on_appraisal ? '' : 'not',
+      earnest_money_return_days_num: ans =>
+        `${ans.earnest_money_return_days_num}`,
+      lead_paint_disclosure: (ans) =>
+        ans.lead_paint_disclosure ? '' : 'not',
+      realtor_information: ans =>
+        ans.realtor_involved ? `${ans.realtor_information}` : '',
+      possession_and_tenants: ans =>
+        OregonFormDataExtractor.getPosessionAndTenants(ans),
+      has_loan: ans =>
+        OregonFormDataExtractor.getLoanText(ans.has_loan as boolean)
+    };
 
   static getPersonalPropertyText(ans: ExtractedAnswers): string {
     if (ans.personal_property_included) {
