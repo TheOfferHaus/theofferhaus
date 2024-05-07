@@ -18,32 +18,27 @@ const ClerkUserMenuItem = () => {
 
 const NavBar = () => {
   return (
-    <nav className="absolute w-full bg-custom-white text-black z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="hidden items-center md:ml-6 md:flex md:space-x-8 ">
-              {/* Navigation links */}
+    <nav className="absolute w-full bg-custom-white z-50">
+      <div className="flex px-4 sm:px-6 lg:px-8 justify-between h-16 mx-auto">
+            {/* Navigation links */}
+            <div className="flex items-center space-x-8">
               <Link
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700"
+                className="px-3 py-2 rounded-md text-sm font-medium hover:text-primary-dark"
                 href="/"
               >
                 Home
               </Link>
               <Link
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700"
+                className="px-3 py-2 rounded-md text-sm font-medium hover:text-primary-dark"
                 href="/quiz"
               >
                 Quiz
               </Link>
-            </div>
           </div>
+          {/* Clerk Sign-in */}
           <div className="flex items-center">
-            <div className="flex-shrink-0">
               <ClerkUserMenuItem />
-            </div>
           </div>
-        </div>
       </div>
     </nav>
   );
