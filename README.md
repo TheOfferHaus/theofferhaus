@@ -31,3 +31,9 @@ Now you can use the prisma client to made database queries. For syntax questions
 3. Check database to confirm that an admin user and regular user have been created
 4. For Clerk, update .env.local to include the keys added to .env.example
 5. Keys and signin info for both users will be provided by auth team
+
+## Setting up Shadcn command line interface
+
+1. In your terminal: `npx shadcn-ui@latest init`
+2. In your terminal: `npx shadcn-ui@latest add table`
+

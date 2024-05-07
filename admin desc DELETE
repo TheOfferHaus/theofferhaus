@@ -1,0 +1,27 @@
+For Admin panel
+
+We would like to see all users.
+
+Be able to organize them by first name, last name, date of offer, and state they are buying in... The more we can organize and search the better.
+
+Have the ability to resend documents simply.
+
+When clicking on the users be able to see what house they're putting offer(s) in on and the status of those offers including all documents they used in our system and uploaded.
+
+The ability to add new documents and modify the fields to correctly correspond with the input from the quiz.
+
+Need to be able to name those documents and associate them with correct dropdowns and correct values.
+
+Also associate documents with each State & Country. For example, each State will need a State Specific Addendum so we have to make sure it gets associated as we add states and as documentation changes YoY.
+
+We what to collect and store all the collected data from the user.
+Collect all the data from the Seller Realtor.
+
+
+Steps:
+
+1. users component that gets users and displays info /admin
+    chart with user info
+    columns: username, Last Name, First Name, Email, state, date of last offer
+
+2. user component /admin/users/[username]
