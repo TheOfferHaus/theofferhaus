@@ -2,6 +2,8 @@
  * Webhook endpoint for receiving data from Typeform.
  */
 
+import { formatFormDataForDocusign } from "@/lib/utils";
+
 export async function POST(request: Request) {
   try {
     const text = await request.text();
@@ -17,4 +19,6 @@ export async function POST(request: Request) {
       status: 400,
     });
   }
+
+  //const newEnvelope = await makeEnvelope(formatFormDataForDocusign(formData), signerData, templateId)
 }

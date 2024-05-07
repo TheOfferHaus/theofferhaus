@@ -72,7 +72,7 @@ class Envelope {
    * If the request fails, it throws an error containing the server's error message.
    */
 
-  async getDocGenFormFields() {
+  async getDocGenFormFields(): Promise<any> {
     const response = await fetch(
       `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
       {
@@ -145,7 +145,7 @@ class Envelope {
    * an error is thrown detailing the server's response.
    */
 
-  async sendSigningEmail() {
+  async sendSigningEmail(): Promise<void> {
     const requestData = {
       status: "sent",
     };
