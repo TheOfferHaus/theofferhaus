@@ -211,7 +211,7 @@ class Template {
  * @param {string} authorizationCode The authorization code received after submitting
  *  the consent form
  *
- * @returns {Promise<{token: string, baseUri: string}>} A promise that resolves with an object containing the `access_token`
+ * @returns {Promise<{accessToken: string, baseUri: string, refreshToken: string, expiresIn: number}>} A promise that resolves with an object containing the `access_token`
  * and `base_uri` of the user's primary account. This information is used for further interactions with the API.
  * If either request fails, the function will throw an error with a detailed message based on the server's response.
  */
@@ -252,10 +252,12 @@ async function getAccessKeyAndBaseUri(authorizationCode: string) {
   const baseUriData = await baseUriResp.json();
 
   return {
-    token: tokenData.access_token,
-    baseUri: baseUriData.accounts[0].base_uri,
+    accessToken: tokenData.access_token,
+    refreshToken: tokenData.refresh_token,
+    expiresIn: tokenData.expires_in,
+    baseUri: baseUriData.accounts[0].base_uri
   };
 }
 
 
-export { Template };
+export { Template, getAccessKeyAndBaseUri };
