@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 /** Component for offer detail, includes offer/property info from typeform fields and links to offer documents*/
 
 export default async function Offer({ params }: { params: { offerId: number; }; }) {
-    const user = await currentUser() as User;
+    const currUser = await currentUser() as User;
 
     const { offerId } = params;
 
@@ -19,7 +19,7 @@ export default async function Offer({ params }: { params: { offerId: number; }; 
         }
     });
 
-    if (!offer) redirect(`${user.username}/offers`);
+    if (!offer) redirect(`${currUser.username}/offers`);
 
     const { typeformId, envelopeId } = offer;
 
