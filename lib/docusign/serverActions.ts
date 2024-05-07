@@ -2,6 +2,7 @@
 
 import Envelope from "./Envelope";
 import Template from "./Template";
+import ApiTokenManager from "./ApiTokenManager";
 import { env } from "process";
 
 type SignerData = {
@@ -67,7 +68,8 @@ async function makeEnvelope(
  * @returns {Promise<void>}
  */
 async function sendEnvelopeEmail(envelopeId: string): Promise<void> {
-  const envelope = new Envelope(envelopeId);
+  const tokenManager = await ApiTokenManager.createApiTokenManager();
+  const envelope = new Envelope(envelopeId, tokenManager);
   await envelope.sendSigningEmail();
 }
 
@@ -81,7 +83,8 @@ async function sendEnvelopeEmail(envelopeId: string): Promise<void> {
  * @returns {Promise<string>} The generated signing URL.
  */
 async function getEnvelopeUrl(envelopeId: string, signerData: SignerData): Promise<string> {
-  const envelope = new Envelope(envelopeId);
+  const tokenManager = await ApiTokenManager.createApiTokenManager();
+  const envelope = new Envelope(envelopeId, tokenManager);
   return await envelope.getSigningUrl(RETURN_URL, signerData);
 }
 
@@ -93,8 +96,9 @@ async function getEnvelopeUrl(envelopeId: string, signerData: SignerData): Promi
  * @returns {Promise<EnvelopeData[]>} An array of envelope data objects containing ID, envelope ID, and signing URL.
  */
 async function getEnvelopeUrls(offers: OfferData[], signerData: SignerData): Promise<EnvelopeData[]> {
+  const tokenManager = await ApiTokenManager.createApiTokenManager();
   const envelopePromises = offers.map(o => {
-    const envelope = new Envelope(o.envelopeId);
+    const envelope = new Envelope(o.envelopeId, tokenManager);
     return envelope.getSigningUrl(RETURN_URL, signerData);
   });
 

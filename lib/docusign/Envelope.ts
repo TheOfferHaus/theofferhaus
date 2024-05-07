@@ -1,4 +1,5 @@
 import { env } from "process";
+import ApiTokenManager from "./ApiTokenManager";
 
 type SignerData = {
   email: string;
@@ -7,9 +8,11 @@ type SignerData = {
 
 export default class Envelope {
   envelopeId: string;
+  tokenManager: ApiTokenManager;
 
-  constructor(envelopeId: string) {
+  constructor(envelopeId: string, tokenManager: ApiTokenManager) {
     this.envelopeId = envelopeId;
+    this.tokenManager = tokenManager;
   }
 
   /**
@@ -29,6 +32,9 @@ export default class Envelope {
     templateId: string,
     signerData: SignerData,
   ): Promise<Envelope> {
+
+    const tokenManager = await ApiTokenManager.createApiTokenManager();
+
     const requestData = {
       templateId: templateId,
       templateRoles: [
@@ -44,11 +50,11 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+      `${await tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -62,7 +68,7 @@ export default class Envelope {
 
     const responseData = await response.json();
 
-    return new Envelope(responseData.envelopeId);
+    return new Envelope(responseData.envelopeId, tokenManager);
   }
 
   /**
@@ -74,11 +80,11 @@ export default class Envelope {
 
   async getDocGenFormFields(): Promise<any> {
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           Accept: "application/json",
         },
       }
@@ -121,11 +127,11 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -151,11 +157,11 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
@@ -194,11 +200,11 @@ export default class Envelope {
     };
 
     const signingUrlResp = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
@@ -218,14 +224,14 @@ export default class Envelope {
    */
 
   // static async getEnvelopes(
-  //   env.DOCUSIGN_BASE_API_PATH: string,
-  //   env.DOCUSIGN_ACCESS_TOKEN: string
+  //   await this.tokenManager.getBaseUrl(): string,
+  //   await this.tokenManager.getAccessToken(): string
   // ): Promise<Array<string>> {
   //   const envelopesResp = await fetch(
-  //     `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+  //     `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
   //     {
   //       headers: {
-  //         Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+  //         Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
   //         "Content-Type": "application/json",
   //       },
   //       body: JSON.stringify('2017-05-02T01:44Z')
@@ -247,8 +253,8 @@ export default class Envelope {
   */
 
   // static async getEnvelopeByIds(
-  //   env.DOCUSIGN_BASE_API_PATH: string,
-  //   env.DOCUSIGN_ACCESS_TOKEN: string,
+  //   await this.tokenManager.getBaseUrl(): string,
+  //   await this.tokenManager.getAccessToken(): string,
   //   envelopeIds: string[]
   // ): Promise<Array<String>> {
   //   const q = new URLSearchParams({
@@ -256,10 +262,10 @@ export default class Envelope {
   //   });
 
   //   const envelopesResp = await fetch(
-  //     `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
+  //     `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
   //     {
   //       headers: {
-  //         Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+  //         Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
   //         "Content-Type": "application/json",
   //       },
   //     }

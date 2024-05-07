@@ -38,6 +38,7 @@ export default class ApiTokenManager {
   async getAccessToken() {
     const now = new Date();
     if (now >= this.expirationTime) {
+      console.log(this.expirationTime, now);
       await this.refreshTokens();
     }
 
@@ -45,6 +46,8 @@ export default class ApiTokenManager {
   }
 
   async refreshTokens() {
+
+    console;
     // Base64 encode the combination of the integration and secret keys
     const encodedKeys = btoa(`${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`);
 

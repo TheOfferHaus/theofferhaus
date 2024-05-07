@@ -1,5 +1,5 @@
 import fs from "fs";
-import { env } from "process";
+import ApiTokenManager from "./ApiTokenManager";
 
 type Signer = {
   recipientId: string;
@@ -53,9 +53,11 @@ const DEFAULT_TEMPLATE_DATA: TemplateData = {
 
 export default class Template {
   id: string;
+  tokenManager: ApiTokenManager;
 
-  constructor(templateId: string) {
+  constructor(templateId: string, tokenManager: ApiTokenManager) {
     this.id = templateId;
+    this.tokenManager = tokenManager;
   }
 
   /**
@@ -73,12 +75,14 @@ export default class Template {
   static async createTemplate(
     templateData: TemplateData = DEFAULT_TEMPLATE_DATA
   ): Promise<Template> {
+    const tokenManager = await ApiTokenManager.createApiTokenManager();
+
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
+      `${await tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await tokenManager.getBaseUrl()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(templateData),
@@ -93,7 +97,7 @@ export default class Template {
 
     console.log(responseData.templateId);
 
-    return new Template(responseData.templateId);
+    return new Template(responseData.templateId, tokenManager);
   }
 
   /** Add documents to template.
@@ -129,11 +133,11 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
           Accept: "application/json",
         },
@@ -167,11 +171,11 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${env.DOCUSIGN_BASE_API_PATH}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
+      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${env.DOCUSIGN_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
