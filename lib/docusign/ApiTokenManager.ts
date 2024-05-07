@@ -32,7 +32,7 @@ export default class ApiTokenManager {
   }
 
   async getBaseUrl() {
-    return this.baseUrl;
+    return `${this.baseUrl}/restapi`;
   }
 
   async getAccessToken() {
@@ -47,7 +47,7 @@ export default class ApiTokenManager {
 
   async refreshTokens() {
 
-    console;
+    console.log('refreshing token');
     // Base64 encode the combination of the integration and secret keys
     const encodedKeys = btoa(`${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`);
 
@@ -55,7 +55,7 @@ export default class ApiTokenManager {
       method: "POST",
       headers: {
         "Authorization": `Basic ${encodedKeys}`,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         grant_type: "refresh_token",
@@ -64,6 +64,7 @@ export default class ApiTokenManager {
     });
 
     if (!response.ok) {
+      console.log(await response.text());
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -72,7 +73,7 @@ export default class ApiTokenManager {
     this.accessToken = newAccessData.access_token;
     this.refreshToken = newAccessData.refresh_token;
     const now = new Date();
-    this.expirationTime = new Date(now.getTime() + newAccessData.expires_in - SECS_PER_HOUR);
+    this.expirationTime = new Date(now.getTime() + (newAccessData.expires_in - SECS_PER_HOUR) * 1000);
 
     await prisma.accessData.update({
       where: {
@@ -87,18 +88,16 @@ export default class ApiTokenManager {
   }
 
   /**
- * Retrieves an access token and the base URI from docusign API from an authentication
- * code that is returned after filling out the consent form
+ * Retrieves an access token, refresh token, and the base URI from docusign API from an authentication
+ * code that is returned after filling out the consent form. Adds these to database.
  *
  * @param {string} authorizationCode The authorization code received after submitting
  *  the consent form
  *
- * @returns {Promise<ApiAccessData>} A promise that resolves with an object containing the `access_token`
- * and `base_uri` of the user's primary account. This information is used for further interactions with the API.
- * If either request fails, the function will throw an error with a detailed message based on the server's response.
+ * @returns {Promise<void>}
  */
 
-  static async getAccessKeyAndBaseUri(authorizationCode: string): Promise<ApiAccessData> {
+  static async initializeAccessData(authorizationCode: string): Promise<void> {
     const encodedKeys = btoa(
       `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
     );
@@ -132,13 +131,19 @@ export default class ApiTokenManager {
     }
 
     const baseUriData = await baseUriResp.json();
+    const now = new Date();
 
-    return {
-      accessToken: tokenData.access_token,
-      refreshToken: tokenData.refresh_token,
-      expiresIn: tokenData.expires_in,
-      baseUri: baseUriData.accounts[0].base_uri
-    };
+    await prisma.accessData.update({
+      where: {
+        id: 0
+      },
+      data: {
+        token: tokenData.access_token,
+        refreshToken: tokenData.refresh_token,
+        expirationTime: new Date(now.getTime() + (tokenData.expires_in - SECS_PER_HOUR) * 1000),
+        baseUri: baseUriData.accounts[0].base_uri
+      }
+    });
   }
 
 }

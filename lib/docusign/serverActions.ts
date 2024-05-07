@@ -106,11 +106,16 @@ async function getEnvelopeUrls(offers: OfferData[], signerData: SignerData): Pro
   return envelopeUrls.map((e, idx) => ({ id: offers[idx].id, envelopeId: offers[idx].envelopeId, url: e }));
 }
 
+async function generateAccessDataAfterConsent(code: string) {
+  await ApiTokenManager.initializeAccessData(code);
+}
+
 
 export {
   makeEnvelope,
   sendEnvelopeEmail,
   createTemplate,
   getEnvelopeUrl,
-  getEnvelopeUrls
+  getEnvelopeUrls,
+  generateAccessDataAfterConsent
 };

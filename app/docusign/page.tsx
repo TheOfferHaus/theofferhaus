@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/clerk-react";
-import { createTemplate, getEnvelopeUrls, getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
+import { createTemplate, getEnvelopeUrls, getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail, generateAccessDataAfterConsent } from "@/lib/docusign/serverActions";
 import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -14,7 +14,6 @@ export default function DocusignPage() {
     const params = useSearchParams();
     const [documentUrl, setDocumentUrl] = useState("");
     const [templateId, setTemplateId] = useState("");
-    const [accessData, setAccessData] = useState({});
     const { user } = useUser();
 
     useEffect(function createTokenOnMount() {
@@ -22,14 +21,7 @@ export default function DocusignPage() {
         console.log('params', params);
 
         async function createToken() {
-            const resp = await fetch('http://localhost:3000/api/docusign',
-                {
-                    method: 'POST',
-                    body: JSON.stringify({ code: params.get('code') })
-                }
-            );
-
-            setAccessData(await resp.json());
+            generateAccessDataAfterConsent(params.get('code')!);
         }
 
         if (params.get('code')) {
