@@ -1,30 +1,42 @@
 import Link from "next/link";
+import { User, currentUser } from "@clerk/nextjs/server";
+
 type OfferObject = {
-  id: number,
-  envelopeId: string,
-  docusignLink: string;
-};
-/** Component for displaying a offer card with a offer ID, docusign link, etc.
+  property: {
+      id: number;
+  };
+} & {
+  id: number;
+  envelopeId: string;
+  typeformId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  price: number;
+  buyerId: string;
+  propertyId: number;
+  status: string;
+}
+
+/** Component for displaying an offer card with a offer ID
  *
  *
  * props:
- * - Offer {id, envelopeId, docusignLink}
+ * - Offer object
  */
 
-
-export default function OfferCard({ offer }: { offer: OfferObject; }) {
-
-  const { id, docusignLink } = offer;
+export default async function OfferCard({ offer } : { offer: OfferObject }) {
+  const { id } = offer;
+  const { username } = await currentUser() as User;
 
   return (
-    <div>
-      <h3>Offer ID: {id}</h3>
-      <p>View Documents&nbsp;
-        <Link
-          href={docusignLink}
-          target="_blank"
-          rel="noopener noreferrer">Here</Link>
-      </p>
+    <div className="OfferCard">
+      <Link
+        href={`/${username}/offers/${id}`}
+        rel="noopener noreferrer">
+        <div>
+          <h2>Offer ID: {id}</h2>
+        </div>
+      </Link>
     </div>
   );
 }
