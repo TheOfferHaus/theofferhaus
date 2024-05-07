@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
         orderBy: "-username"
     });
 
-    const databaseUsers = await prisma.user.findMany({include: {offers: true}})
+    const databaseUsers = await prisma.user.findMany({ include: { offers: true } });
 
     let users: User[];
     users = userData.data.map(user => ({
@@ -19,8 +19,8 @@ export default async function AdminDashboard() {
         lastName: user.lastName,
         firstName: user.firstName,
         email: user.emailAddresses[0].emailAddress,
-        lastOffer: databaseUsers.find( u => u.username === user.username)?.offers[0]?.updatedAt || null
-    }))
+        lastOffer: databaseUsers.find(u => u.username === user.username)?.offers[0]?.updatedAt || null
+    }));
 
     return (
         <div className="container mx-auto py-10">

@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
         },
     });
 
-    function filterSelect(filterValue: string){
+    function filterSelect(filterValue: string) {
         setFilterProperty(filterValue);
         setColumnFilters([]);
     }
@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <Dropdown filterSelect={filterSelect} filterVal={filterProperty}/>
+                <Dropdown filterSelect={filterSelect} filterVal={filterProperty} />
             </div>
             <div className="rounded-md border">
                 <Table>
