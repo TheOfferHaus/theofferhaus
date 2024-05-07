@@ -7,7 +7,7 @@ type ExtractedAnswers = {
 
 export default class OregonFormDataExtractor extends FormDataExtractor {
 
-  additionalInfoExtractors: {
+  static additionalInfoExtractors: {
     [key: string]: (input: ExtractedAnswers) => string;
   } = {
       earnest_money: (ans) =>
@@ -78,8 +78,7 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
 
   static getPersonalPropertyText(ans: ExtractedAnswers): string {
     if (ans.personal_property_included) {
-      return `There shall be personal property included in this Agreement and/or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing except those listed below:
-      ${ans.personal_property_items}`;
+      return `There shall be personal property included in this Agreement and/or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing except those listed below: ${ans.personal_property_items}`;
     }
     return `There shall be no personal property included in this Agreement or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing.`;
   }
