@@ -5,18 +5,20 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <div>
+    <div className="relative h-[42rem] w-screen">
       {/* Background image */}
-      <Image
-        src="/panorama-house.jpeg"
-        fill
-        style={{ objectFit: "cover", width: "100%", height: "100%" }}
-        quality={100}
-        alt="House background"
-        className="z-0"
-      />
+      <div className="h-full">
+        <Image
+          src="/panorama-house.jpeg"
+          alt="House background"
+          fill={true}
+          style={{ objectFit: "cover", objectPosition: "bottom" }}
+          quality={100}
+          priority={true}
+        />
+      </div>
 
-      <div className="absolute inset-0 justify-start text-center top-72">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center bottom-8">
         {/* Title */}
         <h1 className="text-8xl text-custom-white mb-8">The Offer Haus</h1>
 
@@ -36,4 +38,9 @@ const Header = () => {
   );
 };
 
+
+
+
 export default Header;
+
+
