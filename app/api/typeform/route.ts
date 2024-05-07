@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const formData = await request.json();
     console.log("Received webhook data:", formData);
 
-    const formattedData = FormDataExtractor.getFormattedFormDataForDocusign(formData);
+    const formattedData = FormDataExtractor.getFormattedFormDataForDocusign(formData.form_response.answers);
 
     console.log('Formatted data: ', formData);
 

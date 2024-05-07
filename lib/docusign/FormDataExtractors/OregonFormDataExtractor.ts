@@ -1,4 +1,5 @@
 import FormDataExtractor from "./FormDataExtractor";
+import { toWords } from "number-to-words";
 
 type ExtractedAnswers = {
   [key: string]: string | boolean;
@@ -25,6 +26,9 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
         ans.sale_contingent_on_other_sale
           ? ""
           : `Subject Property is Address ${ans.contingent_address}`,
+
+      offer_amount_in_words: (ans) =>
+        toWords(Number(ans.offer_amount_num)),
 
       survey_problems_deadline_date: (ans) =>
         `${ans.survey_problems_deadline_date}`,

@@ -35,6 +35,7 @@ const generalInfo = [
   'verify_sufficient_funds_deadline_time',
   'verify_sufficient_funds_seller_days_num',
   'closing_time_deadline',
+  'deed_type'
 ];
 
 export default class FormDataExtractor {
