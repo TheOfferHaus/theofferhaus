@@ -22,6 +22,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+//TODO: should use @
+import { Dropdown } from "./Dropdown";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -34,6 +36,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [filterProperty, setFilterProperty] = React.useState("username");
 
     const table = useReactTable({
         data,
@@ -49,17 +52,23 @@ export function DataTable<TData, TValue>({
         },
     });
 
+    function filterSelect(filterValue: string){
+        setFilterProperty(filterValue);
+        setColumnFilters([]);
+    }
+
     return (
         <>
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                    placeholder="Filter..."
+                    value={(table.getColumn(filterProperty)?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
+                        table.getColumn(filterProperty)?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
+                <Dropdown filterSelect={filterSelect} filterVal={filterProperty}/>
             </div>
             <div className="rounded-md border">
                 <Table>
