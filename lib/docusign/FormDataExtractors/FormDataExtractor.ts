@@ -2,11 +2,6 @@ type ExtractedAnswers = {
   [key: string]: string | boolean;
 };
 
-type FormattedExtractedAnswers = {
-  [key: string]: string;
-};
-
-
 interface Answer {
   field: { ref: string; };
   type: string;
@@ -43,30 +38,29 @@ const generalInfo = [
 ];
 
 export default class FormDataExtractor {
-  extractedAnswers: ExtractedAnswers;
-
-  additionalInfoExtractors: {
+  static additionalInfoExtractors: {
     [key: string]: (input: ExtractedAnswers) => string;
   } = {};
 
-  constructor(formData: any[]) {
-    this.extractedAnswers = this.extractAnswers(formData);
+  static getFormattedFormDataForDocusign(formData: Answer[]) {
+    const extractedAnswers = FormDataExtractor._extractAnswers(formData);
+    return FormDataExtractor._formatAnswersForDocusign(extractedAnswers);
   }
 
-  extractAnswers(answers: Answer[]): ExtractedAnswers {
+  static _extractAnswers(answers: Answer[]): ExtractedAnswers {
     return Object.fromEntries(
       answers.map(answer =>
         [answer.field.ref, dataExtractors[answer.type](answer)]));
   }
 
-  formatGeneralInfoAnswersForDocusign(answers: ExtractedAnswers): FormattedExtractedAnswers {
+  static _formatGeneralInfoAnswersForDocusign(answers: ExtractedAnswers): { [key: string]: string; } {
     return Object.fromEntries(
       generalInfo.map(field => [field, String(answers[field])])
     );
   }
 
-  formatAnswersForDocusign(answers: ExtractedAnswers): { [key: string]: string; } {
-    const formatted = this.formatGeneralInfoAnswersForDocusign(answers);
+  static _formatAnswersForDocusign(answers: ExtractedAnswers): { [key: string]: string; } {
+    const formatted = FormDataExtractor._formatGeneralInfoAnswersForDocusign(answers);
 
     for (const [field, extractor] of Object.entries(this.additionalInfoExtractors)) {
       formatted[field] = extractor(answers);

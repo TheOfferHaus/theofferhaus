@@ -4,7 +4,6 @@ type ExtractedAnswers = {
   [key: string]: string | boolean;
 };
 
-
 export default class OregonFormDataExtractor extends FormDataExtractor {
 
   additionalInfoExtractors: {
