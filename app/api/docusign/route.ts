@@ -1,10 +1,10 @@
-import { getAccessKeyAndBaseUri } from "@/lib/docusign/admin";
+import ApiTokenManager from "@/lib/docusign/ApiTokenManager";
 import { NextResponse } from "next/server";
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const SECS_PER_HOUR =  3600;
+const SECS_PER_HOUR = 3600;
 
 /**
  * API endpoint for generating token.
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   try {
     const { code } = await request.json();
 
-    const accessData = await getAccessKeyAndBaseUri(code);
+    const accessData = await ApiTokenManager.getAccessKeyAndBaseUri(code);
 
     console.log(accessData);
 
@@ -30,9 +30,11 @@ export async function POST(request: Request) {
       }
     });
 
-    return NextResponse.json(await prisma.accessData.findFirst({where: {
-      id: 0
-    }}));
+    return NextResponse.json(await prisma.accessData.findFirst({
+      where: {
+        id: 0
+      }
+    }));
   } catch (error: any) {
     console.log("Error creating token:", error.message);
 

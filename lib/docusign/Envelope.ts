@@ -5,7 +5,7 @@ type SignerData = {
   name: string;
 };
 
-class Envelope {
+export default class Envelope {
   envelopeId: string;
 
   constructor(envelopeId: string) {
@@ -271,5 +271,3 @@ class Envelope {
   //   return envelopes.map((e) => e.uri);
   // }
 }
-
-export { Envelope };

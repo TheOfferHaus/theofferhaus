@@ -149,10 +149,10 @@ class Template {
   /** Add tabs to template.
    *
    *
-   * @returns {void}
+   * @returns {Promise<void>}
    */
 
-  async addTabs() {
+  async addTabs(): Promise<void> {
     const requestData = {
       signHereTabs: [{
         anchorString: "buyers_signature",

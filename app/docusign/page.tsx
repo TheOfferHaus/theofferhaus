@@ -6,12 +6,12 @@ import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementD
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FormEvent } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const DOCUSIGN_CODE_URL = `https://account-d.docusign.com/password?response_type=code&scope=signature%20impersonation&client_id=${process.env.NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdocusign`;
 
 export default function DocusignPage() {
-    const params = useSearchParams()
+    const params = useSearchParams();
     const [documentUrl, setDocumentUrl] = useState("");
     const [templateId, setTemplateId] = useState("");
     const [accessData, setAccessData] = useState({});
@@ -25,7 +25,7 @@ export default function DocusignPage() {
             const resp = await fetch('http://localhost:3000/api/docusign',
                 {
                     method: 'POST',
-                    body: JSON.stringify({code: params.get('code')})
+                    body: JSON.stringify({ code: params.get('code') })
                 }
             );
 
