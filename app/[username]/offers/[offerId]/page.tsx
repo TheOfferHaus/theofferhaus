@@ -31,6 +31,9 @@ export default async function Offer({ params }: { params: { offerId: number; }; 
     return (
         <div>
             <h1>Specific offer page. Cannot see this if not logged in!</h1>
+            <div className="Address">
+                <h2>Property Address</h2>
+            </div>
             <div className="ClosingDueDate">
                 <h5>Closing Date: </h5>
                 <CountdownTimer targetDate={new Date(currentDate.getTime() + 30 * 24 * 60 * 60 * 1000)} />
