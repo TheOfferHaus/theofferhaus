@@ -106,6 +106,13 @@ async function getEnvelopeUrls(offers: OfferData[], signerData: SignerData): Pro
   return envelopeUrls.map((e, idx) => ({ id: offers[idx].id, envelopeId: offers[idx].envelopeId, url: e }));
 }
 
+
+/**
+ * Initializes access data in ApiTokenManager to use in API calls to Docusign.
+ *
+ * @param {string} code - Code given as search param once give consent to Docusign.
+ */
+
 async function generateAccessDataAfterConsent(code: string) {
   await ApiTokenManager.initializeAccessData(code);
 }
