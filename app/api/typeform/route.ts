@@ -2,12 +2,16 @@
  * Webhook endpoint for receiving data from Typeform.
  */
 
-import { formatFormDataForDocusign } from "@/lib/utils";
+import FormDataExtractor from "@/lib/docusign/FormDataExtractors/FormDataExtractor";
 
 export async function POST(request: Request) {
   try {
-    const text = await request.text();
-    console.log("Received webhook data:", text);
+    const formData = await request.json();
+    console.log("Received webhook data:", formData);
+
+    const formattedData = FormDataExtractor.getFormattedFormDataForDocusign(formData);
+
+    console.log('Formatted data: ', formData);
 
     return new Response("Webhook processed successfully!", {
       status: 200,
