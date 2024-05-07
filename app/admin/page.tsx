@@ -13,9 +13,6 @@ export default async function AdminDashboard() {
 
     const databaseUsers = await prisma.user.findMany({include: {offers: true}})
 
-    console.log("******************", databaseUsers);
-    console.log("******************", databaseUsers[1].offers)
-
     let users: User[];
     users = userData.data.map(user => ({
         username: user.username,
