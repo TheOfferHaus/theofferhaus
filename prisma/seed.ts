@@ -16,6 +16,20 @@ async function main() {
       isAdmin: false
     },
   });
+
+  await prisma.property.create({
+    data: {
+      id: 1
+    }
+  })
+
+  await prisma.offer.create({
+    data: {
+      price: 100,
+      buyerId: "user",
+      propertyId: 1
+    }
+  })
 }
 
 main();

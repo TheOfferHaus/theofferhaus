@@ -11,6 +11,7 @@ export type User = {
   lastName: string | null
   firstName: string | null
   email: string | null
+  lastOffer: Date | null
 }
 
 export const columns: ColumnDef<User>[] = [
@@ -27,7 +28,11 @@ export const columns: ColumnDef<User>[] = [
     header: "First Name",
   },
   {
-    accessorKey: "emailAddresses[0].emailAddress",
+    accessorKey: "email",
     header: "Email"
+  },
+  {
+    accessorKey: "lastOffer",
+    header: "Last Offer"
   }
 ]
