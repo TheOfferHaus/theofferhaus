@@ -22,8 +22,10 @@ import StripeApi from '@/utils/stripeApi';
  *  payment_intent.payment_failed
  */
 export async function POST(req: NextRequest) {
+  const buffer = await req.text();
+  const signature = req.headers.get('stripe-signature')!;
 
-  const event = await StripeApi.constructStripeEvent(req);
+  const event = await StripeApi.constructStripeEvent(buffer, signature);
 
   // handles different event types
   switch (event.type) {

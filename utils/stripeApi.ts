@@ -1,5 +1,4 @@
 import Stripe from 'stripe';
-import type { NextRequest } from 'next/server';
 import type { User } from '@clerk/nextjs/server';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
@@ -53,12 +52,11 @@ class StripeApi {
     return sessionData;
   }
 
-  /** Given an event request body received from Stipe, returns an event object
-   * containing relevant event details.
+  /** Given a request body buffer and signature received from Stripe,
+   * returns an event object containing relevant event details.
    */
-  static async constructStripeEvent(request: NextRequest): Promise<Stripe.Event> {
-    const buffer = await request.text();
-    const signature = request.headers.get('stripe-signature')!;
+  static async constructStripeEvent(
+    buffer: string, signature: string): Promise<Stripe.Event> {
 
     const event = stripe.webhooks.constructEvent(
       buffer,
