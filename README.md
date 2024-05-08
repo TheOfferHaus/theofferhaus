@@ -74,5 +74,14 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 
 
 ## Setting Up Docusign
-1. Ask Cooper or Anissa for the token. Currently, the token expires every 8 hours and we are creating it manually.
-2. We'll send other .env values in the slack as well.
+0. Run `npm install`
+1. Run `npm run migrate:add add-model-for-docusign-access-tokens`
+2. Run `npm run migrate:reset`
+3. Navigate to http://localhost:PORT/admin/docusign
+4. Click on "Get token"
+5. Sign in to docusign using theofferhaus@gmail.com
+6. You should be redirected to http://localhost:PORT/admin/docusign
+7. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
+
+You only have to do the above a single time, it should refresh automatically afterwards.
+
