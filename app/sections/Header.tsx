@@ -20,7 +20,7 @@ const Header = () => {
 
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center bottom-8">
         {/* Title */}
-        <h1 className="text-9xl text-custom-white mb-8">The Offer Haus</h1>
+        <h1 className="text-8xl text-custom-white mb-8">The Offer Haus</h1>
 
         {/* Description */}
         <h3 className="text-2xl text-custom-white mb-8">
