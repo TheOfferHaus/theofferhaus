@@ -77,24 +77,25 @@ export default class Template {
   ): Promise<Template> {
     const tokenManager = await ApiTokenManager.createApiTokenManager();
 
+    console.log(tokenManager.getAccessToken());
     const response = await fetch(
       `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${tokenManager.getBaseUrl()}`,
+          Authorization: `Bearer ${await tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(templateData),
       }
     );
 
-    const responseData = await response.json();
 
     if (response.status > 201) {
-      throw new Error("Template creation failed");
+      throw new Error("Template creation failed: " + await response.text());
     }
 
+    const responseData = await response.json();
     return new Template(responseData.templateId, tokenManager);
   }
 

@@ -64,8 +64,6 @@ export default class ApiTokenManager {
    */
   async refreshTokens(): Promise<void> {
 
-    console.log('refreshing token');
-
     // Base64 encode the combination of the integration and secret keys
     const encodedKeys = btoa(
       `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
