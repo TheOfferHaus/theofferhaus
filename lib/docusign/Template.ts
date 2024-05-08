@@ -95,8 +95,6 @@ export default class Template {
       throw new Error("Template creation failed");
     }
 
-    console.log(responseData.templateId);
-
     return new Template(responseData.templateId, tokenManager);
   }
 

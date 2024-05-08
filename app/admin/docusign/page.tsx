@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/clerk-react";
-import { createTemplate, getEnvelopeUrls, getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail, generateAccessDataAfterConsent } from "@/lib/docusign/serverActions";
+import { createTemplate, getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail, generateAccessDataAfterConsent } from "@/lib/docusign/serverActions";
 import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import Link from "next/link";
 import { useEffect, useState } from "react";

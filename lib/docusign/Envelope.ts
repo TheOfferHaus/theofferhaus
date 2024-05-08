@@ -212,9 +212,7 @@ export default class Envelope {
     );
 
     const signingUrlData = await signingUrlResp.json();
-    console.log(signingUrlData);
     return signingUrlData.url;
-
   }
 
 }
