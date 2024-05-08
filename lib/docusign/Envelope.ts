@@ -1,10 +1,5 @@
-import { env } from "process";
 import ApiTokenManager from "./ApiTokenManager";
-
-type SignerData = {
-  email: string;
-  name: string;
-};
+import { SignerData } from "@/types/docusignTypes";
 
 export default class Envelope {
   envelopeId: string;

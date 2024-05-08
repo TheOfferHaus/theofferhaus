@@ -10,7 +10,7 @@ export default class ApiTokenDatabaseManager {
    * @param refreshToken
    * @param expirationTime
    */
-  static async updateTokenData(
+  async updateTokenData(
     accessToken: string,
     refreshToken: string,
     expirationTime: Date,

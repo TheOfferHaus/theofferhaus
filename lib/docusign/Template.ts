@@ -1,38 +1,6 @@
 import fs from "fs";
 import ApiTokenManager from "./ApiTokenManager";
-
-type Signer = {
-  recipientId: string;
-  roleName: string;
-  routingOrder: string;
-};
-
-type Recipients = {
-  signers: Signer[];
-};
-
-type TemplateData = {
-  description: string;
-  name: string;
-  shared: boolean;
-  emailSubject: string;
-  status: string;
-  recipients: Recipients;
-};
-
-type Document = {
-  documentBase64: string;
-  documentId: string;
-  fileExtension: string; //TODO: constrain file extension values
-  order: string;
-  pages: string;
-  name: string;
-};
-
-type DocumentData = {
-  path: string;
-  pageCount: string;
-};
+import { TemplateData, DocumentData } from "@/types/docusignTypes";
 
 const DEFAULT_TEMPLATE_DATA: TemplateData = {
   description: "Template for residential purchase agreement.",
@@ -78,7 +46,9 @@ export default class Template {
     const tokenManager = await ApiTokenManager.createApiTokenManager();
 
     const response = await fetch(
-      `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
+      `${tokenManager.getBaseUrl()}/v2.1/accounts/${
+        process.env.DOCUSIGN_ACCOUNT_ID
+      }/templates`,
       {
         method: "POST",
         headers: {
@@ -89,9 +59,8 @@ export default class Template {
       }
     );
 
-
     if (response.status > 201) {
-      throw new Error("Template creation failed: " + await response.text());
+      throw new Error("Template creation failed: " + (await response.text()));
     }
 
     const responseData = await response.json();
@@ -108,9 +77,7 @@ export default class Template {
    * to a template. this can be changed if needed.
    */
 
-  async addDocument(
-    documentData: DocumentData
-  ): Promise<void> {
+  async addDocument(documentData: DocumentData): Promise<void> {
     // Read and base64 encode the document
     const documentBuffer = fs.readFileSync(documentData.path);
     const documentBase64 = documentBuffer.toString("base64");
@@ -131,7 +98,9 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${
+        process.env.DOCUSIGN_ACCOUNT_ID
+      }/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
@@ -156,20 +125,26 @@ export default class Template {
 
   async addTabs(): Promise<void> {
     const requestData = {
-      signHereTabs: [{
-        anchorString: "buyers_signature",
-        anchorUnits: "pixels",
-        anchorYOffset: "-20",
-      }],
-      dateSignedTabs: [{
-        anchorString: "sign_date2",
-        anchorUnits: "pixels",
-        anchorYOffset: "-20",
-      }]
+      signHereTabs: [
+        {
+          anchorString: "buyers_signature",
+          anchorUnits: "pixels",
+          anchorYOffset: "-20",
+        },
+      ],
+      dateSignedTabs: [
+        {
+          anchorString: "sign_date2",
+          anchorUnits: "pixels",
+          anchorYOffset: "-20",
+        },
+      ],
     };
 
     const response = await fetch(
-      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${
+        process.env.DOCUSIGN_ACCOUNT_ID
+      }/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {

@@ -3,23 +3,7 @@
 import Envelope from "./Envelope";
 import Template from "./Template";
 import ApiTokenManager from "./ApiTokenManager";
-import { env } from "process";
-
-type SignerData = {
-  email: string;
-  name: string;
-};
-
-type EnvelopeData = {
-  id: string,
-  envelopeId: string,
-  url: string;
-};
-
-type OfferData = {
-  id: string,
-  envelopeId: string;
-};
+import { SignerData, EnvelopeData, OfferData } from "@/types/docusignTypes";
 
 const DEFAULT_TEMPLATE_ID = "fc833cdb-2228-4cdf-8a6a-e67d1b236f75";
 const RETURN_URL = "http://localhost:3000";

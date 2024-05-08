@@ -1,9 +1,6 @@
 import FormDataExtractor from "./FormDataExtractor";
 import { toWords } from "number-to-words";
-
-type ExtractedAnswers = {
-  [key: string]: string | boolean;
-};
+import { ExtractedAnswers } from "@/types/docusignTypes";
 
 /**
  * Utility class for extracting and formatting form data for DocuSign integration.

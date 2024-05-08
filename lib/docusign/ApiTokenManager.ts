@@ -8,12 +8,15 @@ export default class ApiTokenManager {
   baseUrl: string;
   accessToken: string;
   refreshToken: string;
+  dbManager: ApiTokenDatabaseManager;
+
 
   constructor(baseUrl: string, accessToken: string, expirationTime: Date, refreshToken: string) {
     this.baseUrl = baseUrl;
     this.accessToken = accessToken;
     this.expirationTime = expirationTime;
     this.refreshToken = refreshToken;
+    this.dbManager = new ApiTokenDatabaseManager();
   }
 
   /**
@@ -88,7 +91,7 @@ export default class ApiTokenManager {
     this.refreshToken = newAccessData.refresh_token;
     this.expirationTime = calculateNewExpirationTime(newAccessData.expires_in);
 
-    ApiTokenDatabaseManager.updateTokenData(
+    await this.dbManager.updateTokenData(
       this.accessToken,
       this.refreshToken,
       this.expirationTime,
@@ -147,7 +150,8 @@ export default class ApiTokenManager {
     const baseUriData = await getBaseUriData(tokenData.access_token);
 
     // Update database with token information or insert if it doesnt already exist
-    await ApiTokenDatabaseManager.updateTokenData(
+    const dbManager = new ApiTokenDatabaseManager();
+    await dbManager.updateTokenData(
       tokenData.access_token,
       tokenData.refresh_token,
       calculateNewExpirationTime(tokenData.expires_in),

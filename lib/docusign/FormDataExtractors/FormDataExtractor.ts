@@ -1,27 +1,4 @@
-type ExtractedAnswers = {
-  [key: string]: string | boolean;
-};
-
-interface Answer {
-  field: { ref: string; };
-  type: string;
-  choice?: { label: string; };
-  boolean?: boolean;
-  text?: string;
-  number?: number;
-  date?: string;
-  file_url?: string;
-  [key: string]: any;
-}
-
-const dataExtractors: { [key: string]: (input: Answer) => any; } = {
-  choice: (ans: Answer) => ans.choice?.label,
-  boolean: (ans: Answer) => ans.boolean,
-  text: (ans: Answer) => ans.text,
-  number: (ans: Answer) => ans.number,
-  date: (ans: Answer) => ans.date,
-  file_url: (ans: Answer) => ans.file_url,
-};
+import { Answer, ExtractedAnswers } from "@/types/docusignTypes";
 
 // Fields that are needed by all US states
 const generalInfo = [
