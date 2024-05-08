@@ -25,7 +25,7 @@ model User {
 }
 
 model Offer {
-  id         Int        @id @default(autoincrement())
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   envelopeId String     @unique
   typeformId String     @unique
   createdAt  DateTime   @default(now())  @map("created_at")
@@ -44,6 +44,7 @@ model Offer {
 // maybe storing something from mls
 model Property {
   id            Int        @id @default(autoincrement())
+  address       String     @unique
   offers        Offer[]
 
   @@map("properties")
