@@ -7,7 +7,7 @@ async function main() {
     data: {
       username: "admin",
       clerkId: "user_2fvNBFD2qaonTD0iSgP6AKcUOwL",
-      isAdmin: true
+      isAdmin: true,
     },
   });
 
@@ -15,23 +15,23 @@ async function main() {
     data: {
       username: "user",
       clerkId: "user_2fvNHfnwTnyKWjiT5AivVg9AeIn",
-      isAdmin: false
+      isAdmin: false,
     },
   });
 
   await prisma.property.create({
     data: {
-      id: 1
-    }
-  })
+      id: 1,
+    },
+  });
 
   await prisma.offer.create({
     data: {
       price: 100,
       buyerId: "user",
-      propertyId: 1
-    }
-  })
+      propertyId: 1,
+    },
+  });
 }
 
 main();

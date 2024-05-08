@@ -1,16 +1,17 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table";
+
+/** Column definitions for our UserOffersTable */
 
 // This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Offer = {
-  propertyId: number
-  buyerId: string
-  updatedAt: Date
-  status: string
-  price: number
-}
+  propertyId: number;
+  buyerId: string;
+  updatedAt: Date;
+  status: string;
+  price: number;
+};
 
 export const columns: ColumnDef<Offer>[] = [
   {
@@ -33,4 +34,4 @@ export const columns: ColumnDef<Offer>[] = [
     accessorKey: "price",
     header: "Price",
   },
-]
+];

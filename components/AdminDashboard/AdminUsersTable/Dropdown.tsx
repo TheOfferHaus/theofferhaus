@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,11 +11,20 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
-export function Dropdown({filterSelect, filterVal}: {filterSelect: Function, filterVal: string}) {
-//TODO: fix the filter by button
-  function callFilterSelect(value: string){
+/** Filters the data table based on a filter value and updates state in the Data Table component */
+export function Dropdown({
+  filterSelect,
+  filterVal,
+}: {
+  filterSelect: Function;
+  filterVal: string;
+}) {
+  //TODO: fix the filter by button
+
+  /** Calls the filterSelect function to update state in the Data Table */
+  function callFilterSelect(value: string) {
     filterSelect(value);
   }
 
@@ -27,15 +36,25 @@ export function Dropdown({filterSelect, filterVal}: {filterSelect: Function, fil
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={filterVal} onValueChange={callFilterSelect}>
-          <DropdownMenuRadioItem value="username" id="Username">Username</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="lastName">Last Name</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="firstName">First Name</DropdownMenuRadioItem>
+        <DropdownMenuRadioGroup
+          value={filterVal}
+          onValueChange={callFilterSelect}
+        >
+          <DropdownMenuRadioItem value="username" id="Username">
+            Username
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="lastName">
+            Last Name
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="firstName">
+            First Name
+          </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="email">Email</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="lastOffer">Last Offer</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="lastOffer">
+            Last Offer
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
-

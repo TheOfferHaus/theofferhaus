@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../../ui/button";
 
+/** Column definitions for our AdminUsersTable */
+
 // This type is used to define the shape of our data.
 export type User = {
   username: string | null;
@@ -30,7 +32,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const username = row.original.username;
 
-      return (<a href={`/admin/users/${username}`}>{username}</a>);
+      return <a href={`/admin/users/${username}`}>{username}</a>;
     },
   },
   {
@@ -45,7 +47,7 @@ export const columns: ColumnDef<User>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    }
+    },
   },
   {
     accessorKey: "firstName",
@@ -59,7 +61,7 @@ export const columns: ColumnDef<User>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    }
+    },
   },
   {
     accessorKey: "email",
@@ -73,7 +75,7 @@ export const columns: ColumnDef<User>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    }
+    },
   },
   {
     accessorKey: "lastOffer",
@@ -87,6 +89,6 @@ export const columns: ColumnDef<User>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    }
-  }
+    },
+  },
 ];
