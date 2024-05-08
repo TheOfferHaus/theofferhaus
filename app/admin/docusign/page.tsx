@@ -40,6 +40,8 @@ export default function DocusignPage() {
       email: user?.emailAddresses[0].emailAddress!
     };
 
+    setDocumentUrl("In progress");
+
     const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, signerData);
     await sendEnvelopeEmail(envelopeId);
     const envelopeUrl = await getEnvelopeUrl(envelopeId, signerData);
@@ -55,6 +57,12 @@ export default function DocusignPage() {
 
   if (!user) return <h1>Loading</h1>;
 
+  function getDocumentUrl() {
+    if (!documentUrl) return;
+    if (documentUrl === "In progress") return "Envelope generation in progress."
+    else return <Link href={documentUrl}>Document generated! Click to sign.</Link>
+  }
+
   return (
     <div>
       <div>
@@ -67,10 +75,10 @@ export default function DocusignPage() {
         <Link href={DOCUSIGN_CODE_URL}>Get token</Link>
       </div>
       <div>
-        {documentUrl && <Link href={documentUrl}>Sign document</Link>}
+        {getDocumentUrl()}
       </div>
       <div>
-        {templateId}
+        {templateId && `Template successfully created! Template id is: ${templateId}`}
       </div>
     </div>
   );
