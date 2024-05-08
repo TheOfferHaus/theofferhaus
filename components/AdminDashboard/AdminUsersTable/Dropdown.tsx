@@ -21,7 +21,7 @@ export function Dropdown({
   filterSelect: Function;
   filterVal: string;
 }) {
-  //TODO: fix the filter by button
+  //TODO: fix the filter by button to use descriptions instead of values (Last Name instead of lastName)
 
   /** Calls the filterSelect function to update state in the Data Table */
   function callFilterSelect(value: string) {

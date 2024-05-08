@@ -22,8 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-//TODO: should use @
-import { Dropdown } from "./Dropdown";
+import { Dropdown } from "@/components/AdminDashboard/AdminUsersTable/Dropdown";
 
 /** Generating data tables for our UserOffersTable */
 
