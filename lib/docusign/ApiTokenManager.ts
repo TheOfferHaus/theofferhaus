@@ -116,9 +116,12 @@ export default class ApiTokenManager {
         method: "POST",
         headers: {
           Authorization: `Basic ${getSecretKeyEncoding()}`,
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: `grant_type=authorization_code&code=${authorizationCode}`,
+        body: JSON.stringify({
+          grant_type: "authorization_code",
+          code: authorizationCode
+        })
       });
 
       if (!response.ok) {
