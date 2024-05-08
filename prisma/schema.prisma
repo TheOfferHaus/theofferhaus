@@ -25,17 +25,17 @@ model User {
 }
 
 model Offer {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  envelopeId String     @unique
-  typeformId String     @unique
-  createdAt  DateTime   @default(now())  @map("created_at")
-  updatedAt  DateTime   @updatedAt       @map("updated_at")
-  price      Int
-  buyer      User       @relation(fields: [buyerId], references: [username])
-  buyerId    String                      @map("buyer_id")
-  property   Property   @relation(fields: [propertyId], references: [id])
-  propertyId String     @db.Uuid         @map("property_id")
-  status     Status     @default(PENDING)
+  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  envelopeId     String?    @unique
+  typeformId     String?    @unique
+  createdAt      DateTime   @default(now())  @map("created_at")
+  updatedAt      DateTime   @updatedAt       @map("updated_at")
+  price          Int?
+  buyer          User       @relation(fields: [buyerId], references: [username])
+  buyerId        String                      @map("buyer_id")
+  property       Property   @relation(fields: [propertyId], references: [id])
+  propertyId     String     @db.Uuid         @map("property_id")
+  status         Status     @default(PENDING)
 
   @@map("offers")
 }

@@ -2,7 +2,7 @@
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { RADAR_VALIDATE_ADDRESS_API_URL } from "@/constants";
-import { PrismaClient } from "@prisma/client";
+import { navigateToQuiz, createProperty, createOffer } from "@/app/actions";
 
 const initialFormData = {
   number: "",
@@ -14,21 +14,14 @@ const initialFormData = {
   countryCode: "US",
 };
 
-const prisma = new PrismaClient();
-
 /** Form for validating an address. Makes a request to the radar api on form
  * submit and interacts with the database
  */
 export default function AddressValidationForm() {
   const [formData, setFormData] = useState(initialFormData);
-  console.log(
-    "this is key:",
-    process.env.NEXT_PUBLIC_RADAR_TEST_PUBLISHABLE_API_KEY
-  );
-
   const [errors, setErrors] = useState("");
 
-  // Function to handle form submission
+  /** handles form submission */
   async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
 
@@ -54,19 +47,21 @@ export default function AddressValidationForm() {
           },
         }
       );
+
       verificationData = await radarResponse.json();
-    } catch(err) {
-      console.error(err)
+    } catch (err) {
+      console.error(err);
       return;
     }
-
-    console.log(verificationData)
 
     if (verificationData.result.verificationStatus !== "verified") {
-      setErrors("Please check your address please!") // this will be an alert component in future
+      setErrors("Please check your address please!"); // this will be an alert component in future
       return;
     }
 
+    const propertyId = await createProperty(verificationData.address.formattedAddress);
+    const offerId = await createOffer(propertyId);
+    navigateToQuiz(propertyId, offerId);
   }
 
   /** updates inputValues. */
@@ -132,7 +127,9 @@ export default function AddressValidationForm() {
           value={formData.stateCode}
           onChange={handleChange}
         >
-          <option disabled value="">Choose a State</option>
+          <option disabled value="">
+            Choose a State
+          </option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
           <option value="AZ">Arizona</option>

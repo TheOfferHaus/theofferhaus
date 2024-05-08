@@ -5,8 +5,9 @@ import { TYPEFORM_OFFER_FORM_ID } from '@/constants';
 
 /**Component for rendering a TypeForm widget (embeds the form) */
 
-export default function FormWidget({ propertyId } : { propertyId: string}) {
+export default function TypeformWidget({ propertyId, offerId } : { propertyId: string, offerId: string}) {
     return <Widget id={TYPEFORM_OFFER_FORM_ID}
                    className="fixed inset-0 overflow-auto bg-white"
-                   hidden={{ property_id: propertyId}} />
+                   hidden={{ property_id: propertyId,
+                            offer_id: offerId}} />
 };
