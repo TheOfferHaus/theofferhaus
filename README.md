@@ -19,10 +19,50 @@ Developers will have to:
 3. Set up .env.local to have `DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/offerhaus"` with their relevant information passed in
 4. If you are not on a Mac, password will have to be set by going into your database, running \password, and creating a new password.
 5. Run `npm run migrate:init`
-Now you can use the prisma client to made database queries. For syntax questions ping the auth team
+   Now you can use the prisma client to made database queries. For syntax questions ping the auth team
 6. If you want to use prisma studio to easily see database records, run `npm run prisma:studio`
 7. Everytime the schema is updated, in order to update the database accordingly run `npm run migrate:add` followed by `your-migration-name` to describe the change in that format with hyphens between each word. For example, if the schema was updated to add a column called "firstName" to the database, you would run something like `npm run migrate:add add-first-name-column-to-user`
 
+## For setting up Stripe
+
+Setup to make Stripe embedded payment form functional:
+
+1. Include the following API keys in your .env.local: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=... get from David & Sam
+   STRIPE_SECRET_KEY=... get from David & Sam
+   OFFER_PRICE_ID=price_1PC4LDRrTWD9lwhqkYBSUPmV
+   FULL_PACKAGE_PRICE_ID=price_1PDYmLRrTWD9lwhqo9kMOWBi
+   PAYMENT_RETURN_URL=http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}
+   STRIPE_WEBHOOK_SECRET=... see below on getting the value for this key
+
+Setting up the Stipe command line interface to listen for webhook events:
+
+Follow these steps in your terminal
+
+1. `brew install stripe/stripe-cli/stripe`
+2. `stripe login`
+3. Press <Enter> to open a stripe browser window
+4. Enter Stripe credentials
+5. Click “Allow Access” after checking the pairing code in the browser and terminal match.
+6. `stripe` in terminal to see available commands
+7. `stripe listen --forward-to localhost:3000/api/orderConfirmation` to listen for webhook events at the specified URL
+8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
+9. Run a test payment to trigger a webhook. Alternatively you can use the command `stripe trigger <event>` to trigger a specific event type.
+
+Access the payment page with the following URLs:
+
+Offer price: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
+
+Full package price: http://localhost:3000/payment?price_id=price_1PDYmLRrTWD9lwhqo9kMOWBi
+
+To make a test payment, you can use the following credit card info:
+
+Card number: 4242 4242 4242 4242
+MM/YY: any future date
+CVC: any three numbers
+Name: any
+Zip: any
+
+Additional test payment methods can be found here: https://docs.stripe.com/testing.
 
 ## Setting Up Users Seed Data and Clerk
 
