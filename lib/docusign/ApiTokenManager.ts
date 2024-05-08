@@ -1,8 +1,6 @@
 import ApiTokenDatabaseManager from "./ApiTokenDatabaseManager";
 import { getSecretKeyEncoding, calculateNewExpirationTime } from "./utils";
 
-const API_BASE_URL = "https://account-d.docusign.com";
-
 export default class ApiTokenManager {
   expirationTime: Date;
   baseUrl: string;
@@ -67,7 +65,7 @@ export default class ApiTokenManager {
   async refreshTokens(): Promise<void> {
 
     // Request to docusign to refresh tokens
-    const response = await fetch(`${API_BASE_URL}/oauth/token`, {
+    const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/token`, {
       method: "POST",
       headers: {
         "Authorization": `Basic ${getSecretKeyEncoding()}`,
@@ -114,7 +112,7 @@ export default class ApiTokenManager {
     /** Function for getting tokens from authorization code */
     async function getTokenData() {
 
-      const response = await fetch(`${API_BASE_URL}/oauth/token`, {
+      const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/token`, {
         method: "POST",
         headers: {
           Authorization: `Basic ${getSecretKeyEncoding()}`,
@@ -132,7 +130,7 @@ export default class ApiTokenManager {
 
     /** Function for getting base uri */
     async function getBaseUriData(accessToken: string) {
-      const response = await fetch(`${API_BASE_URL}/oauth/userinfo`, {
+      const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/userinfo`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`, // Authorization header
