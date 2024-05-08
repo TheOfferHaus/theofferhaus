@@ -1,5 +1,5 @@
-import Header from "./sections/Header";
-import Body from "./sections/Body";
+import Header from "../components/Header";
+import Body from "../components/Body";
 
 function Home() {
   return (
