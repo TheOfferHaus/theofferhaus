@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <div className="relative h-[42rem] w-screen">
+    <div className="relative h-[38rem] w-screen">
       <div className="h-full">
         <Image
           src="/panorama-house.jpg"
