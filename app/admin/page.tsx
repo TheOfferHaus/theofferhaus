@@ -1,6 +1,6 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { DataTable } from "@/components/AdminUsersTable/data-table";
-import { columns, User } from "@/components/AdminUsersTable/columns";
+import { DataTable } from "@/components/AdminDashboard/AdminUsersTable/data-table";
+import { columns, User } from "@/components/AdminDashboard/AdminUsersTable/columns";
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 

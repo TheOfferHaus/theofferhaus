@@ -1,8 +1,8 @@
 import { clerkClient } from "@clerk/nextjs/server";
 import { PrismaClient } from '@prisma/client';
 import { PaperClipIcon } from "@heroicons/react/16/solid";
-import { columns, Offer } from "@/components/UserOffersTable/columns";
-import { DataTable } from "@/components/UserOffersTable/data-table";
+import { columns, Offer } from "@/components/AdminDashboard/UserOffersTable/columns";
+import { DataTable } from "@/components/AdminDashboard/UserOffersTable/data-table";
 const prisma = new PrismaClient();
 
 

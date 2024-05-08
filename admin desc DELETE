@@ -25,3 +25,16 @@ Steps:
     columns: username, Last Name, First Name, Email, state, date of last offer
 
 2. user component /admin/users/[username]
+
+
+
+
+TODOs:
+
+1. format dates
+2. update Filter By: labels
+3. format columns
+4. consider responsiveness
+5. make dropdown more modular/reusable
+6. move types into own file
+7. review for logic to be moved
