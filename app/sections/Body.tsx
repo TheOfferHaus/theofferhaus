@@ -69,7 +69,7 @@ const Body = () => {
           </CardContent>
           <CardFooter>
             <Link href="#">
-              <button className="bg-primary-medium text-custom-white hover:scale-95 rounded-lg p-4 shadow-md">
+              <button className="bg-primary-medium text-custom-white transition duration-150 ease-in-out transform hover:scale-95 rounded-lg p-4 shadow-md">
                 $99.00 For Offer Package
               </button>
             </Link>
@@ -111,7 +111,7 @@ const Body = () => {
           </CardContent>
           <CardFooter>
             <Link href="#">
-              <button className="bg-primary-medium text-custom-white hover:scale-95 rounded-lg p-4 shadow-md">
+              <button className="bg-primary-medium text-custom-white transition duration-150 ease-in-out transform hover:scale-95 rounded-lg p-4 shadow-md">
                 $499.00 Full Platform Package
               </button>
             </Link>
