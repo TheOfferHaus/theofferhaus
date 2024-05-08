@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 
-const DOCUSIGN_CODE_URL = `https://account-d.docusign.com/password?response_type=code&scope=signature%20impersonation&client_id=${process.env.NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdocusign`;
+const DOCUSIGN_CODE_URL = `https://account-d.docusign.com/password?response_type=code&scope=signature%20impersonation&client_id=${process.env.NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY}&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fadmin%2Fdocusign`;
 
 export default function DocusignPage() {
     const params = useSearchParams();
@@ -17,9 +17,6 @@ export default function DocusignPage() {
     const { user } = useUser();
 
     useEffect(function createTokenOnMount() {
-        console.log('in createTokenOnMount');
-        console.log('params', params);
-
         async function createToken() {
             generateAccessDataAfterConsent(params.get('code')!);
         }
@@ -38,12 +35,8 @@ export default function DocusignPage() {
         };
 
         const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, signerData);
-        console.log("Created envelope");
-        console.log("Envelope Id: ", envelopeId);
         await sendEnvelopeEmail(envelopeId);
-        console.log("Sent evelope signing email");
         const envelopeUrl = await getEnvelopeUrl(envelopeId, signerData);
-        console.log(envelopeUrl);
         setDocumentUrl(envelopeUrl);
     }
 
@@ -59,8 +52,6 @@ export default function DocusignPage() {
             name: `${user?.firstName} ${user?.lastName}`,
             email: user?.emailAddresses[0].emailAddress!
         };
-
-        console.log(await getEnvelopeUrls([{ id: '1', envelopeId: '7ea3a636-a291-41ee-91fd-98f1c613c16f' }], signerData));
     }
 
     if (!user) return <h1>Loading</h1>;
