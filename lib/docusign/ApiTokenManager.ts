@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import ApiTokenDatabaseManager from "./ApiTokenDatabaseManager";
+import { getSecretKeyEncoding, calculateNewExpirationTime } from "./utils";
 
-const prisma = new PrismaClient();
-
-const SECS_PER_HOUR = 3600;
 const API_BASE_URL = "https://account-d.docusign.com";
 
 export default class ApiTokenManager {
@@ -24,13 +22,14 @@ export default class ApiTokenManager {
    */
   static async createApiTokenManager(): Promise<ApiTokenManager> {
     // Get tokens from database
-    const accessData = await prisma.accessData.findUnique({
-      where: {
-        id: 0
-      }
-    });
+    const accessData = await ApiTokenDatabaseManager.getCurrentAccessData();
 
-    return new ApiTokenManager(accessData?.baseUri!, accessData?.token!, accessData?.expirationTime!, accessData?.refreshToken!);
+    // Create new ApiTokenManager instance
+    return new ApiTokenManager(
+      accessData?.baseUri!,
+      accessData?.token!,
+      accessData?.expirationTime!,
+      accessData?.refreshToken!);
   }
 
   /**
@@ -64,16 +63,11 @@ export default class ApiTokenManager {
    */
   async refreshTokens(): Promise<void> {
 
-    // Base64 encode the combination of the integration and secret keys
-    const encodedKeys = btoa(
-      `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
-    );
-
     // Request to docusign to refresh tokens
     const response = await fetch(`${API_BASE_URL}/oauth/token`, {
       method: "POST",
       headers: {
-        "Authorization": `Basic ${encodedKeys}`,
+        "Authorization": `Basic ${getSecretKeyEncoding()}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -92,20 +86,14 @@ export default class ApiTokenManager {
     // Update this instance with new tokens
     this.accessToken = newAccessData.access_token;
     this.refreshToken = newAccessData.refresh_token;
-    const now = new Date();
-    this.expirationTime = new Date(now.getTime() + (newAccessData.expires_in - SECS_PER_HOUR) * 1000);
+    this.expirationTime = calculateNewExpirationTime(newAccessData.expires_in);
 
-    // Update database with new tokens
-    await prisma.accessData.update({
-      where: {
-        id: 0
-      },
-      data: {
-        token: this.accessToken,
-        refreshToken: this.refreshToken,
-        expirationTime: this.expirationTime
-      }
-    });
+    ApiTokenDatabaseManager.updateTokenData(
+      this.accessToken,
+      this.refreshToken,
+      this.expirationTime,
+      this.baseUrl
+    );
   }
 
   /**
@@ -122,14 +110,11 @@ export default class ApiTokenManager {
 
     /** Function for getting tokens from authorization code */
     async function getTokenData() {
-      // Base64 encode the combination of the integration and secret keys
-      const encodedKeys = btoa(
-        `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
-      );
+
       const tokenResp = await fetch(`${API_BASE_URL}/oauth/token`, {
         method: "POST",
         headers: {
-          Authorization: `Basic ${encodedKeys}`,
+          Authorization: `Basic ${getSecretKeyEncoding()}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `grant_type=authorization_code&code=${authorizationCode}`,
@@ -161,27 +146,14 @@ export default class ApiTokenManager {
     const tokenData = await getTokenData();
     const baseUriData = await getBaseUriData(tokenData.access_token);
 
-    const now = new Date();
-
     // Update database with token information or insert if it doesnt already exist
-    await prisma.accessData.upsert({
-      where: {
-        id: 0
-      },
-      update: {
-        token: tokenData.access_token,
-        refreshToken: tokenData.refresh_token,
-        expirationTime: new Date(now.getTime() + (tokenData.expires_in - SECS_PER_HOUR) * 1000),
-        baseUri: baseUriData.accounts[0].base_uri
-      },
-      create: {
-        id: 0,
-        token: tokenData.access_token,
-        refreshToken: tokenData.refresh_token,
-        expirationTime: new Date(now.getTime() + (tokenData.expires_in - SECS_PER_HOUR) * 1000),
-        baseUri: baseUriData.accounts[0].base_uri
-      }
-    });
+    await ApiTokenDatabaseManager.updateTokenData(
+      tokenData.access_token,
+      tokenData.refresh_token,
+      calculateNewExpirationTime(tokenData.expires_in),
+      baseUriData.accounts[0].base_uri
+    );
+
   }
 }
 

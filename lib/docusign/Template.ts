@@ -77,7 +77,6 @@ export default class Template {
   ): Promise<Template> {
     const tokenManager = await ApiTokenManager.createApiTokenManager();
 
-    console.log(tokenManager.getAccessToken());
     const response = await fetch(
       `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
