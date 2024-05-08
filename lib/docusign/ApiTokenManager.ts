@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const SECS_PER_HOUR = 3600;
+const API_BASE_URL = "https://account-d.docusign.com";
 
 export default class ApiTokenManager {
   expirationTime: Date;
@@ -71,7 +72,7 @@ export default class ApiTokenManager {
     );
 
     // Request to docusign to refresh tokens
-    const response = await fetch("https://account-d.docusign.com/oauth/token", {
+    const response = await fetch(`${API_BASE_URL}/oauth/token`, {
       method: "POST",
       headers: {
         "Authorization": `Basic ${encodedKeys}`,
@@ -127,7 +128,7 @@ export default class ApiTokenManager {
       const encodedKeys = btoa(
         `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
       );
-      const tokenResp = await fetch("https://account-d.docusign.com/oauth/token", {
+      const tokenResp = await fetch(`${API_BASE_URL}/oauth/token`, {
         method: "POST",
         headers: {
           Authorization: `Basic ${encodedKeys}`,
@@ -145,15 +146,12 @@ export default class ApiTokenManager {
 
     /** Function for getting base uri */
     async function getBaseUriData(accessToken: string) {
-      const baseUriResp = await fetch(
-        "https://account-d.docusign.com/oauth/userinfo",
-        {
-          method: "GET", // HTTP method
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // Authorization header
-          },
-        }
-      );
+      const baseUriResp = await fetch(`${API_BASE_URL}/oauth/userinfo`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Authorization header
+        },
+      });
 
       if (baseUriResp.status > 201) {
         throw new Error("Getting base url failed");
