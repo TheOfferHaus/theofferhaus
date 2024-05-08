@@ -5,8 +5,13 @@ type ExtractedAnswers = {
   [key: string]: string | boolean;
 };
 
+/**
+ * Utility class for extracting and formatting form data for DocuSign integration.
+ * Specific to the state of Oregon
+ */
 export default class OregonFormDataExtractor extends FormDataExtractor {
 
+  // Extractor functions for the additional info required by Oregon
   static additionalInfoExtractors: {
     [key: string]: (input: ExtractedAnswers) => string;
   } = {

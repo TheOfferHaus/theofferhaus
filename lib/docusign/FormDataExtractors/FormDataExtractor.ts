@@ -3,9 +3,9 @@ type ExtractedAnswers = {
 };
 
 interface Answer {
-  field: { ref: string };
+  field: { ref: string; };
   type: string;
-  choice?: { label: string };
+  choice?: { label: string; };
   boolean?: boolean;
   text?: string;
   number?: number;
@@ -14,7 +14,7 @@ interface Answer {
   [key: string]: any;
 }
 
-const dataExtractors: { [key: string]: (input: Answer) => any } = {
+const dataExtractors: { [key: string]: (input: Answer) => any; } = {
   choice: (ans: Answer) => ans.choice?.label,
   boolean: (ans: Answer) => ans.boolean,
   text: (ans: Answer) => ans.text,
@@ -23,6 +23,7 @@ const dataExtractors: { [key: string]: (input: Answer) => any } = {
   file_url: (ans: Answer) => ans.file_url,
 };
 
+// Fields that are needed by all US states
 const generalInfo = [
   "buyer_email",
   "buyers_name",
@@ -41,31 +42,49 @@ const generalInfo = [
   "deed_type",
 ];
 
+/**
+ * Utility class for extracting and formatting form data for DocuSign integration.
+ */
 export default class FormDataExtractor {
+
+  /* Dictionary of additional information extractors.
+  * This is overwritten in children classes for each US state */
   static additionalInfoExtractors: {
     [key: string]: (input: ExtractedAnswers) => string;
   } = {};
 
-  static getFormattedFormDataForDocusign(formData: Answer[]) {
+
+  /**
+   * Extracts and formats form data for DocuSign.
+   * @param {Answer[]} formData - The form data to be processed.
+   * @returns {[key: string]: string;} - Form data formatted for DocuSign.
+   */
+  static getFormattedFormDataForDocusign(formData: Answer[]): { [key: string]: string; } {
     const extractedAnswers = FormDataExtractor._extractAnswers(formData);
     return FormDataExtractor._formatAnswersForDocusign.call(this, extractedAnswers);
   }
 
+  /**
+   * Extracts answers from the provided form data.
+   * @param {Answer[]} answers - The answers from the form.
+   * @returns {ExtractedAnswers} - Extracted answers mapped by field reference.
+   */
   static _extractAnswers(answers: Answer[]): ExtractedAnswers {
     return Object.fromEntries(
       answers.map((answer) => [
         answer.field.ref,
-        FormDataExtractor._extractAnswer(answer),
+        answer.type === "choice"
+          ? answer.choice!.label
+          : answer[answer.type]
       ])
     );
   }
 
-  static _extractAnswer(answer: Answer) {
-    return answer.type === "choice"
-      ? answer.choice!.label
-      : answer[answer.type];
-  }
-
+  /**
+   * Formats general information answers for DocuSign.
+   * @param {ExtractedAnswers} answers - Extracted answers.
+   * @returns {object} - Formatted general information answers.
+   */
   static _formatGeneralInfoAnswersForDocusign(answers: ExtractedAnswers): {
     [key: string]: string;
   } {
@@ -74,14 +93,18 @@ export default class FormDataExtractor {
     );
   }
 
+  /**
+   * Formats answers for DocuSign including the additional info
+   * (which will be added in children classes).
+   *
+   * @param {ExtractedAnswers} answers - Extracted answers.
+   * @returns {object} - Formatted answers for DocuSign.
+   */
   static _formatAnswersForDocusign(answers: ExtractedAnswers): {
     [key: string]: string;
   } {
     const formatted =
       FormDataExtractor._formatGeneralInfoAnswersForDocusign(answers);
-
-      console.log('this: ', this);
-      console.log('addition info ext: ', this.additionalInfoExtractors);
 
     for (const [field, extractor] of Object.entries(
       this.additionalInfoExtractors
