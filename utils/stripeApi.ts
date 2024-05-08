@@ -1,6 +1,6 @@
-import Stripe from 'stripe';
-import type { User } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
+import Stripe from "stripe";
+import type { User } from "@clerk/nextjs/server";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -12,21 +12,22 @@ class StripeApi {
   /** Creates a Customer object using a name and email, returns customer id */
   static async createCustomer(name: string, email: string): Promise<string> {
     const customer = await stripe.customers.create({
-      name, email
+      name,
+      email,
     });
     return customer.id;
   }
 
-
   /** Creates a Checkout Session object using a customerId and priceId, returns
    * a client secret */
   static async createCheckoutSession(
-    customerId: string, priceId: string): Promise<string> {
-
+    customerId: string,
+    priceId: string,
+  ): Promise<string> {
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
-      ui_mode: 'embedded',
-      saved_payment_method_options: { payment_method_save: 'enabled' },
+      ui_mode: "embedded",
+      saved_payment_method_options: { payment_method_save: "enabled" },
       line_items: [
         {
           // Provide the exact Price ID (for example, pr_1234) of
@@ -35,19 +36,18 @@ class StripeApi {
           quantity: 1,
         },
       ],
-      mode: 'payment',
-      return_url: process.env.PAYMENT_RETURN_URL
+      mode: "payment",
+      return_url: process.env.PAYMENT_RETURN_URL,
     });
     return session.client_secret as string;
   }
-
 
   /** Retrieves a Checkout Session object using a session id, returns a
    * Checkout Session object
    */
   static async retrieveCheckoutSession(
-    sessionId: string): Promise<Stripe.Response<Stripe.Checkout.Session>> {
-
+    sessionId: string,
+  ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
     const sessionData = await stripe.checkout.sessions.retrieve(sessionId);
     return sessionData;
   }
@@ -56,12 +56,13 @@ class StripeApi {
    * returns an event object containing relevant event details.
    */
   static async constructStripeEvent(
-    buffer: string, signature: string): Promise<Stripe.Event> {
-
+    buffer: string,
+    signature: string,
+  ): Promise<Stripe.Event> {
     const event = stripe.webhooks.constructEvent(
       buffer,
       signature,
-      webhookSecret
+      webhookSecret,
     );
 
     return event;
@@ -78,11 +79,11 @@ class StripeApi {
     const username = user.username as string;
     const userData = await prisma.user.findUnique({
       where: {
-        username: username
+        username: username,
       },
       select: {
-        stripeId: true
-      }
+        stripeId: true,
+      },
     });
 
     // throw error if no user found

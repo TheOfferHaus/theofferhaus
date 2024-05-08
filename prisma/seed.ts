@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -6,14 +6,14 @@ async function main() {
   await prisma.user.create({
     data: {
       username: "admin",
-      isAdmin: true
+      isAdmin: true,
     },
   });
 
   await prisma.user.create({
     data: {
       username: "user",
-      isAdmin: false
+      isAdmin: false,
     },
   });
 }

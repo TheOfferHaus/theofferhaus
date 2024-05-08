@@ -19,7 +19,7 @@ Developers will have to:
 3. Set up .env.local to have `DATABASE_URL="postgresql://USERNAME:PASSWORD@localhost:5432/offerhaus"` with their relevant information passed in
 4. If you are not on a Mac, password will have to be set by going into your database, running \password, and creating a new password.
 5. Run `npm run migrate:init`
-Now you can use the prisma client to made database queries. For syntax questions ping the auth team
+   Now you can use the prisma client to made database queries. For syntax questions ping the auth team
 6. If you want to use prisma studio to easily see database records, run `npm run prisma:studio`
 7. Everytime the schema is updated, in order to update the database accordingly run `npm run migrate:add` followed by `your-migration-name` to describe the change in that format with hyphens between each word. For example, if the schema was updated to add a column called "firstName" to the database, you would run something like `npm run migrate:add add-first-name-column-to-user`
 
@@ -28,15 +28,16 @@ Now you can use the prisma client to made database queries. For syntax questions
 Setup to make Stripe embedded payment form functional:
 
 1. Include the following API keys in your .env.local: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=... get from David & Sam
-STRIPE_SECRET_KEY=... get from David & Sam
-OFFER_PRICE_ID=price_1PC4LDRrTWD9lwhqkYBSUPmV
-FULL_PACKAGE_PRICE_ID=price_1PDYmLRrTWD9lwhqo9kMOWBi
-PAYMENT_RETURN_URL=http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}
-STRIPE_WEBHOOK_SECRET=... see below on getting the value for this key
+   STRIPE_SECRET_KEY=... get from David & Sam
+   OFFER_PRICE_ID=price_1PC4LDRrTWD9lwhqkYBSUPmV
+   FULL_PACKAGE_PRICE_ID=price_1PDYmLRrTWD9lwhqo9kMOWBi
+   PAYMENT_RETURN_URL=http://localhost:3000/paymentConfirmation?session_id={CHECKOUT_SESSION_ID}
+   STRIPE_WEBHOOK_SECRET=... see below on getting the value for this key
 
 Setting up the Stipe command line interface to listen for webhook events:
 
 Follow these steps in your terminal
+
 1. `brew install stripe/stripe-cli/stripe`
 2. `stripe login`
 3. Press <Enter> to open a stripe browser window
@@ -62,7 +63,6 @@ Name: any
 Zip: any
 
 Additional test payment methods can be found here: https://docs.stripe.com/testing.
-
 
 ## Setting Up Users Seed Data and Clerk
 

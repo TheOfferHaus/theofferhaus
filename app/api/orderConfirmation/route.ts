@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import StripeApi from '@/utils/stripeApi';
+import { NextRequest, NextResponse } from "next/server";
+import StripeApi from "@/utils/stripeApi";
 
 /** Webhook route that accepts API calls from Stripe to handle events. Currently
  * console logs basic event data and does not handle any order fulfillment.
@@ -23,25 +23,25 @@ import StripeApi from '@/utils/stripeApi';
  */
 export async function POST(req: NextRequest) {
   const buffer = await req.text();
-  const signature = req.headers.get('stripe-signature')!;
+  const signature = req.headers.get("stripe-signature")!;
 
   const event = await StripeApi.constructStripeEvent(buffer, signature);
 
   // handles different event types
   switch (event.type) {
-    case 'payment_intent.succeeded': {
+    case "payment_intent.succeeded": {
       const paymentIntent = event.data.object;
       console.log(`PaymentIntent status: ${paymentIntent.status}`);
       break;
     }
-    case 'payment_intent.payment_failed': {
+    case "payment_intent.payment_failed": {
       const paymentIntent = event.data.object;
       console.log(
-        `❌ Payment failed: ${paymentIntent.last_payment_error?.message}`
+        `❌ Payment failed: ${paymentIntent.last_payment_error?.message}`,
       );
       break;
     }
-    case 'charge.succeeded': {
+    case "charge.succeeded": {
       const charge = event.data.object;
       console.log(`Charge id:`, charge.id);
       break;
@@ -54,4 +54,4 @@ export async function POST(req: NextRequest) {
 
   // Return a response to acknowledge receipt of the event.
   return NextResponse.json({ received: "true" });
-};
+}
