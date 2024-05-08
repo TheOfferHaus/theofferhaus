@@ -114,7 +114,7 @@ export default class Template {
     // Read and base64 encode the document
     const documentBuffer = fs.readFileSync(documentData.path);
     const documentBase64 = documentBuffer.toString("base64");
-    const documentName = Template._getDocumentName(documentData.path);
+    const documentName = Template.getDocumentName(documentData.path);
 
     // Construct request JSON
     const requestData = {
@@ -122,7 +122,7 @@ export default class Template {
         {
           documentBase64: documentBase64,
           documentId: "1",
-          fileExtension: Template._getDocumentExtension(documentName),
+          fileExtension: Template.getDocumentExtension(documentName),
           order: "1",
           pages: documentData.pageCount, //TODO: get num pages programmatically
           name: documentName,
@@ -191,7 +191,7 @@ export default class Template {
    *
    * @returns {string} name of file
    */
-  static _getDocumentName(documentPath: string): string {
+  private static getDocumentName(documentPath: string): string {
     return documentPath.split("/").pop() || "";
   }
 
@@ -201,7 +201,7 @@ export default class Template {
    *
    * @returns {string} File extension.
    */
-  static _getDocumentExtension(documentName: string): string {
+  private static getDocumentExtension(documentName: string): string {
     return documentName.split(".").pop() || "";
   }
 }

@@ -57,7 +57,7 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
         `${ans.agreement_returned_deadline}`,
 
       closing_costs_responsibility: (ans) =>
-        OregonFormDataExtractor.getClosingCostResponsibility(ans.closing_costs_responsibility as string),
+        OregonFormDataExtractor.getClosingCostResponsibilityText(ans.closing_costs_responsibility as string),
 
       mineral_rights_yes_to_buyer: (ans) =>
         ans.mineral_rights_yes_to_buyer ? '' : 'not',
@@ -75,20 +75,20 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
         ans.realtor_involved ? `${ans.realtor_information}` : '',
 
       possession_and_tenants: ans =>
-        OregonFormDataExtractor.getPosessionAndTenants(ans),
+        OregonFormDataExtractor.getPosessionAndTenantsText(ans),
 
       has_loan: ans =>
         OregonFormDataExtractor.getLoanText(ans.has_loan as boolean)
     };
 
-  static getPersonalPropertyText(ans: ExtractedAnswers): string {
+  private static getPersonalPropertyText(ans: ExtractedAnswers): string {
     if (ans.personal_property_included) {
       return `There shall be personal property included in this Agreement and/or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing except those listed below: ${ans.personal_property_items}`;
     }
     return `There shall be no personal property included in this Agreement or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing.`;
   }
 
-  static getClosingCostResponsibility(userChoice: string): string {
+  private static getClosingCostResponsibilityText(userChoice: string): string {
     if (userChoice === "The Seller") {
       return "Seller";
     } else if (userChoice === "You the Buyer") {
@@ -98,7 +98,7 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
     }
   }
 
-  static getPosessionAndTenants(ans: ExtractedAnswers): string {
+  private static getPosessionAndTenantsText(ans: ExtractedAnswers): string {
     if (ans.yes_to_possesion && ans.yes_to_tenants) {
       return `Buyer will accept all tenants at Closing, and unless provided otherwise in this Agreement, all rents will be prorated as of Closing, and all deposits held on behalf of tenants by Seller will be transferred to Buyer through Escrow at Closing.`;
     } else if (ans.yes_to_possesion) {
@@ -110,14 +110,14 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
     }
   }
 
-  static getLoanText(userChoice: boolean): string {
+  private static getLoanText(userChoice: boolean): string {
     if (userChoice) {
       return 'Buyer Loan or Financing is required in order to purchase the Property.';
     }
     return 'No loan or financing of any kind is required in order to purchase the Property.';
   }
 
-  static getEarnestMoneyText(userChoice: boolean): string {
+  private static getEarnestMoneyText(userChoice: boolean): string {
     if (userChoice) {
       return 'The Buyer shall provide a monetary deposit that would be deemed consideration ("Earnest Money").';
     }

@@ -60,8 +60,8 @@ export default class FormDataExtractor {
    * @returns {[key: string]: string;} - Form data formatted for DocuSign.
    */
   static getFormattedFormDataForDocusign(formData: Answer[]): { [key: string]: string; } {
-    const extractedAnswers = FormDataExtractor._extractAnswers(formData);
-    return FormDataExtractor._formatAnswersForDocusign.call(this, extractedAnswers);
+    const extractedAnswers = FormDataExtractor.extractAnswers(formData);
+    return FormDataExtractor.formatAnswersForDocusign.call(this, extractedAnswers);
   }
 
   /**
@@ -69,7 +69,7 @@ export default class FormDataExtractor {
    * @param {Answer[]} answers - The answers from the form.
    * @returns {ExtractedAnswers} - Extracted answers mapped by field reference.
    */
-  static _extractAnswers(answers: Answer[]): ExtractedAnswers {
+  private static extractAnswers(answers: Answer[]): ExtractedAnswers {
     return Object.fromEntries(
       answers.map((answer) => [
         answer.field.ref,
@@ -85,7 +85,7 @@ export default class FormDataExtractor {
    * @param {ExtractedAnswers} answers - Extracted answers.
    * @returns {object} - Formatted general information answers.
    */
-  static _formatGeneralInfoAnswersForDocusign(answers: ExtractedAnswers): {
+  private static formatGeneralInfoAnswersForDocusign(answers: ExtractedAnswers): {
     [key: string]: string;
   } {
     return Object.fromEntries(
@@ -100,11 +100,11 @@ export default class FormDataExtractor {
    * @param {ExtractedAnswers} answers - Extracted answers.
    * @returns {object} - Formatted answers for DocuSign.
    */
-  static _formatAnswersForDocusign(answers: ExtractedAnswers): {
+  private static formatAnswersForDocusign(answers: ExtractedAnswers): {
     [key: string]: string;
   } {
     const formatted =
-      FormDataExtractor._formatGeneralInfoAnswersForDocusign(answers);
+      FormDataExtractor.formatGeneralInfoAnswersForDocusign(answers);
 
     for (const [field, extractor] of Object.entries(
       this.additionalInfoExtractors
