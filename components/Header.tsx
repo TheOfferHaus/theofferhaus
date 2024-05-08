@@ -29,7 +29,7 @@ const Header = () => {
         </h3>
 
         <button className="bg-custom-white text-primary-medium rounded-lg text-2xl shadow-md px-12 py-6 transition duration-150 ease-in-out transform hover:scale-95 ">
-          <Link href="/quiz">Get Started</Link>
+          <Link href="/address-validate">Get Started</Link>
         </button>
       </div>
     </div>

@@ -11,7 +11,7 @@ const NavBar = () => {
           <Link className="px-3 py-2 hover:text-primary-dark" href="/">
             Home
           </Link>
-          <Link className="px-3 py-2 hover:text-primary-dark" href="/quiz">
+          <Link className="px-3 py-2 hover:text-primary-dark" href="/address-validate">
             Quiz
           </Link>
         </div>
