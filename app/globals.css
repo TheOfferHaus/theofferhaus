@@ -7,9 +7,24 @@
   --background-rgb: 255, 253, 247;
 }
 
+@font-face {
+  font-family: "TTNormsPro";
+  src: url("/fonts/TT_Norms_Pro_Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
+}
+
+body,
+button,
+input,
+textarea {
+  font-family: "TTNormsPro", sans-serif;
+  font-weight: 300;
 }
 
 @layer utilities {

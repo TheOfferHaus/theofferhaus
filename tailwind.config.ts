@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 
-const config = {
+const config : Config= {
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -23,6 +23,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        ttnorms: ["TTNormsPro", "sans-serif"],
+      },
       // Accordion keyframes and animation are used in ShadCN components
       keyframes: {
         "accordion-down": {
@@ -43,4 +46,4 @@ const config = {
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
 
-export default config
+export default config;

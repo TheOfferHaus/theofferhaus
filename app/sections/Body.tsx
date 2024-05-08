@@ -21,7 +21,7 @@ const Body = () => {
             You take control of your transaction.
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-lg">
           <div>
             <div className="flex justify-center items-center mb-2">
               <span className="mr-2 text-primary-dark">✔</span>
