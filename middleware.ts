@@ -1,9 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
-  '/admin',                     // Protects the admin dashboard route
-  '/(.*)/offers',               // Protects offers under any username
-  '/(.*)/offers/(.*)',          // Protects specific offer under any username
+  "/admin", // Protects the admin dashboard route
+  "/(.*)/offers", // Protects offers under any username
+  "/(.*)/offers/(.*)", // Protects specific offer under any username
 ]);
 
 export default clerkMiddleware((auth, req) => {
@@ -11,5 +11,5 @@ export default clerkMiddleware((auth, req) => {
 });
 
 export const config = {
-  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };

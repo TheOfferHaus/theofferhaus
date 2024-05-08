@@ -8,14 +8,14 @@ const prisma = new PrismaClient();
 
 /** Component for offer detail, includes offer/property info from typeform fields and links to offer documents*/
 
-export default async function Offer({ params }: { params: { offerId: number; }; }) {
+export default async function Offer({ params }: { params: { offerId: string; }; }) {
     const currUser = await currentUser() as User;
 
     const { offerId } = params;
 
     const offer = await prisma.offer.findUnique({
         where: {
-            id: Number(offerId)
+            id: offerId
         }
     });
 
