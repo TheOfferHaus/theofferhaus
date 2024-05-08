@@ -57,8 +57,7 @@ export default class Envelope {
     );
 
     if (response.status > 201) {
-      const responseText = await response.text();
-      throw new Error(responseText);
+      throw new Error("Creating envelope failed: " + await response.text());
     }
 
     const responseData = await response.json();
@@ -86,12 +85,10 @@ export default class Envelope {
     );
 
     if (!response.ok) {
-      const respText = await response.text();
-      throw new Error(respText);
+      throw new Error("Getting doc gen form fields failed: " + await response.text());
     }
 
-    const responseData = await response.json();
-    return responseData;
+    return await response.json();
   }
 
   /**
@@ -134,7 +131,7 @@ export default class Envelope {
     );
 
     if (!response.ok) {
-      throw new Error(await response.text());
+      throw new Error("Merging data fields failed: " + await response.text());
     }
   }
 
@@ -164,7 +161,7 @@ export default class Envelope {
     );
 
     if (!response.ok) {
-      throw new Error(await response.text());
+      throw new Error("Sending signing email failed: " + await response.text());
     }
   }
 
@@ -194,7 +191,7 @@ export default class Envelope {
       clientUserId: 1005,
     };
 
-    const signingUrlResp = await fetch(
+    const response = await fetch(
       `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
@@ -206,7 +203,11 @@ export default class Envelope {
       }
     );
 
-    const signingUrlData = await signingUrlResp.json();
+    if (!response.ok) {
+      throw new Error("Getting signing url failed: " + await response.text());
+    }
+
+    const signingUrlData = await response.json();
     return signingUrlData.url;
   }
 

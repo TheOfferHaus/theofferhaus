@@ -81,7 +81,7 @@ export default class ApiTokenManager {
 
     // Error handling if API request fails
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error("Refreshing token failed: " + await response.text());
     }
 
     const newAccessData = await response.json();
@@ -114,7 +114,7 @@ export default class ApiTokenManager {
     /** Function for getting tokens from authorization code */
     async function getTokenData() {
 
-      const tokenResp = await fetch(`${API_BASE_URL}/oauth/token`, {
+      const response = await fetch(`${API_BASE_URL}/oauth/token`, {
         method: "POST",
         headers: {
           Authorization: `Basic ${getSecretKeyEncoding()}`,
@@ -123,27 +123,27 @@ export default class ApiTokenManager {
         body: `grant_type=authorization_code&code=${authorizationCode}`,
       });
 
-      if (tokenResp.status > 201) {
-        throw new Error("Getting token failed");
+      if (!response.ok) {
+        throw new Error("Getting token failed: " + await response.text());
       }
 
-      return await tokenResp.json();
+      return await response.json();
     }
 
     /** Function for getting base uri */
     async function getBaseUriData(accessToken: string) {
-      const baseUriResp = await fetch(`${API_BASE_URL}/oauth/userinfo`, {
+      const response = await fetch(`${API_BASE_URL}/oauth/userinfo`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`, // Authorization header
         },
       });
 
-      if (baseUriResp.status > 201) {
-        throw new Error("Getting base url failed");
+      if (!response.ok) {
+        throw new Error("Getting base url failed: " + await response.text());
       }
 
-      return await baseUriResp.json();
+      return await response.json();
     }
 
     const tokenData = await getTokenData();
@@ -157,7 +157,6 @@ export default class ApiTokenManager {
       calculateNewExpirationTime(tokenData.expires_in),
       baseUriData.accounts[0].base_uri
     );
-
   }
 }
 

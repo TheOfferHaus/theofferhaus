@@ -59,7 +59,7 @@ export default class Template {
       }
     );
 
-    if (response.status > 201) {
+    if (!response.ok) {
       throw new Error("Template creation failed: " + (await response.text()));
     }
 
@@ -113,7 +113,7 @@ export default class Template {
     );
 
     if (!response.ok) {
-      throw new Error(await response.text());
+      throw new Error("Adding document to template failed: " + await response.text());
     }
   }
 
@@ -156,7 +156,7 @@ export default class Template {
     );
 
     if (!response.ok) {
-      throw new Error(await response.text());
+      throw new Error("Adding tabs to template failed: " + await response.text());
     }
   }
 
