@@ -35,9 +35,9 @@ export default class ApiTokenManager {
 
   /**
    * Retrieves the base URL for API requests.
-   * @returns {Promise<string>} - A promise resolving to the base URL.
+   * @returns {string} - A promise resolving to the base URL.
    */
-  async getBaseUrl(): Promise<string> {
+  getBaseUrl(): string {
     return `${this.baseUrl}/restapi`;
   }
 

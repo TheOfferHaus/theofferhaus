@@ -78,11 +78,11 @@ export default class Template {
     const tokenManager = await ApiTokenManager.createApiTokenManager();
 
     const response = await fetch(
-      `${await tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
+      `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${await tokenManager.getBaseUrl()}`,
+          Authorization: `Bearer ${tokenManager.getBaseUrl()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(templateData),
@@ -133,7 +133,7 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/documents/1`,
       {
         method: "PUT",
         headers: {
@@ -171,7 +171,7 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
         headers: {

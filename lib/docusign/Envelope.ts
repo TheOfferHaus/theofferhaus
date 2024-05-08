@@ -50,7 +50,7 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${await tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
+      `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
       {
         method: "POST",
         headers: {
@@ -80,7 +80,7 @@ export default class Envelope {
 
   async getDocGenFormFields(): Promise<any> {
     const response = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docGenFormFields`,
       {
         method: "GET",
         headers: {
@@ -127,7 +127,7 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/docgenformfields`,
       {
         method: "PUT",
         headers: {
@@ -157,7 +157,7 @@ export default class Envelope {
     };
 
     const response = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}`,
       {
         method: "PUT",
         headers: {
@@ -200,7 +200,7 @@ export default class Envelope {
     };
 
     const signingUrlResp = await fetch(
-      `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
       {
         method: "POST",
         headers: {
@@ -217,63 +217,4 @@ export default class Envelope {
 
   }
 
-  /**
-   * Retrieves document uris associated with all envelopes that have been created.
-   *
-   * @returns {Promise<string>} Array of document uris for all envelopes.
-   */
-
-  // static async getEnvelopes(
-  //   await this.tokenManager.getBaseUrl(): string,
-  //   await this.tokenManager.getAccessToken(): string
-  // ): Promise<Array<string>> {
-  //   const envelopesResp = await fetch(
-  //     `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify('2017-05-02T01:44Z')
-  //     }
-  //   );
-
-  //   const envelopesData = await envelopesResp.json();
-  //   const envelopes: { uri: string, }[] = envelopesData.envelopes;
-
-  //   return envelopes.map((e) => e.uri);
-  // }
-
-  /**
-  * Filters envelopes by envelope ID and retrieves document uris associated
-  * with them.
-  *
-  *
-  * @returns {Promise<string>} Array of document uris for filtered envelopes.
-  */
-
-  // static async getEnvelopeByIds(
-  //   await this.tokenManager.getBaseUrl(): string,
-  //   await this.tokenManager.getAccessToken(): string,
-  //   envelopeIds: string[]
-  // ): Promise<Array<String>> {
-  //   const q = new URLSearchParams({
-  //     envelopeIds: envelopeIds.join(","),
-  //   });
-
-  //   const envelopesResp = await fetch(
-  //     `${await this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes?${q}`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-
-  //   const envelopesData = await envelopesResp.json();
-  //   const envelopes: { uri: string; }[] = envelopesData.envelopes;
-
-  //   return envelopes.map((e) => e.uri);
-  // }
 }
