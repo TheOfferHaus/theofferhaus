@@ -165,12 +165,19 @@ export default class ApiTokenManager {
 
     const now = new Date();
 
-    // Update database with token information
-    await prisma.accessData.update({
+    // Update database with token information or insert if it doesnt already exist
+    await prisma.accessData.upsert({
       where: {
         id: 0
       },
-      data: {
+      update: {
+        token: tokenData.access_token,
+        refreshToken: tokenData.refresh_token,
+        expirationTime: new Date(now.getTime() + (tokenData.expires_in - SECS_PER_HOUR) * 1000),
+        baseUri: baseUriData.accounts[0].base_uri
+      },
+      create: {
+        id: 0,
         token: tokenData.access_token,
         refreshToken: tokenData.refresh_token,
         expirationTime: new Date(now.getTime() + (tokenData.expires_in - SECS_PER_HOUR) * 1000),
@@ -178,6 +185,5 @@ export default class ApiTokenManager {
       }
     });
   }
-
 }
 
