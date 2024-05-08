@@ -12,7 +12,6 @@ import Link from "next/link";
 const Body = () => {
   return (
     <div>
-      {/* Body Banner with description of pricing options section */}
       <div className="relative w-screen mx-auto px-4 sm:px-6 lg:px-8 bg-custom-white py-6 rounded-3xl -mt-6 z-10">
         <div className="text-center mb-10">
           <h2 className="text-2xl leading-tight">
@@ -43,8 +42,8 @@ const Body = () => {
         </div>
       </div>
 
-      {/* Cards below for pricing options */}
-      <div className="grid grid-cols-2 gap-14 p-32 bg-off-white">
+
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-14 lg:p-32 md:p-12 p-6 bg-off-white">
         <Card>
           <CardHeader>
             <CardTitle>Get started today.</CardTitle>
