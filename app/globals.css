@@ -4,26 +4,27 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-rgb: 255, 253, 247;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+@font-face {
+  font-family: "TTNormsPro";
+  src: url("/fonts/TT_Norms_Pro_Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+body,
+button,
+input,
+textarea {
+  font-family: "TTNormsPro", sans-serif;
+  font-weight: 300;
 }
 
 @layer utilities {
