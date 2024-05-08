@@ -1,21 +1,7 @@
 import Link from "next/link";
+import { OfferObject } from "@/types/types";
 import { User, currentUser } from "@clerk/nextjs/server";
 
-type OfferObject = {
-  property: {
-      id: number;
-  };
-} & {
-  id: number;
-  envelopeId: string;
-  typeformId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  price: number;
-  buyerId: string;
-  propertyId: number;
-  status: string;
-}
 
 /** Component for displaying an offer card with a offer ID
  *
