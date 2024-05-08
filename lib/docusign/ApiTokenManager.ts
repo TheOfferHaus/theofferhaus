@@ -4,15 +4,11 @@ const prisma = new PrismaClient();
 
 const SECS_PER_HOUR = 3600;
 
-type ApiAccessData = { accessToken: string, baseUri: string, refreshToken: string, expiresIn: number; };
-
-
 export default class ApiTokenManager {
   expirationTime: Date;
   baseUrl: string;
   accessToken: string;
   refreshToken: string;
-
 
   constructor(baseUrl: string, accessToken: string, expirationTime: Date, refreshToken: string) {
     this.baseUrl = baseUrl;
@@ -21,7 +17,12 @@ export default class ApiTokenManager {
     this.refreshToken = refreshToken;
   }
 
-  static async createApiTokenManager() {
+  /**
+   * Creates an instance of ApiTokenManager using data from the database.
+   * @returns {Promise<ApiTokenManager>} - A promise resolving to an instance of ApiTokenManager.
+   */
+  static async createApiTokenManager(): Promise<ApiTokenManager> {
+    // Get tokens from database
     const accessData = await prisma.accessData.findUnique({
       where: {
         id: 0
@@ -31,26 +32,45 @@ export default class ApiTokenManager {
     return new ApiTokenManager(accessData?.baseUri!, accessData?.token!, accessData?.expirationTime!, accessData?.refreshToken!);
   }
 
-  async getBaseUrl() {
+  /**
+   * Retrieves the base URL for API requests.
+   * @returns {Promise<string>} - A promise resolving to the base URL.
+   */
+  async getBaseUrl(): Promise<string> {
     return `${this.baseUrl}/restapi`;
   }
 
-  async getAccessToken() {
+  /**
+   * Retrieves the access token for API authorization, refreshing it if necessary.
+   * @returns {Promise<string>} - A promise resolving to the access token.
+   */
+  async getAccessToken(): Promise<string> {
     const now = new Date();
+
+    // Refresh tokens if necessary
     if (now >= this.expirationTime) {
-      console.log(this.expirationTime, now);
       await this.refreshTokens();
     }
 
     return this.accessToken;
   }
 
-  async refreshTokens() {
+
+  /**
+   * Refreshes the access and refresh tokens. Updates database and instance
+   * with new tokens
+   * @returns {Promise<void>} - A promise resolving when tokens are refreshed.
+   */
+  async refreshTokens(): Promise<void> {
 
     console.log('refreshing token');
-    // Base64 encode the combination of the integration and secret keys
-    const encodedKeys = btoa(`${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`);
 
+    // Base64 encode the combination of the integration and secret keys
+    const encodedKeys = btoa(
+      `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
+    );
+
+    // Request to docusign to refresh tokens
     const response = await fetch("https://account-d.docusign.com/oauth/token", {
       method: "POST",
       headers: {
@@ -63,18 +83,20 @@ export default class ApiTokenManager {
       })
     });
 
+    // Error handling if API request fails
     if (!response.ok) {
-      console.log(await response.text());
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const newAccessData = await response.json();
 
+    // Update this instance with new tokens
     this.accessToken = newAccessData.access_token;
     this.refreshToken = newAccessData.refresh_token;
     const now = new Date();
     this.expirationTime = new Date(now.getTime() + (newAccessData.expires_in - SECS_PER_HOUR) * 1000);
 
+    // Update database with new tokens
     await prisma.accessData.update({
       where: {
         id: 0
@@ -98,41 +120,54 @@ export default class ApiTokenManager {
  */
 
   static async initializeAccessData(authorizationCode: string): Promise<void> {
-    const encodedKeys = btoa(
-      `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
-    );
-    const tokenResp = await fetch("https://account-d.docusign.com/oauth/token", {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${encodedKeys}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `grant_type=authorization_code&code=${authorizationCode}`,
-    });
 
-    if (tokenResp.status > 201) {
-      throw new Error("Getting token failed");
-    }
-
-    const tokenData = await tokenResp.json();
-
-    const baseUriResp = await fetch(
-      "https://account-d.docusign.com/oauth/userinfo",
-      {
-        method: "GET", // HTTP method
+    /** Function for getting tokens from authorization code */
+    async function getTokenData() {
+      // Base64 encode the combination of the integration and secret keys
+      const encodedKeys = btoa(
+        `${process.env.DOCUSIGN_INTEGRATION_KEY}:${process.env.DOCUSIGN_SECRET_KEY}`
+      );
+      const tokenResp = await fetch("https://account-d.docusign.com/oauth/token", {
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${tokenData.access_token}`, // Authorization header
+          Authorization: `Basic ${encodedKeys}`,
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
-    );
+        body: `grant_type=authorization_code&code=${authorizationCode}`,
+      });
 
-    if (baseUriResp.status > 201) {
-      throw new Error("Getting base url failed");
+      if (tokenResp.status > 201) {
+        throw new Error("Getting token failed");
+      }
+
+      return await tokenResp.json();
     }
 
-    const baseUriData = await baseUriResp.json();
+    /** Function for getting base uri */
+    async function getBaseUriData(accessToken: string) {
+      const baseUriResp = await fetch(
+        "https://account-d.docusign.com/oauth/userinfo",
+        {
+          method: "GET", // HTTP method
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Authorization header
+          },
+        }
+      );
+
+      if (baseUriResp.status > 201) {
+        throw new Error("Getting base url failed");
+      }
+
+      return await baseUriResp.json();
+    }
+
+    const tokenData = await getTokenData();
+    const baseUriData = await getBaseUriData(tokenData.access_token);
+
     const now = new Date();
 
+    // Update database with token information
     await prisma.accessData.update({
       where: {
         id: 0
