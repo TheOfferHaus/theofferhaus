@@ -1,6 +1,8 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { RADAR_VALIDATE_ADDRESS_API_URL } from "@/constants";
+import { PrismaClient } from "@prisma/client";
 
 const initialFormData = {
   number: "",
@@ -8,20 +10,69 @@ const initialFormData = {
   city: "",
   stateCode: "",
   postalCode: "",
+  unit: "",
   countryCode: "US",
 };
+
+const prisma = new PrismaClient();
 
 /** Form for validating an address. Makes a request to the radar api on form
  * submit and interacts with the database
  */
 export default function AddressValidationForm() {
   const [formData, setFormData] = useState(initialFormData);
+  console.log(
+    "this is key:",
+    process.env.NEXT_PUBLIC_RADAR_TEST_PUBLISHABLE_API_KEY
+  );
+
+  const [errors, setErrors] = useState("");
 
   // Function to handle form submission
-  async function handleSubmit() {}
+  async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
+
+    const params = new URLSearchParams({
+      city: formData.city,
+      stateCode: formData.stateCode,
+      postalCode: formData.postalCode,
+      countryCode: formData.countryCode,
+      number: formData.number,
+      street: formData.street,
+      unit: formData.unit,
+    });
+
+    let verificationData;
+
+    try {
+      const radarResponse = await fetch(
+        `${RADAR_VALIDATE_ADDRESS_API_URL}?${params.toString()}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${process.env.NEXT_PUBLIC_RADAR_TEST_PUBLISHABLE_API_KEY}`,
+          },
+        }
+      );
+      verificationData = await radarResponse.json();
+    } catch(err) {
+      console.error(err)
+      return;
+    }
+
+    console.log(verificationData)
+
+    if (verificationData.result.verificationStatus !== "verified") {
+      setErrors("Please check your address please!") // this will be an alert component in future
+      return;
+    }
+
+  }
 
   /** updates inputValues. */
-  function handleChange(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+  function handleChange(
+    evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
     setFormData((formData) => ({
       ...formData,
       [evt.target.name]: evt.target.value,
@@ -53,6 +104,16 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
+        <label htmlFor="unit">Unit #:</label>
+        <input
+          type="text"
+          id="unit"
+          name="unit"
+          value={formData.unit}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
         <label htmlFor="city">City:</label>
         <input
           type="text"
@@ -64,8 +125,14 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="state-code">State:</label>
-        <select name="state-code" id="state-code" onChange={handleChange}>
+        <label htmlFor="stateCode">State:</label>
+        <select
+          name="stateCode"
+          id="stateCode"
+          value={formData.stateCode}
+          onChange={handleChange}
+        >
+          <option disabled value="">Choose a State</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>
           <option value="AZ">Arizona</option>
@@ -119,22 +186,22 @@ export default function AddressValidationForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="postal-code">Zipcode:</label>
+        <label htmlFor="postalCode">Zipcode:</label>
         <input
           type="text"
-          id="postal-code"
-          name="postal-code"
+          id="postalCode"
+          name="postalCode"
           value={formData.postalCode}
           onChange={handleChange}
           required
         />
       </div>
       <div>
-        <label htmlFor="country-code">Country:</label>
+        <label htmlFor="countryCode">Country:</label>
         <input
           type="text"
-          id="country-code"
-          name="country-code"
+          id="countryCode"
+          name="countryCode"
           value={formData.countryCode}
           disabled
         />

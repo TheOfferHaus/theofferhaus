@@ -34,7 +34,7 @@ model Offer {
   buyer      User       @relation(fields: [buyerId], references: [username])
   buyerId    String                      @map("buyer_id")
   property   Property   @relation(fields: [propertyId], references: [id])
-  propertyId Int                         @map("property_id")
+  propertyId String     @db.Uuid         @map("property_id")
   status     Status     @default(PENDING)
 
   @@map("offers")
@@ -43,7 +43,7 @@ model Offer {
 // id is currently set to autoincrementing but in the future, probably will be
 // maybe storing something from mls
 model Property {
-  id            Int        @id @default(autoincrement())
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   address       String     @unique
   offers        Offer[]
 
