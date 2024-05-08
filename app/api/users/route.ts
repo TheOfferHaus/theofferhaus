@@ -1,8 +1,7 @@
-import { NextResponse, NextRequest } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { NextResponse, NextRequest } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-
 
 /**POST request to api/users
  *
@@ -16,8 +15,12 @@ export async function POST(req: NextRequest) {
   await prisma.user.create({
     data: {
       username: body.data.username,
+<<<<<<< HEAD
       clerkId: body.data.id
     }
+=======
+    },
+>>>>>>> main
   });
 
   return NextResponse.json({ created: true }, { status: 201 });
