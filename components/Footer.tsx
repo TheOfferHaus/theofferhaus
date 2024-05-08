@@ -2,22 +2,23 @@
 
 const Footer = () => {
   return (
-    <footer className="w-full p-2 md:py-4">
+    <footer className="w-full p-2 md:py-4 text-sm">
+
       {/* Container with navigation links */}
-      <div className="w-full max-w-screen-xl mx-auto flex flex-col sm:flex-row items-center justify-between">
-        <ul className="flex flex-wrap items-center text-sm font-medium mb-2 sm:mb-0">
+      <div className="mx-auto flex flex-col sm:flex-row items-center justify-between pl-4">
+        <ul className="flex items-center font-medium mb-2 sm:mb-0">
           <li>
-            <a href="#" className="mr-3 hover:underline md:mr-5">
+            <a href="#" className="mr-3  hover:text-primary-dark md:mr-5">
               About Us
             </a>
           </li>
           <li>
-            <a href="#" className="mr-3 hover:underline md:mr-5">
+            <a href="#" className="mr-3 hover:text-primary-dark md:mr-5">
               FAQs
             </a>
           </li>
           <li>
-            <a href="#" className="hover:underline">
+            <a href="#" className=" hover:text-primary-dark">
               Contact
             </a>
           </li>
@@ -25,13 +26,14 @@ const Footer = () => {
       </div>
 
       {/* Footer copyright section */}
-      <div className="w-full mx-auto text-center text-sm mt-2">
+      <div className="w-full mx-auto text-center mt-2">
         © 2024
-        <a href="#" className="hover:underline">
+        <a href="#" className=" hover:text-primary-dark">
           The Offer Haus™
         </a>
         . All Rights Reserved.
       </div>
+
     </footer>
   );
 };
