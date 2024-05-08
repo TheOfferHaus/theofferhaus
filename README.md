@@ -37,3 +37,9 @@ Now you can use the prisma client to made database queries. For syntax questions
 1. In your terminal: `npx shadcn-ui@latest init`
 2. In your terminal: `npx shadcn-ui@latest add table`
 
+
+## Tell everyone for updated DB
+1. npm run migrate:add add-clerkid-to-users
+2. npm run migrate:reset
+3. If you check PSQL and query for all users, you should see the clerk_id as a
+column

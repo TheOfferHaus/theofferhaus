@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { getDisplayName } from "next/dist/shared/lib/utils";
 
 export function Dropdown({filterSelect, filterVal}: {filterSelect: Function, filterVal: string}) {
 //TODO: fix the filter by button
