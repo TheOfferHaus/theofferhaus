@@ -24,19 +24,19 @@ const Body = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div>
             <div className="flex justify-center items-center mb-2">
-              <span className="mr-2 text-primary-medium">✔</span>
+              <span className="mr-2 text-primary-dark">✔</span>
               <span>One platform for the entire process.</span>
             </div>
           </div>
           <div>
             <div className="flex justify-center items-center mb-2">
-              <span className="mr-2 text-primary-medium">✔</span>
+              <span className="mr-2 text-primary-dark">✔</span>
               <span>Simple price. You won't find any HUGE fees.</span>
             </div>
           </div>
           <div>
             <div className="flex justify-center items-center mb-2">
-              <span className="mr-2 text-primary-medium">✔</span>
+              <span className="mr-2 text-primary-dark">✔</span>
               <span>Full transaction, start to finish.</span>
             </div>
           </div>
@@ -69,7 +69,7 @@ const Body = () => {
           </CardContent>
           <CardFooter>
             <Link href="#">
-              <button className="bg-primary-dark text-off-white rounded-lg p-4 shadow-md">
+              <button className="bg-primary-medium text-custom-white hover:scale-95 rounded-lg p-4 shadow-md">
                 $99.00 For Offer Package
               </button>
             </Link>
@@ -111,7 +111,7 @@ const Body = () => {
           </CardContent>
           <CardFooter>
             <Link href="#">
-              <button className="bg-primary-dark text-off-white rounded-lg p-4 shadow-md">
+              <button className="bg-primary-medium text-custom-white hover:scale-95 rounded-lg p-4 shadow-md">
                 $499.00 Full Platform Package
               </button>
             </Link>

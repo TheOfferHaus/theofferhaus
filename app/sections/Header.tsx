@@ -9,7 +9,7 @@ const Header = () => {
       {/* Background image */}
       <div className="h-full">
         <Image
-          src="/panorama-house.jpeg"
+          src="/panorama-house.jpg"
           alt="House background"
           fill={true}
           style={{ objectFit: "cover", objectPosition: "bottom" }}
@@ -30,7 +30,7 @@ const Header = () => {
         </h3>
 
         {/* Button */}
-        <button className="bg-custom-white text-primary-dark rounded-lg text-2xl shadow-md px-12 py-6 hover:bg-primary-dark hover:text-custom-white">
+        <button className="bg-custom-white text-primary-medium rounded-lg text-2xl shadow-md px-12 py-6 hover:scale-95 ">
           <Link href="/quiz">Get Started</Link>
         </button>
       </div>
