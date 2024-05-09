@@ -1,20 +1,16 @@
 import Link from "next/link";
 import { OfferObject } from "@/types/types";
 import { User, currentUser } from "@clerk/nextjs/server";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "./ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
 
-/** Component for displaying an offer card with a offer ID
- *
+/**
+ * Component for displaying an offer card. Links to specific offer detail page
+ * on click
  *
  * props:
  * - Offer object
+ *
+ * Offers -> OfferCard
  */
 
 export default async function OfferCard({ offer }: { offer: OfferObject }) {

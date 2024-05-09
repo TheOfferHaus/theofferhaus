@@ -1,9 +1,12 @@
 import Link from "next/link";
 import ClerkUserMenuItem from "./ClerkUserMenuItem";
+import { User, currentUser } from "@clerk/nextjs/server";
 
 /** NavBar component */
 
-const NavBar = () => {
+const NavBar = async () => {
+  const currUser = await currentUser() as User;
+
   return (
     <nav className="w-full bg-custom-white">
       <div className="flex px-4 sm:px-6 lg:px-8 justify-between h-16 mx-auto">
@@ -13,6 +16,9 @@ const NavBar = () => {
           </Link>
           <Link className="px-3 py-2 hover:text-primary-dark" href="/quiz">
             Quiz
+          </Link>
+          <Link className="px-3 py-2 hover:text-primary-dark" href={`/${currUser.username}/offers`}>
+            My Offers
           </Link>
         </div>
         <div className="flex items-center">
