@@ -130,17 +130,18 @@ export default class ApiTokenManager {
   async getAccessDataOnConsent(authorizationCode: string): Promise<void> {
     /** Function for getting tokens from authorization code */
     async function getTokenData() {
-      const response = await fetch(
-        `${DOCUSIGN_API_BASE_URL}/oauth/token`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Basic ${getSecretKeyEncoding()}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `grant_type=authorization_code&code=${authorizationCode}`,
-        }
-      );
+
+      const response = await fetch(`${DOCUSIGN_API_BASE_URL}/oauth/token`, {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${getSecretKeyEncoding()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          grant_type: "authorization_code",
+          code: authorizationCode
+        })
+      });
 
       if (!response.ok) {
         throw new Error("Getting token failed: " + (await response.text()));

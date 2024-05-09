@@ -183,13 +183,6 @@ export default class Envelope {
     returnUrl: string,
     recipientData: SignerData
   ): Promise<string> {
-    const payload = {
-      returnUrl: returnUrl,
-      authenticationMethod: "none",
-      email: recipientData.email,
-      userName: recipientData.name,
-      clientUserId: 1005,
-    };
 
     const response = await fetch(
       `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID}/envelopes/${this.envelopeId}/views/recipient`,
@@ -199,7 +192,13 @@ export default class Envelope {
           Authorization: `Bearer ${await this.tokenManager.getAccessToken()}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          returnUrl: returnUrl,
+          authenticationMethod: "none",
+          email: recipientData.email,
+          userName: recipientData.name,
+          clientUserId: 1005,
+        }),
       }
     );
 
