@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type {File} from "@/utils/uploadthingApi";
+import type { File } from "@/utils/uploadthingApi";
 
 export const FileTableColumns: ColumnDef<File>[] = [
   {
@@ -22,27 +22,25 @@ export const FileTableColumns: ColumnDef<File>[] = [
   },
   {
     id: "actions",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const [documentUrl, setDocumentUrl] = useState<string | null>(null);
 
       const file = row.original;
 
       useEffect(() => {
-        const fetchDocumentUrl = async () => {
-          const response = await fetch("/api/uploadthing/getUrl", {
+        async function fetchDocumentUrl() {
+          const response = await fetch("/api/uploadthing/geturl", {
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              "fileKey": file.key
+              fileKey: file.key,
             }),
-            method: "POST"
-          }
-          );
-          console.log("response", response);
+            method: "POST",
+          });
           const data = await response.json();
           setDocumentUrl(data);
-        };
+        }
 
         fetchDocumentUrl();
       }, []);

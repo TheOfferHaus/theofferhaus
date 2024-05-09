@@ -2,18 +2,16 @@
 
 import { UploadButton } from "@/components/UploadThing/UploadHelpers";
 
-export default function UploadButtonArea() {
+export default function UploadButtonArea(
+  { updateFileState } : { updateFileState: Function}) {
   return (
     <div className="flex flex-col items-center justify-between p-24">
       <UploadButton
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
-          // Do something with the response
-          console.log("Files: ", res);
-          alert("Upload Completed");
+          updateFileState(res[0]);
         }}
         onUploadError={(error: Error) => {
-          // Do something with the error.
           alert(`ERROR! ${error.message}`);
         }}
       />
