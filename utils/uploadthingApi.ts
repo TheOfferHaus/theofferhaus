@@ -1,7 +1,7 @@
 import { UTApi } from "uploadthing/server";
 export const utapi = new UTApi();
 
-export type File = {
+type File = {
   name: string;
   key: string;
   status: "Deletion Pending" | "Failed" | "Uploaded" | "Uploading";
@@ -16,13 +16,12 @@ class UploadthingApi {
   }
 
   /** get URL for single file and open it in browser; takes in key as parameter */
-  static async getUrl(
-    fileKey = "d5a6d073-abf8-4962-93a2-0694ca62e063-4g1ptq.jpeg"
-  ) {
-    const response = await utapi.getFileUrls(fileKey);
-    console.log("url", response.data[0].url);
-    return response.data[0].url;
+  static async getUrl(fileKey: string) {
+    const response = await utapi.getSignedURL(fileKey);
+    console.log("url", response.url);
+    return response.url;
   }
 }
 
-export default UploadthingApi;
+export {UploadthingApi};
+export type {File};

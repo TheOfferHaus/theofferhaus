@@ -1,5 +1,5 @@
 import UploadButtonArea from "@/components/UploadThing/UploadButtonArea";
-import UploadthingApi from "@/utils/uploadthingApi";
+import {UploadthingApi} from "@/utils/uploadthingApi";
 import { FileTableColumns } from "@/components/UploadThing/FileTable/FileTableColumns";
 import { FileTable } from "@/components/UploadThing/FileTable/FileTable";
 

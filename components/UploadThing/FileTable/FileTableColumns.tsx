@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import UploadthingApi from "@/utils/uploadthingApi";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
@@ -14,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type File from "@/utils/uploadthingApi";
+import type {File} from "@/utils/uploadthingApi";
 
 export const FileTableColumns: ColumnDef<File>[] = [
   {
@@ -23,21 +22,26 @@ export const FileTableColumns: ColumnDef<File>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      // const file = row.original;
-
+    cell: ({row}) => {
       const [documentUrl, setDocumentUrl] = useState<string | null>(null);
+
+      const file = row.original;
 
       useEffect(() => {
         const fetchDocumentUrl = async () => {
-          console.log("inside of fetchDocumentUrl");
-          const response = await fetch(
-            "http://localhost:3000/api/uploadthing/geturl"
+          const response = await fetch("/api/uploadthing/getUrl", {
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              "fileKey": file.key
+            }),
+            method: "POST"
+          }
           );
-          console.log("**response", response);
+          console.log("response", response);
           const data = await response.json();
-          console.log("**data", data);
-          setDocumentUrl(data.url);
+          setDocumentUrl(data);
         };
 
         fetchDocumentUrl();
@@ -53,7 +57,7 @@ export const FileTableColumns: ColumnDef<File>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => window.open(documentUrl, "_blank")}
+              onClick={() => window.open(documentUrl as string, "_blank")}
             >
               View Document
             </DropdownMenuItem>
