@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className="relative min-h-full">
-        <body>
+        <body className="overflow-x-hidden">
           <NavBar />
           <main>{children}</main>
           <Footer />
