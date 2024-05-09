@@ -4,7 +4,7 @@ import { UploadButton } from "@/components/UploadThing/UploadHelpers";
 
 export default function UploadButtonArea() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+    <div className="flex flex-col items-center justify-between p-24">
       <UploadButton
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
