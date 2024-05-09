@@ -71,3 +71,17 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 3. Check database to confirm that an admin user and regular user have been created
 4. For Clerk, update .env.local to include the keys added to .env.example
 5. Keys and signin info for both users will be provided by auth team
+
+
+## Setting Up Docusign
+0. Run `npm install`
+1. Run `npm run migrate:add add-model-for-docusign-access-tokens`
+2. Run `npm run migrate:reset`
+3. Navigate to http://localhost:PORT/admin/docusign
+4. Click on "Get token"
+5. Sign in to docusign using theofferhaus@gmail.com
+6. You should be redirected to http://localhost:PORT/admin/docusign
+7. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
+
+You only have to do the above a single time, it should refresh automatically afterwards.
+
