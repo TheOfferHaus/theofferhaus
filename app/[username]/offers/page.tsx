@@ -43,9 +43,9 @@ export default async function Offers({
   const offers = user.offers;
 
   return (
-    <div>
-      <div className="gap-3 columns-3">
-        {offers.length === 0 && <h3>You have no offers!</h3>}
+    <div className="text-center">
+      {offers.length === 0 && <h3>You have no offers!</h3>}
+      <div className="grid grid-cols-3 place-items-center">
         {offers.map((o) => (
           <OfferCard key={o.id} offer={o} />
         ))}

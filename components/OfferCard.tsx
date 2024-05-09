@@ -22,15 +22,17 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
   const { username } = (await currentUser()) as User;
 
   return (
-    <div>
-      <Link href={`/${username}/offers/${id}`} rel="noopener noreferrer" className="h-auto w-96">
-        <Card className="">
+    <div className="h-auto w-5/6 mt-4 mb-6">
+      <Link href={`/${username}/offers/${id}`} rel="noopener noreferrer">
+        <Card className="pb-3">
           <CardHeader>
             <CardTitle className="font-bold text-xl">
               {property.address}
             </CardTitle>
           </CardHeader>
-          <CardFooter>Offer ID: {id}</CardFooter>
+          <CardDescription className="text-center text-lg">
+            Offer ID: {id}
+          </CardDescription>
         </Card>
       </Link>
     </div>

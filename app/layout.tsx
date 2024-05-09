@@ -6,7 +6,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "OfferHaus",
-  description: "Write a winning offer and save thousands on your next home purchase.",
+  description:
+    "Write a winning offer and save thousands on your next home purchase.",
 };
 
 export default function RootLayout({
@@ -16,13 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="relative min-h-full">
         <body>
-            <NavBar />
-          <main>
-            {children}
-          </main>
-            <Footer />
+          <NavBar />
+          <main>{children}</main>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
