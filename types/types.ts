@@ -11,7 +11,7 @@ type OfferObject = {
   updatedAt: Date;
   price: number | null;
   buyerId: string;
-  propertyId: number;
+  propertyId: string;
   status: string;
 }
 
