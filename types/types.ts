@@ -1,15 +1,15 @@
 type OfferObject = {
   property: {
-      id: number,
+      id: string,
       address: string;
   };
 } & {
-  id: number;
-  envelopeId: string;
-  typeformId: string;
+  id: string;
+  envelopeId: string | null;
+  typeformId: string | null;
   createdAt: Date;
   updatedAt: Date;
-  price: number;
+  price: number | null;
   buyerId: string;
   propertyId: number;
   status: string;

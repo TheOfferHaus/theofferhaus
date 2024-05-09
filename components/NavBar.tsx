@@ -5,7 +5,7 @@ import { User, currentUser } from "@clerk/nextjs/server";
 /** NavBar component */
 
 const NavBar = async () => {
-  const currUser = await currentUser() as User;
+  const currUser = (await currentUser()) as User;
 
   return (
     <nav className="w-full bg-custom-white">
@@ -17,9 +17,14 @@ const NavBar = async () => {
           <Link className="px-3 py-2 hover:text-primary-dark" href="/quiz">
             Quiz
           </Link>
-          <Link className="px-3 py-2 hover:text-primary-dark" href={`/${currUser.username}/offers`}>
-            My Offers
-          </Link>
+          {currUser && (
+            <Link
+              className="px-3 py-2 hover:text-primary-dark"
+              href={`/${currUser.username}/offers`}
+            >
+              My Offers
+            </Link>
+          )}
         </div>
         <div className="flex items-center">
           <ClerkUserMenuItem />
