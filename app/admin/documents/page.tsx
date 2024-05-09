@@ -5,7 +5,6 @@ import { FileTable } from "@/components/UploadThing/FileTable/FileTable";
 
 export default async function Documents() {
   const files = await UploadthingApi.listFiles();
-  console.log("****files", files);
 
   return (
     <div className="h-screen mx-32">
