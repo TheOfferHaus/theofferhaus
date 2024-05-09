@@ -35,9 +35,12 @@ export default function DocusignPage() {
   async function handleSendEnvelope(evt: FormEvent) {
     evt.preventDefault();
 
+    console.dir(user);
+
     const signerData = {
       name: `${user?.firstName} ${user?.lastName}`,
-      email: user?.emailAddresses[0].emailAddress!
+      email: user?.emailAddresses[0].emailAddress!,
+      userId: user?.username!
     };
 
     setDocumentUrl("In progress");
@@ -59,8 +62,8 @@ export default function DocusignPage() {
 
   function getDocumentUrl() {
     if (!documentUrl) return;
-    if (documentUrl === "In progress") return "Envelope generation in progress."
-    else return <Link href={documentUrl}>Document generated! Click to sign.</Link>
+    if (documentUrl === "In progress") return "Envelope generation in progress.";
+    else return <Link href={documentUrl}>Document generated! Click to sign.</Link>;
   }
 
   return (

@@ -1,6 +1,8 @@
 import { DOCUSIGN_API_BASE_URL } from "@/config";
 import ApiTokenDatabaseManager from "./ApiTokenDatabaseManager";
 import { getSecretKeyEncoding, calculateNewExpirationTime } from "./utils";
+import { TokenDataResponse, BaseUriDataResponse } from "@/config";
+
 
 export default class ApiTokenManager {
   expirationTime?: Date;
@@ -118,6 +120,58 @@ export default class ApiTokenManager {
   }
 
   /**
+ * Retrieves token data including access token, refresh token, and expiration time
+ * from the authorization code obtained after the user's consent.
+ *
+ * @param {string} authorizationCode - The authorization code received after the user's consent.
+ * @returns {Promise<TokenDataResponse>} - A promise that resolves to the token data obtained from the authorization code.
+ */
+  private async getTokenDataFromConsentCode(authorizationCode: string): Promise<TokenDataResponse> {
+
+    const response = await fetch(`${DOCUSIGN_API_BASE_URL}/oauth/token`, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${getSecretKeyEncoding()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        grant_type: "authorization_code",
+        code: authorizationCode
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Getting token failed: " + (await response.text()));
+    }
+
+    return await response.json();
+  }
+
+  /**
+ * Retrieves the base URI associated with the DocuSign account using the provided access token.
+ * @param {string} accessToken - The access token obtained from the token data.
+ * @returns {Promise<BaseUriDataResponse>} - A promise that resolves to the base URI data.
+ */
+  private async getBaseUriData(accessToken: string): Promise<BaseUriDataResponse> {
+
+    const response = await fetch(
+      `${DOCUSIGN_API_BASE_URL}/oauth/userinfo`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // Authorization header
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Getting base url failed: " + (await response.text()));
+    }
+
+    return await response.json();
+  }
+
+  /**
    * Retrieves an access token, refresh token, and the base URI from docusign API from an authentication
    * code that is returned after filling out the consent form. Adds these to database.
    *
@@ -126,51 +180,10 @@ export default class ApiTokenManager {
    *
    * @returns {Promise<void>}
    */
-
   async getAccessDataOnConsent(authorizationCode: string): Promise<void> {
-    /** Function for getting tokens from authorization code */
-    async function getTokenData() {
 
-      const response = await fetch(`${DOCUSIGN_API_BASE_URL}/oauth/token`, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${getSecretKeyEncoding()}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          grant_type: "authorization_code",
-          code: authorizationCode
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error("Getting token failed: " + (await response.text()));
-      }
-
-      return await response.json();
-    }
-
-    /** Function for getting base uri */
-    async function getBaseUriData(accessToken: string) {
-      const response = await fetch(
-        `${DOCUSIGN_API_BASE_URL}/oauth/userinfo`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // Authorization header
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Getting base url failed: " + (await response.text()));
-      }
-
-      return await response.json();
-    }
-
-    const tokenData = await getTokenData();
-    const baseUriData = await getBaseUriData(tokenData.access_token);
+    const tokenData = await this.getTokenDataFromConsentCode(authorizationCode);
+    const baseUriData = await this.getBaseUriData(tokenData.access_token);
 
     // Update database with token information or insert if it doesnt already exist
     await this.dbManager.updateTokenData(
@@ -181,3 +194,5 @@ export default class ApiTokenManager {
     );
   }
 }
+
+

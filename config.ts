@@ -5,9 +5,9 @@ type ExtractedAnswers = {
 };
 
 type Answer = {
-  field: { ref: string };
+  field: { ref: string; };
   type: string;
-  choice?: { label: string };
+  choice?: { label: string; };
   boolean?: boolean;
   text?: string;
   number?: number;
@@ -19,6 +19,7 @@ type Answer = {
 type SignerData = {
   email: string;
   name: string;
+  userId: string;
 };
 
 type EnvelopeData = {
@@ -56,11 +57,25 @@ type DocumentData = {
   pageCount: string;
 };
 
+type TokenDataResponse = {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+};
+
+type BaseUriDataResponse = {
+  accounts: {
+    base_uri: string;
+  }[];
+};
+
 export {
   DOCUSIGN_API_BASE_URL
-}
+};
 
 export type {
+  BaseUriDataResponse,
+  TokenDataResponse,
   ExtractedAnswers,
   Answer,
   SignerData,
@@ -70,4 +85,4 @@ export type {
   Signer,
   Recipients,
   DocumentData
-}
+};

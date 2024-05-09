@@ -37,7 +37,7 @@ export default class Envelope {
           email: signerData.email,
           name: signerData.name,
           roleName: "signer",
-          clientUserId: 1005,
+          clientUserId: signerData.userId,
           embeddedRecipientStartURL: "SIGN_AT_DOCUSIGN"
         },
       ],
@@ -181,7 +181,7 @@ export default class Envelope {
 
   async getSigningUrl(
     returnUrl: string,
-    recipientData: SignerData
+    signerData: SignerData
   ): Promise<string> {
 
     const response = await fetch(
@@ -195,9 +195,9 @@ export default class Envelope {
         body: JSON.stringify({
           returnUrl: returnUrl,
           authenticationMethod: "none",
-          email: recipientData.email,
-          userName: recipientData.name,
-          clientUserId: 1005,
+          email: signerData.email,
+          userName: signerData.name,
+          clientUserId: signerData.userId,
         }),
       }
     );

@@ -6,12 +6,13 @@ export default class ApiTokenDatabaseManager {
 
   /** Updates database with new token information
    *
-   * @param accessToken
+   * @param token
    * @param refreshToken
    * @param expirationTime
+   * @param baseUri
    */
   async updateTokenData(
-    accessToken: string,
+    token: string,
     refreshToken: string,
     expirationTime: Date,
     baseUri: string
@@ -22,17 +23,17 @@ export default class ApiTokenDatabaseManager {
         id: 0
       },
       update: {
-        token: accessToken,
-        refreshToken: refreshToken,
-        expirationTime: expirationTime,
+        token,
+        refreshToken,
+        expirationTime,
         baseUri: baseUri,
       },
       create: {
         id: 0,
-        token: accessToken,
-        refreshToken: refreshToken,
-        expirationTime: expirationTime,
-        baseUri: baseUri,
+        token,
+        refreshToken,
+        expirationTime,
+        baseUri,
       }
     });
   }

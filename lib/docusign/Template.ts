@@ -46,8 +46,7 @@ export default class Template {
     const tokenManager = await ApiTokenManager.createApiTokenManager();
 
     const response = await fetch(
-      `${tokenManager.getBaseUrl()}/v2.1/accounts/${
-        process.env.DOCUSIGN_ACCOUNT_ID
+      `${tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID
       }/templates`,
       {
         method: "POST",
@@ -81,7 +80,7 @@ export default class Template {
     // Read and base64 encode the document
     const documentBuffer = fs.readFileSync(documentData.path);
     const documentBase64 = documentBuffer.toString("base64");
-    const documentName = Template.getDocumentName(documentData.path);
+    const documentName = documentData.path.split("/").pop() || "";
 
     // Construct request JSON
     const requestData = {
@@ -89,7 +88,7 @@ export default class Template {
         {
           documentBase64: documentBase64,
           documentId: "1",
-          fileExtension: Template.getDocumentExtension(documentName),
+          fileExtension: documentName.split(".").pop() || "",
           order: "1",
           pages: documentData.pageCount, //TODO: get num pages programmatically
           name: documentName,
@@ -98,8 +97,7 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${
-        process.env.DOCUSIGN_ACCOUNT_ID
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID
       }/templates/${this.id}/documents/1`,
       {
         method: "PUT",
@@ -144,8 +142,7 @@ export default class Template {
     };
 
     const response = await fetch(
-      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${
-        process.env.DOCUSIGN_ACCOUNT_ID
+      `${this.tokenManager.getBaseUrl()}/v2.1/accounts/${process.env.DOCUSIGN_ACCOUNT_ID
       }/templates/${this.id}/recipients/1/tabs`,
       {
         method: "POST",
@@ -162,25 +159,5 @@ export default class Template {
         "Adding tabs to template failed: " + (await response.text())
       );
     }
-  }
-
-  /** Takes document path and returns document name.
-   *
-   * @param {string} documentPath Path to document to add to template.
-   *
-   * @returns {string} name of file
-   */
-  private static getDocumentName(documentPath: string): string {
-    return documentPath.split("/").pop() || "";
-  }
-
-  /** Takes document name and returns file extension.
-   *
-   * @param {string} documentName Path to document to add to template.
-   *
-   * @returns {string} File extension.
-   */
-  private static getDocumentExtension(documentName: string): string {
-    return documentName.split(".").pop() || "";
   }
 }

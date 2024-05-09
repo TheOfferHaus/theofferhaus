@@ -90,9 +90,8 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
       return "Seller";
     } else if (userChoice === "You the Buyer") {
       return "Buyer";
-    } else {
-      return "both Parties shared equally";
     }
+    return "both Parties shared equally";
   }
 
   private static getPosessionAndTenantsText(ans: ExtractedAnswers): string {
@@ -102,9 +101,8 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
       return `Seller will remove all tenants before Closing, pay any legally-required tenant relocation costs, and deliver possession to Buyer by 5:00 p.m. on the date of Closing.`;
     } else if (ans.possesion_tenant_time) {
       return `Possession of the Property will be delivered by Seller to Buyer by [filled out time] on the date of Closing`;
-    } else {
-      return `Possession of the Property will be delivered by Seller to Buyer by 5:00p.m on the date of Closing`;
     }
+    return `Possession of the Property will be delivered by Seller to Buyer by 5:00p.m on the date of Closing`;
   }
 
   private static getLoanText(userChoice: boolean): string {
@@ -118,7 +116,6 @@ export default class OregonFormDataExtractor extends FormDataExtractor {
     if (userChoice) {
       return 'The Buyer shall provide a monetary deposit that would be deemed consideration ("Earnest Money").';
     }
-
     return 'The Buyer shall not be required to make a payment, down payment, or any other type of monetary deposit that would be deemed consideration ("Earnest Money").';
   }
 
