@@ -1,6 +1,6 @@
 import fs from "fs";
 import ApiTokenManager from "./ApiTokenManager";
-import { TemplateData, DocumentData } from "@/types/docusignTypes";
+import { TemplateData, DocumentData } from "@/config";
 
 const DEFAULT_TEMPLATE_DATA: TemplateData = {
   description: "Template for residential purchase agreement.",

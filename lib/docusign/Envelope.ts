@@ -1,5 +1,5 @@
 import ApiTokenManager from "./ApiTokenManager";
-import { SignerData } from "@/types/docusignTypes";
+import { SignerData } from "@/config";
 
 export default class Envelope {
   envelopeId: string;

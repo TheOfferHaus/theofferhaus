@@ -1,4 +1,5 @@
-import { Answer, ExtractedAnswers } from "@/types/docusignTypes";
+import { Answer, ExtractedAnswers } from "@/config";
+
 
 // Fields that are needed by all US states
 const generalInfo = [

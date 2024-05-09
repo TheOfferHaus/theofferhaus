@@ -37,7 +37,7 @@ export default class ApiTokenDatabaseManager {
     });
   }
 
-  static async getCurrentAccessData() {
+  async getCurrentAccessData() {
     return await prisma.accessData.findUnique({
       where: {
         id: 0

@@ -1,3 +1,5 @@
+const DOCUSIGN_API_BASE_URL = "https://account-d.docusign.com";
+
 type ExtractedAnswers = {
   [key: string]: string | boolean;
 };
@@ -54,14 +56,18 @@ type DocumentData = {
   pageCount: string;
 };
 
+export {
+  DOCUSIGN_API_BASE_URL
+}
+
 export type {
-  Answer,
   ExtractedAnswers,
+  Answer,
   SignerData,
   EnvelopeData,
   OfferData,
-  DocumentData,
   TemplateData,
-  Recipients,
   Signer,
-};
+  Recipients,
+  DocumentData
+}

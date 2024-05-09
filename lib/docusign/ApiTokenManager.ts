@@ -1,15 +1,20 @@
+import { DOCUSIGN_API_BASE_URL } from "@/config";
 import ApiTokenDatabaseManager from "./ApiTokenDatabaseManager";
 import { getSecretKeyEncoding, calculateNewExpirationTime } from "./utils";
 
 export default class ApiTokenManager {
-  expirationTime: Date;
-  baseUrl: string;
-  accessToken: string;
-  refreshToken: string;
+  expirationTime?: Date;
+  baseUrl?: string;
+  accessToken?: string;
+  refreshToken?: string;
   dbManager: ApiTokenDatabaseManager;
 
-
-  constructor(baseUrl: string, accessToken: string, expirationTime: Date, refreshToken: string) {
+  constructor(
+    baseUrl?: string,
+    accessToken?: string,
+    expirationTime?: Date,
+    refreshToken?: string
+  ) {
     this.baseUrl = baseUrl;
     this.accessToken = accessToken;
     this.expirationTime = expirationTime;
@@ -22,15 +27,26 @@ export default class ApiTokenManager {
    * @returns {Promise<ApiTokenManager>} - A promise resolving to an instance of ApiTokenManager.
    */
   static async createApiTokenManager(): Promise<ApiTokenManager> {
-    // Get tokens from database
-    const accessData = await ApiTokenDatabaseManager.getCurrentAccessData();
+    const dbManager = new ApiTokenDatabaseManager();
+    const accessData = await dbManager.getCurrentAccessData();
 
     // Create new ApiTokenManager instance
     return new ApiTokenManager(
       accessData?.baseUri!,
       accessData?.token!,
       accessData?.expirationTime!,
-      accessData?.refreshToken!);
+      accessData?.refreshToken!
+    );
+  }
+
+  async initializeAccessData() {
+    const accessData = await this.dbManager!.getCurrentAccessData();
+
+    // Create new ApiTokenManager instance
+    this.baseUrl = accessData?.baseUri!;
+    this.accessToken = accessData?.token!;
+    this.expirationTime = accessData?.expirationTime!;
+    this.refreshToken = accessData?.refreshToken!;
   }
 
   /**
@@ -38,6 +54,7 @@ export default class ApiTokenManager {
    * @returns {string} - A promise resolving to the base URL.
    */
   getBaseUrl(): string {
+    if (!this.baseUrl) this.initializeAccessData();
     return `${this.baseUrl}/restapi`;
   }
 
@@ -46,16 +63,16 @@ export default class ApiTokenManager {
    * @returns {Promise<string>} - A promise resolving to the access token.
    */
   async getAccessToken(): Promise<string> {
+    if (!this.accessToken) this.initializeAccessData();
     const now = new Date();
 
     // Refresh tokens if necessary
-    if (now >= this.expirationTime) {
+    if (now >= this.expirationTime!) {
       await this.refreshTokens();
     }
 
-    return this.accessToken;
+    return this.accessToken!;
   }
-
 
   /**
    * Refreshes the access and refresh tokens. Updates database and instance
@@ -63,23 +80,26 @@ export default class ApiTokenManager {
    * @returns {Promise<void>} - A promise resolving when tokens are refreshed.
    */
   async refreshTokens(): Promise<void> {
-
+    if (!this.refreshToken) this.initializeAccessData();
     // Request to docusign to refresh tokens
-    const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/token`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Basic ${getSecretKeyEncoding()}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        grant_type: "refresh_token",
-        refresh_token: this.refreshToken
-      })
-    });
+    const response = await fetch(
+      `${DOCUSIGN_API_BASE_URL}/oauth/token`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${getSecretKeyEncoding()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          grant_type: "refresh_token",
+          refresh_token: this.refreshToken,
+        }),
+      }
+    );
 
     // Error handling if API request fails
     if (!response.ok) {
-      throw new Error("Refreshing token failed: " + await response.text());
+      throw new Error("Refreshing token failed: " + (await response.text()));
     }
 
     const newAccessData = await response.json();
@@ -89,40 +109,41 @@ export default class ApiTokenManager {
     this.refreshToken = newAccessData.refresh_token;
     this.expirationTime = calculateNewExpirationTime(newAccessData.expires_in);
 
-    await this.dbManager.updateTokenData(
-      this.accessToken,
-      this.refreshToken,
-      this.expirationTime,
-      this.baseUrl
+    await this.dbManager!.updateTokenData(
+      this.accessToken!,
+      this.refreshToken!,
+      this.expirationTime!,
+      this.baseUrl!
     );
   }
 
   /**
- * Retrieves an access token, refresh token, and the base URI from docusign API from an authentication
- * code that is returned after filling out the consent form. Adds these to database.
- *
- * @param {string} authorizationCode The authorization code received after submitting
- *  the consent form
- *
- * @returns {Promise<void>}
- */
+   * Retrieves an access token, refresh token, and the base URI from docusign API from an authentication
+   * code that is returned after filling out the consent form. Adds these to database.
+   *
+   * @param {string} authorizationCode The authorization code received after submitting
+   *  the consent form
+   *
+   * @returns {Promise<void>}
+   */
 
-  static async initializeAccessData(authorizationCode: string): Promise<void> {
-
+  async getAccessDataOnConsent(authorizationCode: string): Promise<void> {
     /** Function for getting tokens from authorization code */
     async function getTokenData() {
-
-      const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/token`, {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${getSecretKeyEncoding()}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `grant_type=authorization_code&code=${authorizationCode}`,
-      });
+      const response = await fetch(
+        `${DOCUSIGN_API_BASE_URL}/oauth/token`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Basic ${getSecretKeyEncoding()}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `grant_type=authorization_code&code=${authorizationCode}`,
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Getting token failed: " + await response.text());
+        throw new Error("Getting token failed: " + (await response.text()));
       }
 
       return await response.json();
@@ -130,15 +151,18 @@ export default class ApiTokenManager {
 
     /** Function for getting base uri */
     async function getBaseUriData(accessToken: string) {
-      const response = await fetch(`${process.env.DOCUSIGN_API_BASE_URL}/oauth/userinfo`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // Authorization header
-        },
-      });
+      const response = await fetch(
+        `${DOCUSIGN_API_BASE_URL}/oauth/userinfo`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Authorization header
+          },
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Getting base url failed: " + await response.text());
+        throw new Error("Getting base url failed: " + (await response.text()));
       }
 
       return await response.json();
@@ -148,8 +172,7 @@ export default class ApiTokenManager {
     const baseUriData = await getBaseUriData(tokenData.access_token);
 
     // Update database with token information or insert if it doesnt already exist
-    const dbManager = new ApiTokenDatabaseManager();
-    await dbManager.updateTokenData(
+    await this.dbManager.updateTokenData(
       tokenData.access_token,
       tokenData.refresh_token,
       calculateNewExpirationTime(tokenData.expires_in),
@@ -157,4 +180,3 @@ export default class ApiTokenManager {
     );
   }
 }
-

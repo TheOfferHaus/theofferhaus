@@ -3,7 +3,7 @@
 import Envelope from "./Envelope";
 import Template from "./Template";
 import ApiTokenManager from "./ApiTokenManager";
-import { SignerData, EnvelopeData, OfferData } from "@/types/docusignTypes";
+import { SignerData, EnvelopeData, OfferData  } from "@/config";
 
 const DEFAULT_TEMPLATE_ID = "fc833cdb-2228-4cdf-8a6a-e67d1b236f75";
 const RETURN_URL = "http://localhost:3000";
@@ -98,7 +98,8 @@ async function getEnvelopeUrls(offers: OfferData[], signerData: SignerData): Pro
  */
 
 async function generateAccessDataAfterConsent(code: string) {
-  await ApiTokenManager.initializeAccessData(code);
+  const apiTokenManager = new ApiTokenManager();
+  await apiTokenManager.getAccessDataOnConsent(code);
 }
 
 
