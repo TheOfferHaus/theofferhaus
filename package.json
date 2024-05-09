@@ -12,6 +12,7 @@
     "lint": "next lint",
     "migrate:dev": "dotenv -e .env.local -- npx prisma migrate dev",
     "migrate:init": "dotenv -e .env.local -- npx prisma migrate dev --name init",
+    "migrate:add": "dotenv -e .env.local -- npx prisma migrate dev --name",
     "migrate:reset": "dotenv -e .env.local -- npx prisma migrate reset",
     "prisma:studio": "dotenv -e .env.local -- npx prisma studio"
   },
