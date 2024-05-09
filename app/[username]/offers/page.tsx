@@ -6,56 +6,60 @@ import Link from "next/link";
 
 const prisma = new PrismaClient();
 
-
 /** Lists all the offer documents user has generated with our platform. Includes
  * offer ID and link to corresponding Docusign envelope
  *
  * Ensures that users can only access their own offers
  */
 
-export default async function Offers({ params }: { params: { username: string; }; }) {
-    const { username } = params;
-    const currUser = await currentUser() as User;
+export default async function Offers({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const { username } = params;
+  const currUser = (await currentUser()) as User;
 
-    if (username !== currUser.username) redirect(`/${currUser.username}/offers`);
+  if (username !== currUser.username) redirect(`/${currUser.username}/offers`);
 
-    const user = await prisma.user.findUnique({
-        where: {
-            username: username
-        },
+  const user = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+    include: {
+      offers: {
         include: {
-            offers: {
-                include: {
-                    property: true
-                },
-                orderBy: {
-                    id: 'asc',
-                }
-            }
-        }
-    });
+          property: true,
+        },
+        orderBy: {
+          id: "asc",
+        },
+      },
+    },
+  });
 
-    if (!user) throw new Error("Failed to get user from database");
+  if (!user) throw new Error("Failed to get user from database");
 
-    const offers = user.offers;
+  const offers = user.offers;
 
-    return (
-        <div>
-            <div>
-                {offers.length === 0 &&
-                <h3>You have no offers!</h3>}
-                {offers.map(o => <OfferCard key={o.id} offer={o} />)}
-            </div>
-            <button
-                className="px-4 py-2 bg-white text-black font-semibold rounded-lg shadow-md
+  return (
+    <div>
+      <div className="gap-3 columns-3">
+        {offers.length === 0 && <h3>You have no offers!</h3>}
+        {offers.map((o) => (
+          <OfferCard key={o.id} offer={o} />
+        ))}
+      </div>
+      <button
+        className="mt-5 px-4 py-2 bg-white text-black font-semibold rounded-lg shadow-md
               hover:bg-black hover:text-white focus:outline-none focus:ring-2
               focus:ring-light-gray focus:ring-opacity-75 transition duration-300
-              ease-in-out transform hover:-translate-y-1 hover:scale-100"
-            >
-                <Link href="/quiz">
-                    <p className="hover:text-gray-300">Make new offer</p>
-                </Link>
-            </button>
-        </div>
-    );
+              ease-in-out transform hover:-translate-y-1 hover:scale-10"
+      >
+        <Link href="/quiz">
+          <p className="hover:text-gray-300">Make new offer</p>
+        </Link>
+      </button>
+    </div>
+  );
 }

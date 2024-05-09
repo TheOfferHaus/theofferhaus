@@ -1,6 +1,7 @@
 type OfferObject = {
   property: {
-      id: number;
+      id: number,
+      address: string;
   };
 } & {
   id: number;
