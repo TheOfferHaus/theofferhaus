@@ -112,7 +112,7 @@ export default class Envelope {
     const requestData = {
       docGenFormFields: [
         {
-          documentId: documentId,
+          documentId,
           docGenFormFieldList,
         },
       ],
