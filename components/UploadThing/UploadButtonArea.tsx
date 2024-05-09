@@ -1,6 +1,6 @@
 "use client";
 
-import { UploadButton } from "@/utils/uploadthing";
+import { UploadButton } from "@/components/UploadThing/UploadHelpers";
 
 export default function UploadButtonArea() {
   return (
