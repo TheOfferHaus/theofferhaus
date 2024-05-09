@@ -28,6 +28,7 @@
     "dotenv-cli": "^7.4.1",
     "lucide-react": "^0.378.0",
     "next": "14.1.4",
+    "number-to-words": "^1.2.4",
     "react": "^18",
     "react-dom": "^18",
     "stripe": "^15.4.0",
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/number-to-words": "^1.2.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^9.0.8",
