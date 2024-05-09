@@ -2,10 +2,17 @@
  * Webhook endpoint for receiving data from Typeform.
  */
 
+import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
+import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
+import { makeEnvelope } from "@/lib/docusign/serverActions";
+
 export async function POST(request: Request) {
   try {
-    const text = await request.text();
-    console.log("Received webhook data:", text);
+    const formData = await request.json();
+
+    const formattedData = OregonFormDataExtractor.getFormattedFormDataForDocusign(formData.form_response.answers);
+
+    const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, {email: 'ani.nishioka@gmail.com', name: 'Anissa Nishioka'});
 
     return new Response("Webhook processed successfully!", {
       status: 200,
@@ -17,4 +24,6 @@ export async function POST(request: Request) {
       status: 400,
     });
   }
+
+  //const newEnvelope = await makeEnvelope(formatFormDataForDocusign(formData), signerData, templateId)
 }

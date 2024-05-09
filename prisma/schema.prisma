@@ -54,3 +54,14 @@ enum Status {
   ACCEPTED
   PENDING
 }
+
+model AccessData {
+  id             Int       @id @default(autoincrement())
+  baseUri        String    @map("base_uri")
+  token          String
+  refreshToken   String    @map("refresh_token")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  expirationTime DateTime  @map("expiration_time")
+
+  @@map("access_data")
+}
