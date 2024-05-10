@@ -8,20 +8,20 @@ type File = {
   id: string;
 };
 
+/** Uploadthing Api calls */
 class UploadthingApi {
-  /** List all files hosted in uploadThing */
+  /** Get all files hosted in uploadThing */
   static async listFiles(): Promise<File[]> {
     const response = await utapi.listFiles();
     return response.files as File[];
   }
 
-  /** get URL for single file and open it in browser; takes in key as parameter */
+  /** Get URL for single file and open it in browser; takes in key as parameter */
   static async getUrl(fileKey: string) {
     const response = await utapi.getSignedURL(fileKey);
-    console.log("url", response.url);
     return response.url;
   }
 }
 
-export {UploadthingApi};
-export type {File};
+export { UploadthingApi };
+export type { File };

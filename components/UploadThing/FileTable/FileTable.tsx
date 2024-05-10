@@ -21,6 +21,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+/** UploadThing File Table*/
 export function FileTable<TData, TValue>({
   columns,
   data,
