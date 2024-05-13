@@ -54,7 +54,7 @@ export default function CountdownTimer({ targetDate }: CountdownProps) {
         }
 
         timerComponents.push(
-            <span key={interval}>
+            <span key={interval} suppressHydrationWarning={true}>
                 {timeLeft[interval as keyof TimeLeft]} {interval}{' '}
             </span>
         );

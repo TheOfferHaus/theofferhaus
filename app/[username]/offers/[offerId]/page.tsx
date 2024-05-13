@@ -42,32 +42,19 @@ export default async function Offer({
       </div>
       <div className="ClosingDueDate">
         <h5>Closing Date: </h5>
-        <CountdownTimer
-          targetDate={
-            new Date('5/14/2024')
-          }
-        />
+        <CountdownTimer targetDate={new Date("5/14/2024")} />
       </div>
       <div className="NegotiationDueDate">
         <h5>Negotiation Due Date: </h5>
-        <CountdownTimer
-          targetDate={new Date('5/15/2024')}
-        //   targetDate={new Date(currentDate.getTime() + 1 * 60000)}
-        />
+        <CountdownTimer targetDate={new Date("5/15/2024")} />
       </div>
       <div className="AppraisalDueDate">
         <h5>Appraisal Due Date: </h5>
-        <CountdownTimer
-          targetDate={new Date('5/16/2024')}
-        //   targetDate={new Date(currentDate.getTime() + 1 * 60000)}
-        />
+        <CountdownTimer targetDate={new Date("5/16/2024")} />
       </div>
       <div className="InspectionDueDate">
         <h5>Inspection Due Date: </h5>
-        <CountdownTimer
-          targetDate={new Date('5/17/2024')}
-        //   targetDate={new Date(currentDate.getTime() + 1 * 60000)}
-        />
+        <CountdownTimer targetDate={new Date("5/17/2024")} />
       </div>
     </div>
   );
