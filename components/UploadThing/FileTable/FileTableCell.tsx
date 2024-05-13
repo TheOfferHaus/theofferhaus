@@ -1,41 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { File } from "@/utils/uploadthingApi";
 import DeleteFileDropdownItem from "./DeleteFileDropdownItem";
+import ViewFileDropdownItem from "./ViewFileDropdownItem";
 
 /** Cell in the UploadThing file table */
-export default function FileTableCell ({ file }: {file: File}) {
-  const [documentUrl, setDocumentUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchDocumentUrl() {
-      const response = await fetch("/api/uploadthing/getUrl", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fileKey: file.key,
-        }),
-        method: "POST",
-      });
-      const url = await response.json();
-      setDocumentUrl(url);
-    }
-
-    fetchDocumentUrl();
-  }, []);
-
+export default function FileTableCell({ file }: { file: File }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,11 +24,7 @@ export default function FileTableCell ({ file }: {file: File}) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => window.open(documentUrl as string, "_blank")}
-        >
-          View Document
-        </DropdownMenuItem>
+        <ViewFileDropdownItem file={file} />
         <DeleteFileDropdownItem file={file} />
       </DropdownMenuContent>
     </DropdownMenu>
