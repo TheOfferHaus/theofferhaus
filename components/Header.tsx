@@ -1,9 +1,16 @@
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
 /** Header component for landing page */
 
-const Header = () => {
+const Header = async () => {
+
+  const currUser = await currentUser();
+
+  const getStartedURL = currUser ? "/address-validate" : "/intro"
+
+
   return (
     <div className="relative h-[38rem] w-screen">
       <div className="h-full">
@@ -29,7 +36,7 @@ const Header = () => {
         </h3>
 
         <button className="bg-custom-white text-primary-medium rounded-lg text-2xl shadow-md px-12 py-6 transition duration-150 ease-in-out transform hover:scale-95 ">
-          <Link href="/address-validate">Get Started</Link>
+          <Link href={getStartedURL}>Get Started</Link>
         </button>
       </div>
     </div>

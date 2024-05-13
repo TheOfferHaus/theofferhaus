@@ -6,6 +6,7 @@ import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFor
 import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import { makeEnvelope } from "@/lib/docusign/serverActions";
 import { PrismaClient } from ".prisma/client";
+import { setFormInProgressFalse } from "@/app/actions";
 
 
 const prisma = new PrismaClient();
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
     // const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, {email: 'ani.nishioka@gmail.com', name: 'Anissa Nishioka'});
     // console.log(envelopeId);
 
+    await setFormInProgressFalse();
     return new Response("Webhook processed successfully!", {
       status: 200,
     });

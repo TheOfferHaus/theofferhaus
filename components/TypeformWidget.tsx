@@ -16,7 +16,7 @@ export default function TypeformWidget({
 }) {
   return (
     <Widget
-      id={"g0qtEedy"}
+      id={TYPEFORM_OFFER_FORM_ID}
       className="fixed inset-0 overflow-auto bg-white"
       hidden={{
         username: username,

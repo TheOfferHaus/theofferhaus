@@ -2,7 +2,8 @@
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { RADAR_VALIDATE_ADDRESS_API_URL } from "@/constants";
-import { navigateToQuiz, createProperty, createOffer } from "@/app/actions";
+import { navigateToQuiz, createProperty, createOffer, setFormInProgressTrue } from "@/app/actions";
+
 
 const initialFormData = {
   number: "",
@@ -61,7 +62,7 @@ export default function AddressValidationForm() {
 
     const propertyId = await createProperty(verificationData.address.formattedAddress);
     const offerId = await createOffer(propertyId);
-
+    await setFormInProgressTrue();
     navigateToQuiz(propertyId, offerId);
   }
 

@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 
+
 export const metadata: Metadata = {
   title: "OfferHaus",
   description:
