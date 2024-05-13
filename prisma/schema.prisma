@@ -40,8 +40,6 @@ model Offer {
   @@map("offers")
 }
 
-// id is currently set to autoincrementing but in the future, probably will be
-// maybe storing something from mls
 model Property {
   id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   address       String     @unique
