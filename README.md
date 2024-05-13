@@ -74,18 +74,19 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 
 ## Setting Up Clerk To Add User to Personal Database on Signup
 1. Run `npm install`
-2. Head to Clerk Dashboard(https://dashboard.clerk.com/), log in, and click on 'webhooks'
-3. In your terminal, run `lt --port 3000` ***this should be the port your next app is running on***
-4. Copy the url generated in your terminal
-5. In the Clerk webhook dashboard, click 'Add Endpoint'
-6. Paste the url from your terminal to the 'Endpoint Url' section
-7. Add /api/users to the end of the url
-8. In the description, add '{YOUR NAME}'s endpoint'
-9. Scroll to the bottom of the filtering events section, under the user section, check 'user.created'
-10. Click Create
-11. Now when you make a new account in the app, make sure your localtunnel is running, and the user is added to your database
-12. Any time you exit localtunnel in your terminal, and want to create a new user in the app, you'll need to repeat step 3 and replace your URL in the clerk webhook dashboard
-13. We recommend you have a separate terminal tab running localtunnel
+2. Make sure you also install localtunnel globally with `npm install -g localtunnel`
+3. Head to Clerk Dashboard(https://dashboard.clerk.com/), log in, and click on 'webhooks'
+4. In your terminal, run `lt --port 3000` ***this should be the port your next app is running on***
+5. Copy the url generated in your terminal
+6. In the Clerk webhook dashboard, click 'Add Endpoint'
+7. Paste the url from your terminal to the 'Endpoint Url' section
+8. Add /api/users to the end of the url
+9. In the description, add '{YOUR NAME}'s endpoint'
+10. Scroll to the bottom of the filtering events section, under the user section, check 'user.created'
+11. Click Create
+12. Now when you make a new account in the app, make sure your localtunnel is running, and the user is added to your database
+13. Any time you exit localtunnel in your terminal, and want to create a new user in the app, you'll need to repeat step 3 and replace your URL in the clerk webhook dashboard
+14. We recommend you have a separate terminal tab running localtunnel
 ***NOTE: When a user is created in the app, anyone with an active webhook will see that user added to their own database***
 
 ## Setting Up Docusign
