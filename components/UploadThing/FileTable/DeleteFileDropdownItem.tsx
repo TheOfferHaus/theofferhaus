@@ -4,8 +4,14 @@ import type { File } from "@/utils/uploadthingApi";
 import { useEffect, useState } from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-export default function DeleteFileDropdownItem({ file }: { file: File; }) {
-  const [deleteFileKey, setDeleteFileKey] = useState(false);
+/** Dropdown menu item component for deleting a file
+ *
+ * State: deleteFileKey (" " | null)
+ *
+ * Props: file {name, key, status, id}
+ */
+export default function DeleteFileDropdownItem({ file }: { file: File }) {
+  const [deleteFileKey, setDeleteFileKey] = useState<string | null>(null);
 
   useEffect(() => {
     async function deleteFile() {
@@ -19,19 +25,17 @@ export default function DeleteFileDropdownItem({ file }: { file: File; }) {
         method: "POST",
       });
       const msg = await response.json();
-      setDeleteFileKey(false);
+      setDeleteFileKey(null);
     }
 
-    if (deleteFileKey === true) {
+    if (deleteFileKey === file.key) {
       deleteFile();
     }
   }, [deleteFileKey]);
 
   return (
     <>
-      <DropdownMenuItem
-        onClick={() => setDeleteFileKey(true)}
-      >
+      <DropdownMenuItem onClick={() => setDeleteFileKey(file.key)}>
         Delete Document
       </DropdownMenuItem>
     </>
