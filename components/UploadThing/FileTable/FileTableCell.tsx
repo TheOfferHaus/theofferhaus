@@ -19,7 +19,7 @@ export default function FileTableCell ({ file }: {file: File}) {
 
   useEffect(() => {
     async function fetchDocumentUrl() {
-      const response = await fetch("/api/uploadthing/geturl", {
+      const response = await fetch("/api/uploadthing/getUrl", {
         headers: {
           "Content-Type": "application/json",
         },
