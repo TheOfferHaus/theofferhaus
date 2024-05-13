@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="relative min-h-full">
         <body className="overflow-x-hidden">
         <NextSSRPlugin
           routerConfig={extractRouterConfig(ourFileRouter)}
