@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { File } from "@/utils/uploadthingApi";
+import DeleteFileDropdownItem from "./DeleteFileDropdownItem";
 
-/** Cell in the UploadThin file table */
+/** Cell in the UploadThing file table */
 export default function FileTableCell ({ file }: {file: File}) {
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
 
@@ -49,6 +50,7 @@ export default function FileTableCell ({ file }: {file: File}) {
         >
           View Document
         </DropdownMenuItem>
+        <DeleteFileDropdownItem file={file} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

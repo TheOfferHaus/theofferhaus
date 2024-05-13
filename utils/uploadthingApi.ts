@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import { UTApi } from "uploadthing/server";
 export const utapi = new UTApi();
 
@@ -20,6 +21,13 @@ class UploadthingApi {
   static async getUrl(fileKey: string) {
     const response = await utapi.getSignedURL(fileKey);
     return response.url;
+  }
+
+
+  /** Delete file from UploadThing server; takes in key as parameter */
+  static async deleteFile(fileKey: string) {
+    const response = await utapi.deleteFiles(fileKey);
+    return NextResponse.json(response);
   }
 }
 
