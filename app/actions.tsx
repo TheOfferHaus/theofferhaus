@@ -8,7 +8,11 @@ const prisma = new PrismaClient();
 
 /** redirects to offer form specific to inputted property */
 async function navigateToQuiz(propertyId: string, offerId: string) {
-  redirect(`/quiz?propertyId=${propertyId}&offerId=${offerId}`);
+  const { username } = (await currentUser()) as User;
+
+  redirect(
+    `/quiz?username=${username}&propertyId=${propertyId}&offerId=${offerId}`
+  );
 }
 
 /** adds property to the database */
@@ -19,8 +23,8 @@ async function createProperty(address: string) {
     },
     update: {},
     create: {
-        address: address
-    }
+      address: address,
+    },
   });
 
   return property.id;
@@ -28,20 +32,52 @@ async function createProperty(address: string) {
 
 /** adds offer to the database */
 async function createOffer(propertyId: string) {
-  const currUser = await currentUser() as User;
+  const currUser = (await currentUser()) as User;
 
   const offer = await prisma.offer.create({
     data: {
       buyerId: currUser.username as string,
       propertyId: propertyId,
-    }
+    },
   });
 
   return offer.id;
 }
 
-export {
-    navigateToQuiz,
-    createProperty,
-    createOffer
+/** updates user's offerFormInProgress to true */
+async function setFormInProgressTrue() {
+  const currUser = (await currentUser()) as User;
+  const username = currUser.username as string;
+
+  await prisma.user.update({
+    where: {
+      username: username,
+    },
+    data: {
+      offerFormInProgress: true,
+    },
+  });
 }
+
+/** updates user's offerFormInProgress to false */
+async function setFormInProgressFalse() {
+  const currUser = (await currentUser()) as User;
+  const username = currUser.username as string;
+
+  await prisma.user.update({
+    where: {
+      username: username,
+    },
+    data: {
+      offerFormInProgress: false,
+    },
+  });
+}
+
+export {
+  navigateToQuiz,
+  createProperty,
+  createOffer,
+  setFormInProgressTrue,
+  setFormInProgressFalse,
+};

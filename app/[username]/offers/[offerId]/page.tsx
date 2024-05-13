@@ -1,7 +1,6 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
-import { User } from "@clerk/nextjs/server";
 import CountdownTimer from "@/components/CountdownTimer";
 
 const prisma = new PrismaClient();

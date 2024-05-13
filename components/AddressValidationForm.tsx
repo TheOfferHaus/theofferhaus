@@ -61,6 +61,7 @@ export default function AddressValidationForm() {
 
     const propertyId = await createProperty(verificationData.address.formattedAddress);
     const offerId = await createOffer(propertyId);
+
     navigateToQuiz(propertyId, offerId);
   }
 
