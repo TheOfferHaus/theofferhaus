@@ -1,5 +1,3 @@
-"use client";
-
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,7 +15,7 @@ import ViewFileDropdownItem from "./ViewFileDropdownItem";
  *
  * Takes file as parameter: {name, key, status, id}
 */
-export default function FileTableCell({ file, deleteFile }: { file: File, deleteFile: (file: File) => void}) {
+export default function FileTableCell({ file }: { file: File }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,7 +26,7 @@ export default function FileTableCell({ file, deleteFile }: { file: File, delete
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <ViewFileDropdownItem file={file} />
-        <DeleteFileDropdownItem file={file} deleteFile={deleteFile} />
+        <DeleteFileDropdownItem file={file} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

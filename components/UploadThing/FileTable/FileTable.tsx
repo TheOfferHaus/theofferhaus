@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   ColumnDef,
@@ -15,31 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { File } from "@/utils/uploadthingApi";
-import { RowData } from "@tanstack/react-table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  deleteFile: (file: File) => void
-}
-
-declare module '@tanstack/react-table' {
-  interface TableMeta<TData extends RowData> {
-    deleteFile: (file: File) => void;
-  }
 }
 
 /** UploadThing File Table*/
 export function FileTable<TData, TValue>({
   columns,
-  data,
-  deleteFile
+  data
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
-    meta: {deleteFile: deleteFile},
     getCoreRowModel: getCoreRowModel(),
   });
 
