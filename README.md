@@ -72,6 +72,22 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 4. For Clerk, update .env.local to include the keys added to .env.example
 5. Keys and signin info for both users will be provided by auth team
 
+## Setting Up Clerk To Add User to Personal Database on Signup
+1. Run `npm install`
+2. Make sure you also install localtunnel globally with `npm install -g localtunnel`
+3. Head to Clerk Dashboard(https://dashboard.clerk.com/), log in, and click on 'webhooks'
+4. In your terminal, run `lt --port 3000` ***this should be the port your next app is running on***
+5. Copy the url generated in your terminal
+6. In the Clerk webhook dashboard, click 'Add Endpoint'
+7. Paste the url from your terminal to the 'Endpoint Url' section
+8. Add /api/users to the end of the url
+9. In the description, add '{YOUR NAME}'s endpoint'
+10. Scroll to the bottom of the filtering events section, under the user section, check 'user.created'
+11. Click Create
+12. Now when you make a new account in the app, make sure your localtunnel is running, and the user is added to your database
+13. Any time you exit localtunnel in your terminal, and want to create a new user in the app, you'll need to repeat step 3 and replace your URL in the clerk webhook dashboard
+14. We recommend you have a separate terminal tab running localtunnel
+***NOTE: When a user is created in the app, anyone with an active webhook will see that user added to their own database***
 
 ## Setting Up Docusign
 0. Run `npm install`
@@ -84,4 +100,3 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 7. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
 
 You only have to do the above a single time, it should refresh automatically afterwards.
-
