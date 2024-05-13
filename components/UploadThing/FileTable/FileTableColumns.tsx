@@ -11,9 +11,9 @@ export const FileTableColumns: ColumnDef<File>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       return (
-        <FileTableCell file={row.original} />
+        <FileTableCell file={row.original} deleteFile={table.options.meta!.deleteFile!} />
       );
     }
   },

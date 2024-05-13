@@ -10,11 +10,11 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
  *
  * Props: file {name, key, status, id}
  */
-export default function DeleteFileDropdownItem({ file }: { file: File }) {
-  const [deleteFileKey, setDeleteFileKey] = useState<string | null>(null);
+export default function DeleteFileDropdownItem({ file, deleteFile }: { file: File, deleteFile: (file: File) => void}) {
+  const [isDeleteFile, setIsDeleteFile] = useState<boolean>(false);
 
   useEffect(() => {
-    async function deleteFile() {
+    async function deleteUploadThingFile() {
       const response = await fetch("/api/uploadthing/deletefiles", {
         headers: {
           "Content-Type": "application/json",
@@ -25,17 +25,18 @@ export default function DeleteFileDropdownItem({ file }: { file: File }) {
         method: "POST",
       });
       const msg = await response.json();
-      setDeleteFileKey(null);
+      deleteFile(file);
+      setIsDeleteFile(false);
     }
 
-    if (deleteFileKey === file.key) {
-      deleteFile();
+    if (isDeleteFile === true) {
+      deleteUploadThingFile();
     }
-  }, [deleteFileKey]);
+  }, [isDeleteFile]);
 
   return (
     <>
-      <DropdownMenuItem onClick={() => setDeleteFileKey(file.key)}>
+      <DropdownMenuItem onClick={() => setIsDeleteFile(true)}>
         Delete Document
       </DropdownMenuItem>
     </>

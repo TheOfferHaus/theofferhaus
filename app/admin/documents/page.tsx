@@ -32,7 +32,11 @@ export default function Documents() {
 
   /** Updates state with newly uploaded file. */
   function updateFiles(file: File): void {
-    setFiles((curr) => [...curr, file]);
+    setFiles((curr) => [file, ...curr]);
+  }
+
+  function deleteFile(file: File): void {
+    setFiles(curr => curr.filter((f => f.key !== file.key)))
   }
 
   if (isLoading) return <div>Loading...</div>;
@@ -40,7 +44,7 @@ export default function Documents() {
   return (
     <div className="h-screen mx-32">
       <UploadDropzoneArea updateFileState={updateFiles} />
-      <FileTable columns={FileTableColumns} data={files} />
+      <FileTable columns={FileTableColumns} data={files} deleteFile={deleteFile} />
     </div>
   );
 }

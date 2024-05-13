@@ -17,7 +17,7 @@ import ViewFileDropdownItem from "./ViewFileDropdownItem";
  *
  * Takes file as parameter: {name, key, status, id}
 */
-export default function FileTableCell({ file }: { file: File }) {
+export default function FileTableCell({ file, deleteFile }: { file: File, deleteFile: (file: File) => void}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -28,7 +28,7 @@ export default function FileTableCell({ file }: { file: File }) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <ViewFileDropdownItem file={file} />
-        <DeleteFileDropdownItem file={file} />
+        <DeleteFileDropdownItem file={file} deleteFile={deleteFile} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
