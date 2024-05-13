@@ -1,32 +1,33 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 /**
  * Webhook endpoint for receiving data from Typeform.
  */
 
 import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
-import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
 import { makeEnvelope } from "@/lib/docusign/serverActions";
-import { PrismaClient } from ".prisma/client";
-import { setFormInProgressFalse } from "@/app/actions";
-
-
-const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
-
-
   try {
     const formData = await request.json();
-
-    console.log(formData);
+    const { username, property_id, offer_id } = formData.form_response.hidden;
 
     const formattedData = OregonFormDataExtractor.getFormattedFormDataForDocusign(formData.form_response.answers);
+    const envelopeId = await makeEnvelope(formattedData, { email: formattedData.buyer_email, name: formattedData.buyers_name, userId: username });
 
-    console.log("formatted data:", formattedData);
+    await prisma.offer.update({
+      where: {
+        id: 'ef555a14-cebe-48b8-a813-9f777ca38572'
+      },
+      data: {
+        envelopeId,
+        typeformId: formData.event_id,
+        propertyId: "0fddb1e9-66af-409a-89e5-0350b76e6da5"
+      }
+    });
 
-    // const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, {email: 'ani.nishioka@gmail.com', name: 'Anissa Nishioka'});
-    // console.log(envelopeId);
-
-    await setFormInProgressFalse();
     return new Response("Webhook processed successfully!", {
       status: 200,
     });
