@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+
 import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
 import { makeEnvelope } from "@/lib/docusign/serverActions";
-
-const prisma = new PrismaClient();
+import { updateOfferOnFormSubmission, setOfferFormInProgressFalse } from "./databaseHelpers";
 
 /**
  * Webhook endpoint for receiving data from Typeform.
@@ -26,25 +25,8 @@ export async function POST(request: Request) {
 
     const envelopeId = await makeEnvelope(formattedData, signerData);
 
-    await prisma.offer.update({
-      where: {
-        id: offer_id,
-      },
-      data: {
-        envelopeId,
-        typeformId: formData.event_id,
-        propertyId: property_id,
-      },
-    });
-
-    await prisma.user.update({
-      where: {
-        username,
-      },
-      data: {
-        offerFormInProgress: false,
-      },
-    });
+    await updateOfferOnFormSubmission(offer_id, envelopeId, formData.event_id, property_id);
+    await setOfferFormInProgressFalse(username);
 
     return new Response("Webhook processed successfully!", {
       status: 200,
