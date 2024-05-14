@@ -5,7 +5,7 @@ import Template from "./Template";
 import ApiTokenManager from "./ApiTokenManager";
 import { SignerData, EnvelopeData, OfferData  } from "@/config";
 
-const DEFAULT_TEMPLATE_ID = "fc833cdb-2228-4cdf-8a6a-e67d1b236f75";
+const DEFAULT_TEMPLATE_ID = "43816c9d-83fe-4677-bab6-09d21a2816b4";
 const RETURN_URL = "http://localhost:3000";
 
 /**
@@ -16,12 +16,7 @@ const RETURN_URL = "http://localhost:3000";
 async function createTemplate(): Promise<string> {
   const template = await Template.createTemplate();
 
-  const documentData = {
-    path: process.cwd() + "/public/agreementTemplate.docx",
-    pageCount: "7"
-  };
-
-  await template.addDocument(documentData);
+  await template.addDocument(process.cwd() + "/public/agreementTemplate.docx");
   await template.addTabs();
   return template.id;
 }
