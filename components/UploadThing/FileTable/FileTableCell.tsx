@@ -14,7 +14,7 @@ import ViewFileDropdownItem from "./ViewFileDropdownItem";
 /** Cell in the UploadThing file table
  *
  * Takes file as parameter: {name, key, status, id}
-*/
+ */
 export default function FileTableCell({ file }: { file: File }) {
   return (
     <DropdownMenu>

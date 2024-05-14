@@ -1,3 +1,5 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 
 import type { File } from "@/utils/uploadthingApi";
@@ -12,9 +14,7 @@ export const FileTableColumns: ColumnDef<File>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return (
-        <FileTableCell file={row.original} />
-      );
-    }
+      return <FileTableCell file={row.original} />;
+    },
   },
 ];

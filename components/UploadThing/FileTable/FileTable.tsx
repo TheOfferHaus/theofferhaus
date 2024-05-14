@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
@@ -24,7 +24,7 @@ interface DataTableProps<TData, TValue> {
 /** UploadThing File Table*/
 export function FileTable<TData, TValue>({
   columns,
-  data
+  data,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
