@@ -23,7 +23,7 @@ export default async function AddressValidate() {
   return (
     <div className="flex flex-col justify-start items-center min-h-screen mx-auto mt-44">
         <p className="text-3xl font-bold">
-          Please input the address for the property you are making an offer to
+          Please input the address for the property you are making an offer to!
         </p>
         <br />
       <AddressValidationForm />

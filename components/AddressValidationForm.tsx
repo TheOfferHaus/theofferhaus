@@ -8,7 +8,9 @@ import {
   createOffer,
   setFormInProgressTrue,
 } from "@/app/actions";
+import { US_STATES } from "@/constants";
 import { toast } from "sonner";
+
 
 const initialFormData = {
   number: "",
@@ -86,8 +88,10 @@ export default function AddressValidationForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="number">Street Number:&nbsp;</label>
+      <div className="mb-2">
+        <label htmlFor="number" className="font-semibold">
+          Street Number:&nbsp;
+        </label>
         <input
           type="text"
           id="number"
@@ -95,9 +99,11 @@ export default function AddressValidationForm() {
           value={formData.number}
           onChange={handleChange}
           required
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ex: 1234"
         />
       </div>
-      <div>
+      <div className="mb-2">
         <label htmlFor="street">Street Name:&nbsp;</label>
         <input
           type="text"
@@ -106,9 +112,11 @@ export default function AddressValidationForm() {
           value={formData.street}
           onChange={handleChange}
           required
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ex: Main Street"
         />
       </div>
-      <div>
+      <div className="mb-2">
         <label htmlFor="unit">Unit #:&nbsp;</label>
         <input
           type="text"
@@ -116,9 +124,11 @@ export default function AddressValidationForm() {
           name="unit"
           value={formData.unit}
           onChange={handleChange}
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ex: 37"
         />
       </div>
-      <div>
+      <div className="mb-2">
         <label htmlFor="city">City:&nbsp;</label>
         <input
           type="text"
@@ -127,72 +137,28 @@ export default function AddressValidationForm() {
           value={formData.city}
           onChange={handleChange}
           required
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ex: San Francisco"
         />
       </div>
-      <div>
+      <div className="mb-2">
         <label htmlFor="stateCode">State:&nbsp;</label>
         <select
           name="stateCode"
           id="stateCode"
           value={formData.stateCode}
           onChange={handleChange}
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option disabled value="">
             Choose a State
           </option>
-          <option value="AL">Alabama</option>
-          <option value="AK">Alaska</option>
-          <option value="AZ">Arizona</option>
-          <option value="AR">Arkansas</option>
-          <option value="CA">California</option>
-          <option value="CO">Colorado</option>
-          <option value="CT">Connecticut</option>
-          <option value="DE">Delaware</option>
-          <option value="FL">Florida</option>
-          <option value="GA">Georgia</option>
-          <option value="HI">Hawaii</option>
-          <option value="ID">Idaho</option>
-          <option value="IL">Illinois</option>
-          <option value="IN">Indiana</option>
-          <option value="IA">Iowa</option>
-          <option value="KS">Kansas</option>
-          <option value="KY">Kentucky</option>
-          <option value="LA">Louisiana</option>
-          <option value="ME">Maine</option>
-          <option value="MD">Maryland</option>
-          <option value="MA">Massachusetts</option>
-          <option value="MI">Michigan</option>
-          <option value="MN">Minnesota</option>
-          <option value="MS">Mississippi</option>
-          <option value="MO">Missouri</option>
-          <option value="MT">Montana</option>
-          <option value="NE">Nebraska</option>
-          <option value="NV">Nevada</option>
-          <option value="NH">New Hampshire</option>
-          <option value="NJ">New Jersey</option>
-          <option value="NM">New Mexico</option>
-          <option value="NY">New York</option>
-          <option value="NC">North Carolina</option>
-          <option value="ND">North Dakota</option>
-          <option value="OH">Ohio</option>
-          <option value="OK">Oklahoma</option>
-          <option value="OR">Oregon</option>
-          <option value="PA">Pennsylvania</option>
-          <option value="RI">Rhode Island</option>
-          <option value="SC">South Carolina</option>
-          <option value="SD">South Dakota</option>
-          <option value="TN">Tennessee</option>
-          <option value="TX">Texas</option>
-          <option value="UT">Utah</option>
-          <option value="VT">Vermont</option>
-          <option value="VA">Virginia</option>
-          <option value="WA">Washington</option>
-          <option value="WV">West Virginia</option>
-          <option value="WI">Wisconsin</option>
-          <option value="WY">Wyoming</option>
+          {Object.entries(US_STATES).map(([code, state]) => (
+            <option value={code}>{state}</option>
+          ))}
         </select>
       </div>
-      <div>
+      <div className="mb-2">
         <label htmlFor="postalCode">Zipcode:&nbsp;</label>
         <input
           type="text"
@@ -200,20 +166,22 @@ export default function AddressValidationForm() {
           name="postalCode"
           value={formData.postalCode}
           onChange={handleChange}
+          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="ex: 99999"
           required
         />
       </div>
-      <div>
-        <label htmlFor="countryCode">Country:&nbsp;</label>
-        <input
-          type="text"
-          id="countryCode"
-          name="countryCode"
-          value={formData.countryCode}
-          disabled
-        />
+      <div className="flex justify-center items-center">
+        <button
+          type="submit"
+          className=" mt-5 px-4 py-2 bg-custom-white text-black font-semibold rounded-lg shadow-md
+                hover:bg-black hover:text-white focus:outline-none focus:ring-2
+                focus:ring-light-gray focus:ring-opacity-75 transition duration-300
+                ease-in-out transform hover:-translate-y-1 hover:scale-10"
+        >
+          Submit
+        </button>
       </div>
-      <button type="submit">Submit</button>
     </form>
   );
 }
