@@ -87,7 +87,7 @@ export default function AddressValidationForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="number">Street Number:</label>
+        <label htmlFor="number">Street Number:&nbsp;</label>
         <input
           type="text"
           id="number"
@@ -98,7 +98,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="street">Street Name:</label>
+        <label htmlFor="street">Street Name:&nbsp;</label>
         <input
           type="text"
           id="street"
@@ -109,7 +109,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="unit">Unit #:</label>
+        <label htmlFor="unit">Unit #:&nbsp;</label>
         <input
           type="text"
           id="unit"
@@ -119,7 +119,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="city">City:</label>
+        <label htmlFor="city">City:&nbsp;</label>
         <input
           type="text"
           id="city"
@@ -130,7 +130,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="stateCode">State:</label>
+        <label htmlFor="stateCode">State:&nbsp;</label>
         <select
           name="stateCode"
           id="stateCode"
@@ -193,7 +193,7 @@ export default function AddressValidationForm() {
         </select>
       </div>
       <div>
-        <label htmlFor="postalCode">Zipcode:</label>
+        <label htmlFor="postalCode">Zipcode:&nbsp;</label>
         <input
           type="text"
           id="postalCode"
@@ -204,7 +204,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div>
-        <label htmlFor="countryCode">Country:</label>
+        <label htmlFor="countryCode">Country:&nbsp;</label>
         <input
           type="text"
           id="countryCode"
