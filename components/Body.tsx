@@ -4,7 +4,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription
+  CardDescription,
 } from "@/components/ui/card";
 import Link from "next/link";
 import CommissionTicker from "./CommissionTicker";
@@ -44,22 +44,17 @@ const Body = () => {
         </div>
       </div>
 
-      <div className="">
-        <Card className="bg-primary-medium shadow-xl pb-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-x-0">
+      <div>
+        <Card className="bg-primary-medium shadow-xl pb-2 flex justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 items-center">
             <CardContent className="pt-2 text-4xl text-custom-white font-bold text-center -mb-6 md:ml-32 ml-0 2xl:text-5xl">
               <CommissionTicker incrementAmount={1519.42} />
             </CardContent>
-            <CardDescription className="text-sm px-2 pb-2 pt-2 text-custom-white text-center md:mr-32 mr-0 md:text-lg md:px-0">
-              <ul>
-                <li>*In the U.S. with a median home value of $340,000 and</li>
-
-                <li>an average commission rate of 5.49%, buyers are paying</li>
-
-                <li>$47,916,720,000 in fees yearly.</li>
-
-                <li>That's $1,519.42 per second in fees!</li>
-              </ul>
+            <CardDescription className="text-sm px-2 pb-2 pt-2 text-custom-white text-center md:mr-32 mr-0 md:text-lg md:px-0 max-w-2xl">
+              *In the U.S. with a median home value of $340,000&nbsp;and
+              an average commission rate of 5.49%, buyers are&nbsp;paying
+              $47,916,720,000 in fees&nbsp;yearly.
+              That's&nbsp;$1,519.42&nbsp;per&nbsp;second&nbsp;in&nbsp;fees!
             </CardDescription>
           </div>
         </Card>
