@@ -9,10 +9,14 @@ export default function TypeformWidget({
   username,
   propertyId,
   offerId,
+  email,
+  fullName
 }: {
   username: string;
   propertyId: string;
   offerId: string;
+  email: string;
+  fullName: string;
 }) {
   return (
     <Widget
@@ -22,6 +26,8 @@ export default function TypeformWidget({
         username: username,
         property_id: propertyId,
         offer_id: offerId,
+        email: email,
+        full_name: fullName
       }}
     />
   );

@@ -57,6 +57,8 @@ export default async function Quiz({
         propertyId={propertyId}
         offerId={offerId}
         username={username}
+        email={currUser.emailAddresses[0].emailAddress}
+        fullName={currUser.fullName!}
       />
     </main>
   );

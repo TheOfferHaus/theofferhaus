@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
-import { makeEnvelope, sendEnvelopeEmail, getEnvelopeUrl } from "@/lib/docusign/serverActions";
+import { makeEnvelope } from "@/lib/docusign/serverActions";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   try {
     const formData = await request.json();
-    const { username, property_id, offer_id } = formData.form_response.hidden;
+    const { username, property_id, offer_id, email, full_name } = formData.form_response.hidden;
 
     const formattedData =
       OregonFormDataExtractor.getFormattedFormDataForDocusign(
@@ -19,16 +19,12 @@ export async function POST(request: Request) {
       );
 
     const signerData = {
-      email: formattedData.buyer_email,
-      name: formattedData.buyers_name,
+      email,
+      name: full_name,
       userId: username,
-    }
+    };
 
     const envelopeId = await makeEnvelope(formattedData, signerData);
-
-    await sendEnvelopeEmail(envelopeId);
-
-    console.log(await getEnvelopeUrl(envelopeId, signerData));
 
     await prisma.offer.update({
       where: {
@@ -61,5 +57,4 @@ export async function POST(request: Request) {
     });
   }
 
-  //const newEnvelope = await makeEnvelope(formatFormDataForDocusign(formData), signerData, templateId)
 }
