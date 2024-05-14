@@ -17,11 +17,16 @@ export default async function AddressValidate() {
 
   if (!user) throw new Error("Error fetching user from database");
 
-  if (user.offerFormInProgress) redirect(`/${username}/offers?validateRedirect=true`)
+  if (user.offerFormInProgress)
+    redirect(`/${username}/offers?validateRedirect=true`);
 
-    return (
-      <div className="flex justify-center items-center min-h-screen mx-auto">
-        <AddressValidationForm />
-      </div>
-    );
+  return (
+    <div className="flex flex-col justify-start items-center min-h-screen mx-auto mt-44">
+        <p className="text-3xl font-bold">
+          Please input the address for the property you are making an offer to
+        </p>
+        <br />
+      <AddressValidationForm />
+    </div>
+  );
 }

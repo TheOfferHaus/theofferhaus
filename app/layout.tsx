@@ -3,7 +3,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "OfferHaus",
@@ -20,6 +20,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className="relative min-h-full">
         <body className="overflow-x-hidden">
+          <Toaster position="top-center" closeButton />
           <NavBar />
           <main>{children}</main>
           <Footer />

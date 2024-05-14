@@ -14,6 +14,8 @@ const config : Config= {
       "primary-medium": "#007FFF",
       "off-white": "#F2F1EB",
       "custom-white": "#fffdf7",
+      "success-green": "#5cb85c",
+      "completed-blue": "#0077B5",
     },
     container: {
       center: true,

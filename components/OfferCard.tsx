@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { OfferObject } from "@/types/types";
 import { User, currentUser } from "@clerk/nextjs/server";
-import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "./ui/card";
 
 /**
  * Component for displaying an offer card. Links to specific offer detail page
@@ -14,7 +20,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
  */
 
 export default async function OfferCard({ offer }: { offer: OfferObject }) {
-  const { id, property } = offer;
+  const { id, property, typeformId } = offer;
   const { username } = (await currentUser()) as User;
 
   return (
@@ -29,6 +35,13 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
           <CardDescription className="text-center text-lg">
             Offer ID: {id}
           </CardDescription>
+          {!typeformId ? (
+            <p className="text-success-green p-0 text-lg font-bold">
+              In Progress
+            </p>
+          ) : (
+            <p className="text-completed-blue p-0 text-lg font-bold">Completed</p>
+          )}
         </Card>
       </Link>
     </div>
