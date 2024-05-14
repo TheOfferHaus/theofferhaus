@@ -33,8 +33,8 @@ export function Dropdown({
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Filter By: {filterVal} </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+      <DropdownMenuContent className="w-56 bg-custom-white">
+        <DropdownMenuLabel>Filter By:</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={filterVal}

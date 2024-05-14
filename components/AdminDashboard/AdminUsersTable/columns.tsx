@@ -3,17 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../../ui/button";
+import type { User } from "@/lib/adminDashboard/types";
 
 /** Column definitions for our AdminUsersTable */
-
-// This type is used to define the shape of our data.
-export type User = {
-  username: string | null;
-  lastName: string | null;
-  firstName: string | null;
-  email: string | null;
-  lastOffer: Date | null;
-};
 
 export const columns: ColumnDef<User>[] = [
   {
