@@ -1,6 +1,6 @@
 import type { File } from "@/utils/uploadthingApi";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { getDocumentUrl } from "@/app/actions";
+import { getDocumentUrl } from "@/app/admin/documents/actions";
 
 /** Dropdown menu item component for viewing a file
  *

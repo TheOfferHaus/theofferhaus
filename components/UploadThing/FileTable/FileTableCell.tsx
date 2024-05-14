@@ -6,6 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import type { File } from "@/utils/uploadthingApi";
 import DeleteFileDropdownItem from "./DeleteFileDropdownItem";
@@ -23,8 +24,9 @@ export default function FileTableCell({ file }: { file: File }) {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className="bg-off-white" align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <ViewFileDropdownItem file={file} />
         <DeleteFileDropdownItem file={file} />
       </DropdownMenuContent>
