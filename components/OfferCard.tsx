@@ -37,7 +37,7 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
           </CardDescription>
           {!typeformId ? (
             <p className="text-success-green p-0 text-lg font-bold">
-              In Progress!
+              In Progress
             </p>
           ) : (
             <p className="text-completed-blue p-0 text-lg font-bold">Completed</p>

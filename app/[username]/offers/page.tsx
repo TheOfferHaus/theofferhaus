@@ -35,7 +35,7 @@ export default async function Offers({
           property: true,
         },
         orderBy: {
-          id: "asc",
+          createdAt: "desc",
         },
       },
     },

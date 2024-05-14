@@ -2,8 +2,13 @@
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { RADAR_VALIDATE_ADDRESS_API_URL } from "@/constants";
-import { navigateToQuiz, createProperty, createOffer, setFormInProgressTrue } from "@/app/actions";
-
+import {
+  navigateToQuiz,
+  createProperty,
+  createOffer,
+  setFormInProgressTrue,
+} from "@/app/actions";
+import { toast } from "sonner";
 
 const initialFormData = {
   number: "",
@@ -20,7 +25,6 @@ const initialFormData = {
  */
 export default function AddressValidationForm() {
   const [formData, setFormData] = useState(initialFormData);
-  const [errors, setErrors] = useState("");
 
   /** handles form submission */
   async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
@@ -56,11 +60,15 @@ export default function AddressValidationForm() {
     }
 
     if (verificationData.result.verificationStatus !== "verified") {
-      setErrors("Please check your address please!"); // this will be an alert component in future
+      toast.warning(
+        "Please make sure the address has been inputted correctly!"
+      );
       return;
     }
 
-    const propertyId = await createProperty(verificationData.address.formattedAddress);
+    const propertyId = await createProperty(
+      verificationData.address.formattedAddress
+    );
     const offerId = await createOffer(propertyId);
     await setFormInProgressTrue();
     navigateToQuiz(propertyId, offerId);

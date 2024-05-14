@@ -61,8 +61,8 @@ export default function CountdownTimer({ targetDate }: CountdownProps) {
     });
 
     return (
-        <div>
+        <span>
             {timerComponents.length ? timerComponents : <span>Past Due Date!</span>}
-        </div>
+        </span>
     );
 };
