@@ -13,8 +13,6 @@ Derived Values
   sellers_current_state
 
 stuff to get some other way
-street address, city, state,
-
 
 property_disclosures_agreement_days_num Being moved to a state specific form
 
@@ -91,8 +89,6 @@ export default class FormDataExtractor {
     earnest_money_location: (ans) => FormDataExtractor.getEarnestMoneyLocationText(ans),
 
     current_buyer_address: (ans) => FormDataExtractor.getBuyerAddress(ans),
-
-
   };
 
   /**
@@ -104,10 +100,30 @@ export default class FormDataExtractor {
     [key: string]: string;
   } {
     const extractedAnswers = FormDataExtractor.extractAnswers(formData);
-    return FormDataExtractor.formatAnswersForDocusign.call(
-      this,
-      extractedAnswers
-    );
+
+
+    const formatted =
+      FormDataExtractor.formatGeneralInfoAnswersForDocusign(extractedAnswers);
+
+    const formattedBooleans = FormDataExtractor.formatBooleanAnswersForDocusign(extractedAnswers);
+
+    for (let [field, value] of Object.entries(formattedBooleans)) {
+      formatted[field] = value;
+    }
+
+    for (const [field, extractor] of Object.entries(
+      this.additionalInfoExtractors
+    )) {
+      formatted[field] = extractor(extractedAnswers);
+    }
+
+    for (const [field, extractor] of Object.entries(
+      this.stateSpecificExtractors
+    )) {
+      formatted[field] = extractor(extractedAnswers);
+    }
+
+    return formatted;
   }
 
   /**
@@ -153,7 +169,6 @@ export default class FormDataExtractor {
       FormDataExtractor.booleanToNot.map((field) => [field, answers[field] ? "" : "not"])
     );
   }
-
 
   /**
    * Formats answers for DocuSign including the additional info
