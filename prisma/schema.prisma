@@ -26,23 +26,24 @@ model User {
 }
 
 model Offer {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())  @map("created_at")
-  updatedAt  DateTime   @updatedAt       @map("updated_at")
-  price      Int
-  buyer      User       @relation(fields: [buyerId], references: [username])
-  buyerId    String                      @map("buyer_id")
-  property   Property   @relation(fields: [propertyId], references: [id])
-  propertyId Int                         @map("property_id")
-  status     Status     @default(PENDING)
+  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  envelopeId     String?    @unique
+  typeformId     String?    @unique
+  createdAt      DateTime   @default(now())  @map("created_at")
+  updatedAt      DateTime   @updatedAt       @map("updated_at")
+  price          Int?
+  buyer          User       @relation(fields: [buyerId], references: [username])
+  buyerId        String                      @map("buyer_id")
+  property       Property   @relation(fields: [propertyId], references: [id])
+  propertyId     String     @db.Uuid         @map("property_id")
+  status         Status     @default(PENDING)
 
   @@map("offers")
 }
 
-// id is currently set to autoincrementing but in the future, probably will be
-// maybe storing something from mls
 model Property {
-  id            Int        @id @default(autoincrement())
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  address       String     @unique
   offers        Offer[]
 
   @@map("properties")
@@ -52,4 +53,15 @@ enum Status {
   REJECTED
   ACCEPTED
   PENDING
+}
+
+model AccessData {
+  id             Int       @id @default(autoincrement())
+  baseUri        String    @map("base_uri")
+  token          String
+  refreshToken   String    @map("refresh_token")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  expirationTime DateTime  @map("expiration_time")
+
+  @@map("access_data")
 }
