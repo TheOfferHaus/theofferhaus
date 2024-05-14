@@ -14,7 +14,7 @@ import CommissionTicker from "./CommissionTicker";
 const Body = () => {
   return (
     <div>
-      <div className="relative w-screen mx-auto px-4 sm:px-6 lg:px-8 bg-custom-white py-6 rounded-3xl -mt-6 z-10">
+      <div className="relative w-screen mx-auto px-4 sm:px-6 lg:px-8 bg-custom-white py-6 rounded-3xl -mt-6 z-10 rounded-b-none">
         <div className="text-center mb-10">
           <h2 className="text-2xl leading-tight">
             The simplest way to buy Real Estate.
@@ -45,14 +45,14 @@ const Body = () => {
       </div>
 
       <div>
-        <Card className="bg-primary-medium shadow-xl pb-2 flex justify-center">
+        <Card className="bg-primary-medium shadow-xl pb-2 flex justify-center rounded-t-none rounded-b-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center">
             <CardContent className="pt-2 text-4xl text-custom-white font-bold text-center -mb-6 md:ml-32 ml-0 2xl:text-5xl">
               <CommissionTicker incrementAmount={1519.42} />
             </CardContent>
             <CardDescription className="text-sm px-2 pb-2 pt-2 text-custom-white text-center md:mr-32 mr-0 md:text-lg md:px-0 max-w-2xl">
-              *In the U.S. with a median home value of $340,000&nbsp;and
-              an average commission rate of 5.49%, buyers are&nbsp;paying
+              *In the U.S. with a median home value of $340,000&nbsp;and an
+              average commission rate of 5.49%, buyers are&nbsp;paying
               $47,916,720,000 in fees&nbsp;yearly.
               That's&nbsp;$1,519.42&nbsp;per&nbsp;second&nbsp;in&nbsp;fees!
             </CardDescription>
