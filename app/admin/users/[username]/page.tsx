@@ -1,36 +1,21 @@
 import { clerkClient } from "@clerk/nextjs/server";
+import type { User } from "@clerk/nextjs/server";
+import type { Offer } from "@/lib/adminDashboard/types";
 import { PrismaClient } from "@prisma/client";
 import { PaperClipIcon } from "@heroicons/react/16/solid";
-import {
-  columns,
-  Offer,
-} from "@/components/AdminDashboard/UserOffersTable/columns";
+import { columns } from "@/components/AdminDashboard/UserOffersTable/columns";
 import { DataTable } from "@/components/AdminDashboard/UserOffersTable/data-table";
+import { getClerkUserAndOffers } from "@/lib/adminDashboard/utils";
 const prisma = new PrismaClient();
 
 /** Gets user data and displays the user profile page
  * Parameters: url params with username
  */
 export default async function UserProfile(data: {
-  params: { username: string; };
+  params: { username: string };
 }) {
   const username = data.params.username;
-
-  const databaseUser = await prisma.user.findUnique({
-    where: { username: username },
-    include: { offers: true },
-  });
-
-  let clerkUser = await clerkClient.users.getUser(databaseUser!.clerkId);
-
-  let offers: Offer[];
-  offers = databaseUser!.offers.map((offer) => ({
-    propertyId: offer.propertyId,
-    buyerId: offer.buyerId,
-    updatedAt: offer.updatedAt,
-    status: offer.status,
-    price: offer.price,
-  }));
+  const { clerkUser, offers } = await getClerkUserAndOffers(username);
 
   return (
     <div>

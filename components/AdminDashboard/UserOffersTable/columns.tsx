@@ -1,18 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import type { Offer } from "@/lib/adminDashboard/types";
 
 /** Column definitions for our UserOffersTable */
-
-// This type is used to define the shape of our data.
-export type Offer = {
-  propertyId: number;
-  buyerId: string;
-  updatedAt: Date;
-  status: string;
-  price: number;
-};
-
 export const columns: ColumnDef<Offer>[] = [
   {
     accessorKey: "propertyId",

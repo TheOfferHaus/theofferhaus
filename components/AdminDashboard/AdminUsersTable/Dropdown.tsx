@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -21,9 +19,15 @@ export function Dropdown({
   filterSelect: Function;
   filterVal: string;
 }) {
-  //TODO: fix the filter by button to use descriptions instead of values (Last Name instead of lastName)
+  /** Labels for displaying the current filter applied to the table */
+  const labels: { [key: string]: string } = {
+    username: "Username",
+    lastName: "Last Name",
+    firstName: "First Name",
+    email: "Email",
+    lastOffer: "Last Offer",
+  };
 
-  /** Calls the filterSelect function to update state in the Data Table */
   function callFilterSelect(value: string) {
     filterSelect(value);
   }
@@ -31,7 +35,9 @@ export function Dropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Filter By: {filterVal} </Button>
+        <Button className="bg-dark-gray text-custom-white">
+          Filter By: {labels[filterVal]}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-custom-white">
         <DropdownMenuLabel>Filter By:</DropdownMenuLabel>
@@ -40,7 +46,7 @@ export function Dropdown({
           value={filterVal}
           onValueChange={callFilterSelect}
         >
-          <DropdownMenuRadioItem value="username" id="Username">
+          <DropdownMenuRadioItem value="username">
             Username
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="lastName">

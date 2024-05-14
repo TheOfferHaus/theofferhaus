@@ -1,11 +1,11 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
-const config : Config= {
+const config: Config = {
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -14,16 +14,17 @@ const config : Config= {
       "primary-medium": "#007FFF",
       "off-white": "#F2F1EB",
       "custom-white": "#fffdf7",
+      "dark-gray": "#4F4F4D",
     },
     container: {
       center: true,
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        "xs": "475px",
-        "mobile":"250px"
+        xs: "475px",
+        mobile: "250px",
       },
-      },
+    },
     extend: {
       borderRadius: {
         lg: "var(--radius)",
@@ -51,6 +52,6 @@ const config : Config= {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
 export default config;

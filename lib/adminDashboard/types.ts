@@ -1,3 +1,5 @@
+import { Status } from "@prisma/client";
+
 /** User type for the admin dashboard User table */
 type User = {
   username: string | null;
@@ -7,6 +9,13 @@ type User = {
   lastOffer: Date | null;
 };
 
-export type {
-  User
+/** Offer type */
+type Offer = {
+  propertyId: string;
+  buyerId: string;
+  updatedAt: Date;
+  status: string;
+  price: number | null;
 };
+
+export type { User, Offer };
