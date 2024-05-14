@@ -89,19 +89,14 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 14. We recommend you have a separate terminal tab running localtunnel
 ***NOTE: When a user is created in the app, anyone with an active webhook will see that user added to their own database***
 
-### Setting user flow from logged out -> intro quiz -> sign-up -> address validation -> real quiz
-*** This can only work for one person at a time. Redirection with Typeform requires a specific localtunnel URL. This will be solved when we have a deployed frontend***
-1. Make sure you have installed localtunnel globally with `npm install -g localtunnel`
-2. In your terminal, run `lt --port 3000` ***this should be the port your next app is running on***\
-3. Copy the url generated in your terminal
-4. Head to typeform dashboard, go to the Interest Quiz and The Offerhaus Quiz
-5. Under Endings in the bottom left side, click the panel with the link
-6. Replace the link with your own localtunnel URL, make sure to leave the pathname unchanged
-7. Your link should look like: `https://easy-rats-laugh.loca.lt/address-validate`
-8. Make sure to do this for both quizzes and publish
-9. When testing this, you'll be shown a localtunnel password page when the redirection occurs
-10. Follow the instructions on the page to get that password and you should be able to proceed
-
+## Adding localtunnel URL to Typeform Webhook in Order to Receive the Response Data
+1. Navigate to Typeform Dashboard
+2. Go to The Offer Haus Offer Quiz
+3. Click on the Connect tab
+4. Click on the Webhooks tab
+5. Click Add a Webhook
+6. Paste in your localtunnel URL and add `/api/typeform`to the end of it
+7. Click 'Save Webbook' and make sure to also click the Webhook ON slider to enable it
 
 ## Setting Up Docusign
 0. Run `npm install`
