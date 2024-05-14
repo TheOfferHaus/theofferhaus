@@ -1,5 +1,7 @@
 import { Faq } from "@/lib/faqs/data";
 
+/** Card component that displays a single FAQ */
+
 export default function FaqCard({ faq }: { faq: Faq }) {
   return (
     <div className="mb-20">
