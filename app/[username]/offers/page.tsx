@@ -63,7 +63,7 @@ export default async function Offers({
               focus:ring-light-gray focus:ring-opacity-75 transition duration-300
               ease-in-out transform hover:-translate-y-1 hover:scale-10"
         >
-          <Link href="/address-validate">
+          <Link href="/address-validate" target="_blank">
             <p className="hover:text-gray-300">Make new offer</p>
           </Link>
         </button>
