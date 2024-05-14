@@ -3,38 +3,43 @@ import { toWords } from "number-to-words";
 
 /*
 
-HOA thing
+Figure this out
+  HOA thing
+
+Fields in template which are not quite fields in typeform
+  (derived values, or not yet supported)
+Not supported
+  num_buyers_words
+  num_buyers
+
+Derived Values
+  offer_made_on_date
+  sellers_current_city
+  sellers_current_state
 
 
-offer_made_on_date
-num_buyers_words
-num_buyers
-sellers_current_city
-sellers_current_state
-
-
-closing_costs_responsibility
-personal_property_included
-earnest_money
-earnest_money_deposit_location Turn to the correct text
+Fields in template and typeform but tranformation required
+  closing_costs_responsibility
+  personal_property_included
+  earnest_money
+  earnest_money_deposit_location Turn to the correct text
 
 
 property_disclosures_agreement_days_num Being moved to a state specific form
 
 
 
+
+
+
+
+
+
+
+
 Questions for which there is nothing in the template
 personal_property_items
 earnest_money_deposit_location
-
-
-
-
-purchase_financed_method
-
-
-
-
  */
 
 
@@ -93,7 +98,7 @@ export default class FormDataExtractor {
       possession_and_tenants: ans =>
         FormDataExtractor.getPosessionAndTenantsText(ans),
 
-      has_loan: ans =>
+      purchase_financed_method: ans =>
         FormDataExtractor.getLoanText(ans)
     };
 
