@@ -10,6 +10,7 @@ import {
 } from "@/app/actions";
 import { US_STATES } from "@/constants";
 import { toast } from "sonner";
+import {z} from 'zod'
 
 
 const initialFormData = {
@@ -22,6 +23,16 @@ const initialFormData = {
   countryCode: "US",
 };
 
+const addressSchema = z.object({
+  number: z.coerce.number({message: "Street number must be a number"}),
+  street: z.string({message: "Street name is invalid"}).min(3, {message: "Street name must be at least 3 characters"}),
+  city: z.string({message: "City is invalid"}),
+  stateCode: z.string(),
+  postalCode: z.string({message: "Zipcode is invalid"}),
+  unit: z.string({message: "Unit Number is invalid"}).optional(),
+  countryCode: z.string()
+})
+
 /** Form for validating an address. Makes a request to the radar api on form
  * submit and interacts with the database
  */
@@ -31,6 +42,13 @@ export default function AddressValidationForm() {
   /** handles form submission */
   async function handleSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
+
+    const result = addressSchema.safeParse(formData);
+
+    if (!result.success) {
+      result.error.issues.forEach((issue) => toast.warning(issue.message))
+      return;
+    }
 
     const params = new URLSearchParams({
       city: formData.city,
