@@ -23,9 +23,19 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
   const { id, property, typeformId } = offer;
   const { username } = (await currentUser()) as User;
 
+  // Brings user to quiz if offer in progress, brings user to offer detail page
+  // otherwise
   return (
     <div className="h-auto w-5/6 mt-4 mb-6">
-      <Link href={`/${username}/offers/${id}`} rel="noopener noreferrer">
+      <Link
+        href={
+          !typeformId
+            ? `/quiz?username=${username}&propertyId=${property.id}&offerId=${id}`
+            : `/${username}/offers/${id}`
+        }
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Card className="pb-3">
           <CardHeader>
             <CardTitle className="font-bold text-xl">
@@ -40,7 +50,9 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
               In Progress
             </p>
           ) : (
-            <p className="text-completed-blue p-0 text-lg font-bold">Completed</p>
+            <p className="text-completed-blue p-0 text-lg font-bold">
+              Completed
+            </p>
           )}
         </Card>
       </Link>
