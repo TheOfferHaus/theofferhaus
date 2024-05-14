@@ -19,14 +19,23 @@ export async function POST(request: Request) {
 
     await prisma.offer.update({
       where: {
-        id: 'ef555a14-cebe-48b8-a813-9f777ca38572'
+        id: offer_id
       },
       data: {
         envelopeId,
         typeformId: formData.event_id,
-        propertyId: "0fddb1e9-66af-409a-89e5-0350b76e6da5"
+        propertyId: property_id
       }
     });
+
+    await prisma.user.update({
+      where: {
+        username
+      },
+      data: {
+        offerFormInProgress: false
+      }
+    })
 
     return new Response("Webhook processed successfully!", {
       status: 200,
