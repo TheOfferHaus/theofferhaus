@@ -1,6 +1,6 @@
 import { User, currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import OfferCard from "@/components/OfferCard";
 import Link from "next/link";
 
