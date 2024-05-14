@@ -3,12 +3,7 @@
  * **ALL DUMMY DATA BELOW**
  */
 
-type Faq = {
-  question: string;
-  answer: string;
-};
-
-const FaqData = [
+const FAQs = [
   {
     question: "What is a real estate offer?",
     answer:
@@ -61,5 +56,4 @@ const FaqData = [
   },
 ];
 
-export { FaqData };
-export type { Faq };
+export { FAQs };
