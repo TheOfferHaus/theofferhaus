@@ -89,6 +89,15 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 14. We recommend you have a separate terminal tab running localtunnel
 ***NOTE: When a user is created in the app, anyone with an active webhook will see that user added to their own database***
 
+## Adding localtunnel URL to Typeform Webhook in Order to Receive the Response Data
+1. Navigate to Typeform Dashboard
+2. Go to The Offer Haus Offer Quiz
+3. Click on the Connect tab
+4. Click on the Webhooks tab
+5. Click Add a Webhook
+6. Paste in your localtunnel URL and add `/api/typeform`to the end of it
+7. Click 'Save Webbook' and make sure to also click the Webhook ON slider to enable it
+
 ## Setting Up Docusign
 0. Run `npm install`
 1. Run `npm run migrate:add add-model-for-docusign-access-tokens`
