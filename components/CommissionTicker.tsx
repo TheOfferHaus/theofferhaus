@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 
+/**
+ * Incrementing numbers component for numbers animation.
+ */
+
 interface CommissionTickerProps {
   initialAmount?: number;
   incrementAmount: number;
@@ -13,21 +17,19 @@ const CommissionTicker: React.FC<CommissionTickerProps> = ({
   incrementAmount,
 }) => {
   const [amount, setAmount] = useState<number>(initialAmount);
-  const [prevAmount, setPrevAmount] = useState<number>(initialAmount);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPrevAmount(amount);
       setAmount((prevAmount) => prevAmount + incrementAmount);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [amount, incrementAmount]);
+  }, [incrementAmount]);
 
   return (
     <div>
       <CountUp
-        start={prevAmount}
+        start={0}
         end={amount}
         duration={0.1}
         separator=","
