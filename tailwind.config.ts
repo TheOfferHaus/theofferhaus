@@ -15,6 +15,7 @@ const config: Config = withUt({
       "primary-medium": "#007FFF",
       "off-white": "#F2F1EB",
       "custom-white": "#fffdf7",
+      "dark-gray": "#A9A9A9",
     },
     container: {
       center: true,
