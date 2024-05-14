@@ -154,7 +154,7 @@ export default function AddressValidationForm() {
             Choose a State
           </option>
           {Object.entries(US_STATES).map(([code, state]) => (
-            <option value={code}>{state}</option>
+            <option value={code} key={code}>{state}</option>
           ))}
         </select>
       </div>
