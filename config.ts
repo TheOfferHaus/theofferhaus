@@ -54,7 +54,6 @@ type TemplateData = {
 
 type DocumentData = {
   path: string;
-  pageCount: string;
 };
 
 type TokenDataResponse = {
