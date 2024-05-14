@@ -99,6 +99,8 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 6. Replace the link with your own localtunnel URL, make sure to leave the pathname unchanged
 7. Your link should look like: `https://easy-rats-laugh.loca.lt/address-validate`
 8. Make sure to do this for both quizzes and publish
+9. When testing this, you'll be shown a localtunnel password page when the redirection occurs
+10. Follow the instructions on the page to get that password and you should be able to proceed
 
 
 ## Setting Up Docusign
