@@ -60,7 +60,7 @@ const Body = () => {
         </Card>
       </div>
 
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-14 lg:p-32 md:p-12 p-12 sm:p-20 md:mb-12 mb-12 bg-off-white">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-14 lg:p-32 md:p-12 p-12 sm:p-20 mb-12 bg-off-white">
         <Card>
           <CardHeader>
             <CardTitle>Get started today.</CardTitle>
