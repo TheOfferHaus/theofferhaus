@@ -1,12 +1,8 @@
-import { clerkClient } from "@clerk/nextjs/server";
-import type { User } from "@clerk/nextjs/server";
-import type { Offer } from "@/lib/adminDashboard/types";
-import { PrismaClient } from "@prisma/client";
 import { PaperClipIcon } from "@heroicons/react/16/solid";
 import { columns } from "@/components/AdminDashboard/UserOffersTable/columns";
 import { DataTable } from "@/components/AdminDashboard/UserOffersTable/data-table";
 import { getClerkUserAndOffers } from "@/lib/adminDashboard/utils";
-const prisma = new PrismaClient();
+
 
 /** Gets user data and displays the user profile page
  * Parameters: url params with username

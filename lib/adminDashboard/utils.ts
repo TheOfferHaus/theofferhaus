@@ -2,6 +2,7 @@ import type { User, Offer } from "@/lib/adminDashboard/types";
 import { clerkClient } from "@clerk/nextjs/server";
 import prisma from "@/prisma/userMethods";
 
+
 async function getAdminDashBoardUsers(): Promise<User[]> {
   const userData = await clerkClient.users.getUserList({
     orderBy: "-username",
@@ -25,7 +26,7 @@ async function getClerkUserAndOffers(username: string) {
     where: { username: username },
     include: { offers: true },
   });
-  
+
   const clerkUser = await clerkClient.users.getUser(databaseUser!.clerkId);
 
   const offers = databaseUser!.offers.map((offer) => ({
