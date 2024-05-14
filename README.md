@@ -95,7 +95,7 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 3. Click on the Connect tab
 4. Click on the Webhooks tab
 5. Click Add a Webhook
-6. Paste in your localtunnel URL and add `/api/typeform`to the end of it
+6. Paste in your localtunnel URL and add `/api/typeform` to the end of it
 7. Click 'Save Webbook' and make sure to also click the Webhook ON slider to enable it
 
 ## Setting Up Docusign
