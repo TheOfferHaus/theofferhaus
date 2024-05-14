@@ -1,7 +1,8 @@
 
 import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
-import { makeEnvelope } from "@/lib/docusign/serverActions";
+import { getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
 import { updateOfferOnFormSubmission, setOfferFormInProgressFalse } from "./databaseHelpers";
+import { sign } from "crypto";
 
 /**
  * Webhook endpoint for receiving data from Typeform.
@@ -24,6 +25,10 @@ export async function POST(request: Request) {
     };
 
     const envelopeId = await makeEnvelope(formattedData, signerData);
+
+    await sendEnvelopeEmail(envelopeId);
+
+    console.log(await getEnvelopeUrl(envelopeId, signerData));
 
     await updateOfferOnFormSubmission(offer_id, envelopeId, formData.event_id, property_id);
     await setOfferFormInProgressFalse(username);
