@@ -122,7 +122,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div className="mb-2">
-        <label htmlFor="street">Street Name:&nbsp;</label>
+        <label htmlFor="street" className="font-semibold">Street Name:&nbsp;</label>
         <input
           type="text"
           id="street"
@@ -135,7 +135,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div className="mb-2">
-        <label htmlFor="unit">Unit #:&nbsp;</label>
+        <label htmlFor="unit" className="font-semibold">Unit #:&nbsp;</label>
         <input
           type="text"
           id="unit"
@@ -147,7 +147,7 @@ export default function AddressValidationForm() {
         />
       </div>
       <div className="mb-2">
-        <label htmlFor="city">City:&nbsp;</label>
+        <label htmlFor="city" className="font-semibold">City:&nbsp;</label>
         <input
           type="text"
           id="city"
@@ -160,13 +160,13 @@ export default function AddressValidationForm() {
         />
       </div>
       <div className="mb-2">
-        <label htmlFor="stateCode">State:&nbsp;</label>
+        <label htmlFor="stateCode" className="font-semibold">State:&nbsp;</label>
         <select
           name="stateCode"
           id="stateCode"
           value={formData.stateCode}
           onChange={handleChange}
-          className="border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="border rounded w-full py-2 px-2 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option disabled value="">
             Choose a State
@@ -177,7 +177,7 @@ export default function AddressValidationForm() {
         </select>
       </div>
       <div className="mb-2">
-        <label htmlFor="postalCode">Zipcode:&nbsp;</label>
+        <label htmlFor="postalCode" className="font-semibold">Zipcode:&nbsp;</label>
         <input
           type="text"
           id="postalCode"
