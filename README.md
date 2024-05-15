@@ -10,6 +10,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Every time a new branch is merged
+
+1. Run `npm install`
+2. Run `npm run migrate:dev`
+3. If you want to re-seed your database, run `npm run migrate:reset`.
+
 ## For setting up database with Prisma
 
 Developers will have to:
@@ -21,7 +27,7 @@ Developers will have to:
 5. Run `npm run migrate:init`
    Now you can use the prisma client to made database queries. For syntax questions ping the auth team
 6. If you want to use prisma studio to easily see database records, run `npm run prisma:studio`
-7. Everytime the schema is updated, in order to update the database accordingly run `npm run migrate:add` followed by `your-migration-name` to describe the change in that format with hyphens between each word. For example, if the schema was updated to add a column called "firstName" to the database, you would run something like `npm run migrate:add add-first-name-column-to-user`
+7. Every time the schema is updated, in order to update the database accordingly run `npm run migrate:dev` and follow terminal prompts
 
 ## For setting up Stripe
 
@@ -96,7 +102,7 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 4. Click on the Webhooks tab
 5. Click Add a Webhook
 6. Paste in your localtunnel URL and add `/api/typeform` to the end of it
-7. Click 'Save Webbook' and make sure to also click the Webhook ON slider to enable it
+7. Click 'Save Webhook' and make sure to also click the Webhook ON slider to enable it
 
 ## Setting Up Docusign
 0. Run `npm install`
