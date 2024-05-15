@@ -29,7 +29,7 @@ const CommissionTicker: React.FC<CommissionTickerProps> = ({
   return (
     <div>
       <CountUp
-        start={0}
+        start={Math.max(0, amount - incrementAmount)}
         end={amount}
         duration={0.1}
         separator=","
