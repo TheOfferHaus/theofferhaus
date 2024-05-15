@@ -72,13 +72,6 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 4. For Clerk, update .env.local to include the keys added to .env.example
 5. Keys and signin info for both users will be provided by auth team
 
-## Tell everyone for updated DB
-
-1. npm run migrate:add add-clerkid-to-users
-2. npm run migrate:reset
-3. If you check PSQL and query for all users, you should see the clerk_id as a
-   column
-
 ## Setting Up Clerk To Add User to Personal Database on Signup
 1. Run `npm install`
 2. Make sure you also install localtunnel globally with `npm install -g localtunnel`
