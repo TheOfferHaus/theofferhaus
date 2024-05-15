@@ -6,13 +6,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import CountUpWidget from "@/components/CountUpWidget";
 
 /** Body component for landing page */
 
 const Body = () => {
   return (
     <div>
-      <div className="relative w-screen mx-auto px-4 sm:px-6 lg:px-8 bg-custom-white py-6 rounded-3xl -mt-6 z-10">
+      <div className="relative w-screen mx-auto px-4 sm:px-6 lg:px-8 bg-custom-white py-6 rounded-3xl -mt-6 z-10 rounded-b-none">
         <div className="text-center mb-10">
           <h2 className="text-2xl leading-tight">
             The simplest way to buy Real Estate.
@@ -42,7 +43,9 @@ const Body = () => {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-14 lg:p-32 md:p-12 p-6 bg-off-white">
+      <CountUpWidget/>
+
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-14 lg:p-32 md:p-12 p-12 sm:p-20 mb-12 bg-off-white">
         <Card>
           <CardHeader>
             <CardTitle>Get started today.</CardTitle>
