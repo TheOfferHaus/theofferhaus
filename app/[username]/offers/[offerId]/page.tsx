@@ -2,6 +2,7 @@ import { currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import CountdownTimer from "@/components/CountdownTimer";
+import Image from "next/image";
 
 const prisma = new PrismaClient();
 
@@ -33,7 +34,7 @@ export default async function Offer({
     <div className="grid grid-cols-2 pt-12">
       <div className="MapAndDueDates text-center text-xl font-extrabold">
         <div className="Map mb-20">
-          <img
+          <Image
             className="h-auto w-2/4 mx-auto"
             src="/example-map.jpg"
             alt="PropertyMap"
