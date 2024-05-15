@@ -10,7 +10,7 @@ import {
 } from "@/app/actions";
 import { US_STATES } from "@/constants";
 import { toast } from "sonner";
-import {z} from 'zod'
+import { z } from 'zod';
 
 
 const initialFormData = {
@@ -24,14 +24,14 @@ const initialFormData = {
 };
 
 const addressSchema = z.object({
-  number: z.coerce.number({message: "Street number must be a number"}),
-  street: z.string({message: "Street name is invalid"}).min(3, {message: "Street name must be at least 3 characters"}),
-  city: z.string({message: "City is invalid"}),
+  number: z.coerce.number({ message: "Street number must be a number" }),
+  street: z.string({ message: "Street name is invalid" }).min(3, { message: "Street name must be at least 3 characters" }),
+  city: z.string({ message: "City is invalid" }),
   stateCode: z.string(),
-  postalCode: z.string({message: "Zipcode is invalid"}),
-  unit: z.string({message: "Unit Number is invalid"}).optional(),
+  postalCode: z.string({ message: "Zipcode is invalid" }),
+  unit: z.string({ message: "Unit Number is invalid" }).optional(),
   countryCode: z.string()
-})
+});
 
 /** Form for validating an address. Makes a request to the radar api on form
  * submit and interacts with the database
@@ -46,7 +46,7 @@ export default function AddressValidationForm() {
     const result = addressSchema.safeParse(formData);
 
     if (!result.success) {
-      result.error.issues.forEach((issue) => toast.warning(issue.message))
+      result.error.issues.forEach((issue) => toast.warning(issue.message));
       return;
     }
 
@@ -194,8 +194,8 @@ export default function AddressValidationForm() {
           type="submit"
           className=" mt-5 px-4 py-2 bg-custom-white text-black font-semibold rounded-lg shadow-md
                 hover:bg-black hover:text-white focus:outline-none focus:ring-2
-                focus:ring-light-gray focus:ring-opacity-75 transition duration-300
-                ease-in-out transform hover:-translate-y-1 hover:scale-10"
+                focus:ring-light-gray focus:ring-opacity-75 animation: : transition duration-150
+                ease-in-out transform hover:scale-95"
         >
           Submit
         </button>
