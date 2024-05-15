@@ -22,6 +22,9 @@ personal_property_items
 earnest_money_deposit_location
  */
 
+type Extractors = {
+  [key: string]: (input: ExtractedAnswers) => string;
+};
 
 /**
  * Utility class for extracting and formatting form data for DocuSign integration.
@@ -56,13 +59,9 @@ export default class FormDataExtractor {
 
   /* Dictionary of additional information extractors.
    * This is overwritten in children classes for each US state */
-  static stateSpecificExtractors: {
-    [key: string]: (input: ExtractedAnswers) => string;
-  } = {}
+  static stateSpecificExtractors: Extractors = {};
 
-  static additionalInfoExtractors: {
-    [key: string]: (input: ExtractedAnswers) => string;
-  } = {
+  static additionalInfoExtractors: Extractors = {
     offer_amount_in_words: (ans) => toWords(Number(ans.offer_amount_num)),
 
     personal_property_included: (ans) =>
@@ -78,7 +77,7 @@ export default class FormDataExtractor {
 
     purchase_financed_method: (ans) => FormDataExtractor.getLoanText(ans),
 
-    offer_made_on_date: (ans) => `${new Date().toLocaleDateString('en-us',{year:"numeric", month:"numeric", day:"numeric"})}`,
+    offer_made_on_date: (ans) => `${new Date().toLocaleDateString('en-us', { year: "numeric", month: "numeric", day: "numeric" })}`,
 
     has_hoa: (ans) => FormDataExtractor.getHOAText(ans),
 
@@ -99,31 +98,39 @@ export default class FormDataExtractor {
   static getFormattedFormDataForDocusign(formData: Answer[]): {
     [key: string]: string;
   } {
+
     const extractedAnswers = FormDataExtractor.extractAnswers(formData);
 
-
-    const formatted =
+    const formattedGeneralAnswers =
       FormDataExtractor.formatGeneralInfoAnswersForDocusign(extractedAnswers);
+    const formattedBooleans =
+      FormDataExtractor.formatBooleanAnswersForDocusign(extractedAnswers);
+    const formatedAdditionalInfo =
+      FormDataExtractor.formatDataViaExtractors(this.additionalInfoExtractors, extractedAnswers);
+    const formatedStateSpecificInfo =
+      FormDataExtractor.formatDataViaExtractors(this.stateSpecificExtractors, extractedAnswers);
 
-    const formattedBooleans = FormDataExtractor.formatBooleanAnswersForDocusign(extractedAnswers);
+    return {
+      ...formattedGeneralAnswers,
+      ...formattedBooleans,
+      ...formatedAdditionalInfo,
+      ...formatedStateSpecificInfo
+    };
 
-    for (let [field, value] of Object.entries(formattedBooleans)) {
-      formatted[field] = value;
-    }
+  }
 
-    for (const [field, extractor] of Object.entries(
-      this.additionalInfoExtractors
-    )) {
-      formatted[field] = extractor(extractedAnswers);
-    }
 
-    for (const [field, extractor] of Object.entries(
-      this.stateSpecificExtractors
-    )) {
-      formatted[field] = extractor(extractedAnswers);
-    }
-
-    return formatted;
+  private static formatDataViaExtractors(
+    extractors: Extractors,
+    answers: ExtractedAnswers
+  ): {
+    [key: string]: string;
+  } {
+    return Object.fromEntries(
+      Object.entries(extractors).map(([field, extractor]) =>
+        [field, extractor(answers)]
+      )
+    );
   }
 
   /**
@@ -139,7 +146,6 @@ export default class FormDataExtractor {
       ])
     );
   }
-
 
   /**
    * Formats general information answers for DocuSign.
@@ -170,40 +176,6 @@ export default class FormDataExtractor {
     );
   }
 
-  /**
-   * Formats answers for DocuSign including the additional info
-   * (which will be added in children classes).
-   *
-   * @param {ExtractedAnswers} answers - Extracted answers.
-   * @returns {object} - Formatted answers for DocuSign.
-   */
-  private static formatAnswersForDocusign(answers: ExtractedAnswers): {
-    [key: string]: string;
-  } {
-    const formatted =
-      FormDataExtractor.formatGeneralInfoAnswersForDocusign(answers);
-
-    const formattedBooleans = FormDataExtractor.formatBooleanAnswersForDocusign(answers);
-
-    for (let [field, value] of Object.entries(formattedBooleans)) {
-      formatted[field] = value;
-    }
-
-    for (const [field, extractor] of Object.entries(
-      this.additionalInfoExtractors
-    )) {
-      formatted[field] = extractor(answers);
-    }
-
-    for (const [field, extractor] of Object.entries(
-      this.stateSpecificExtractors
-    )) {
-      formatted[field] = extractor(answers);
-    }
-
-    return formatted;
-  }
-
   private static getPersonalPropertyText(ans: ExtractedAnswers): string {
     if (ans.personal_property_included) {
       return `There shall be personal property included in this Agreement and/or included in the purchase of the real property. All removable items from the real property, i.e. "non-fixtures", shall be retained by the Seller at closing except those listed below: ${ans.personal_property_items}`;
@@ -229,15 +201,15 @@ export default class FormDataExtractor {
 
   private static getHOAText(ans: ExtractedAnswers): string {
     if (ans.has_hoa) {
-      return "Seller to send Buyer OREF 024 - Homeowners Association/Townhome/Planned Community Addendum. In this Agreement,  “townhome” means a connected home where the owner also owns the ground beneath the home, and “Planned Community” means a residential subdivision, not a condominium or timeshare, in which owners are collectively responsible for part of the subdivision."
+      return "Seller to send Buyer OREF 024 - Homeowners Association/Townhome/Planned Community Addendum. In this Agreement,  “townhome” means a connected home where the owner also owns the ground beneath the home, and “Planned Community” means a residential subdivision, not a condominium or timeshare, in which owners are collectively responsible for part of the subdivision.";
     }
 
-    return ""
+    return "";
   }
 
   private static getClosingCostText(ans: ExtractedAnswers): string {
     if (ans.closing_costs_responsibility !== 'Buyer') {
-      `Additional Information as follows: ${ans.closing_costs_responsibility_other || ans.closing_costs_responsibility_seller}`
+      `Additional Information as follows: ${ans.closing_costs_responsibility_other || ans.closing_costs_responsibility_seller}`;
     }
     return '';
   }
@@ -251,12 +223,12 @@ export default class FormDataExtractor {
 
   private static getEarnestMoneyLocationText(ans: ExtractedAnswers): string {
     if (ans.earnest_money) {
-      return `The Earnest Money will be deposited at ${ans.earnest_money_deposit_location}`
+      return `The Earnest Money will be deposited at ${ans.earnest_money_deposit_location}`;
     }
     return '';
   }
 
   private static getBuyerAddress(ans: ExtractedAnswers): string {
-    return `${ans['5705500f-691b-4b40-9e21-a7232ba38654']} ${ans['850b0283-3cb4-455c-9698-f4acddc75034']}, ${ans['b5cd018b-1bf7-4fba-895e-4939b00f69e9']}, ${ans["14125393-a333-4cd7-9fac-e88ed2bc8ead"]} ${ans["b8a5110a-aec8-48b1-aa02-36f829b7bc42"]}, ${ans["7445e581-84af-414d-9a23-f16f9ecec5e9"]}`
+    return `${ans['5705500f-691b-4b40-9e21-a7232ba38654']} ${ans['850b0283-3cb4-455c-9698-f4acddc75034']}, ${ans['b5cd018b-1bf7-4fba-895e-4939b00f69e9']}, ${ans["14125393-a333-4cd7-9fac-e88ed2bc8ead"]} ${ans["b8a5110a-aec8-48b1-aa02-36f829b7bc42"]}, ${ans["7445e581-84af-414d-9a23-f16f9ecec5e9"]}`;
   }
 }
