@@ -13,6 +13,8 @@ export async function POST(request: Request) {
     const formData = await request.json();
     const { username, property_id, offer_id, email, full_name } = formData.form_response.hidden;
 
+    await setOfferFormInProgressFalse(username);
+
     const formattedData =
       OregonFormDataExtractor.getFormattedFormDataForDocusign(
         formData.form_response.answers
@@ -30,8 +32,7 @@ export async function POST(request: Request) {
 
     console.log(await getEnvelopeUrl(envelopeId, signerData));
 
-    await updateOfferOnFormSubmission(offer_id, envelopeId, formData.event_id, property_id);
-    await setOfferFormInProgressFalse(username);
+    await updateOfferOnFormSubmission(offer_id, envelopeId, formData.form_response.token, property_id);
 
     return new Response("Webhook processed successfully!", {
       status: 200,
