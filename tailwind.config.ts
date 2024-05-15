@@ -15,7 +15,9 @@ const config: Config = withUt({
       "primary-medium": "#007FFF",
       "off-white": "#F2F1EB",
       "custom-white": "#fffdf7",
-      "dark-gray": "#A9A9A9",
+      "dark-gray": "#4F4F4D",
+      "success-green": "#5cb85c",
+      "completed-blue": "#0077B5",
     },
     container: {
       center: true,
@@ -27,6 +29,11 @@ const config: Config = withUt({
       },
     },
     extend: {
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       fontFamily: {
         ttnorms: ["TTNormsPro", "sans-serif"],
       },

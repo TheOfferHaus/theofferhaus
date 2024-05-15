@@ -76,11 +76,11 @@ export default class Template {
    * to a template. this can be changed if needed.
    */
 
-  async addDocument(documentData: DocumentData): Promise<void> {
+  async addDocument(documentPath: string): Promise<void> {
     // Read and base64 encode the document
-    const documentBuffer = fs.readFileSync(documentData.path);
+    const documentBuffer = fs.readFileSync(documentPath);
     const documentBase64 = documentBuffer.toString("base64");
-    const documentName = documentData.path.split("/").pop() || "";
+    const documentName = documentPath.split("/").pop() || "";
 
     // Construct request JSON
     const requestData = {
@@ -90,7 +90,6 @@ export default class Template {
           documentId: "1",
           fileExtension: documentName.split(".").pop() || "",
           order: "1",
-          pages: documentData.pageCount, //TODO: get num pages programmatically
           name: documentName,
         },
       ],

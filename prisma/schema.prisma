@@ -15,11 +15,14 @@ datasource db {
 
 model User {
   username     String      @id @unique
+  clerkId      String      @unique         @map("clerk_id")
   isAdmin      Boolean     @default(false) @map("is_admin")
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt      @map("updated_at")
   stripeId     String?                     @map("stripe_id")
+  offerFormInProgress   Boolean     @default(false) @map("offer_form_in_progress")
   offers       Offer[]
+
 
   @@map("users")
 }
@@ -27,6 +30,7 @@ model User {
 model Offer {
   id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   envelopeId     String?    @unique
+  envelopeURL    String?    @unique
   typeformId     String?    @unique
   createdAt      DateTime   @default(now())  @map("created_at")
   updatedAt      DateTime   @updatedAt       @map("updated_at")

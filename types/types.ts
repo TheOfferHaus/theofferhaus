@@ -15,6 +15,11 @@ type OfferObject = {
   status: string;
 }
 
+type USStatesObject = {
+  [key: string] : string;
+}
+
 export type {
-  OfferObject
+  OfferObject,
+  USStatesObject
 }

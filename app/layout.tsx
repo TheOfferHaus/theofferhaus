@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "OfferHaus",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <NextSSRPlugin
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
+          <Toaster position="top-center" closeButton />
           <NavBar />
           <main>{children}</main>
           <Footer />

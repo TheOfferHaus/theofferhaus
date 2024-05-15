@@ -1,18 +1,37 @@
+
+import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
+import { getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
+import { updateOfferOnFormSubmission, setOfferFormInProgressFalse } from "./databaseHelpers";
+import { sign } from "crypto";
+
 /**
  * Webhook endpoint for receiving data from Typeform.
  */
 
-import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
-import RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA from "@/lib/docusign/agreementDummyData";
-import { makeEnvelope } from "@/lib/docusign/serverActions";
-
 export async function POST(request: Request) {
   try {
     const formData = await request.json();
+    const { username, property_id, offer_id, email, full_name } = formData.form_response.hidden;
 
-    const formattedData = OregonFormDataExtractor.getFormattedFormDataForDocusign(formData.form_response.answers);
+    const formattedData =
+      OregonFormDataExtractor.getFormattedFormDataForDocusign(
+        formData.form_response.answers
+      );
 
-    const envelopeId = await makeEnvelope(RESIDENTIAL_PURCHASE_AGREEMENT_DUMMY_DATA, {email: 'ani.nishioka@gmail.com', name: 'Anissa Nishioka'});
+    const signerData = {
+      email,
+      name: full_name,
+      userId: username,
+    };
+
+    const envelopeId = await makeEnvelope(formattedData, signerData);
+
+    await sendEnvelopeEmail(envelopeId);
+
+    console.log(await getEnvelopeUrl(envelopeId, signerData));
+
+    await updateOfferOnFormSubmission(offer_id, envelopeId, formData.event_id, property_id);
+    await setOfferFormInProgressFalse(username);
 
     return new Response("Webhook processed successfully!", {
       status: 200,
@@ -25,5 +44,4 @@ export async function POST(request: Request) {
     });
   }
 
-  //const newEnvelope = await makeEnvelope(formatFormDataForDocusign(formData), signerData, templateId)
 }

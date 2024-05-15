@@ -4,7 +4,7 @@ import FaqHeader from "@/components/FaqHeader";
 /** FAQs page */
 export default function Faqs() {
   return (
-    <div className="">
+    <div>
       <FaqHeader />
       <FaqBody />
     </div>
