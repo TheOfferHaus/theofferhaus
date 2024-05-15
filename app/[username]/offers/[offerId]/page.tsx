@@ -8,6 +8,9 @@ import {
   OFFER_DETAIL_REFERENCES,
 } from "@/constants";
 import { TypeformAnswerObject, OfferDetailObject } from "@/types/types";
+import { SignerData } from "@/config";
+import { getEnvelopeUrl } from "@/lib/docusign/serverActions";
+import Link from "next/link";
 
 const prisma = new PrismaClient();
 
@@ -20,7 +23,7 @@ const prisma = new PrismaClient();
 export default async function Offer({
   params,
 }: {
-  params: { offerId: string };
+  params: { offerId: string; };
 }) {
   const currUser = (await currentUser()) as User;
 
@@ -37,7 +40,17 @@ export default async function Offer({
 
   if (!offer) redirect(`${currUser.username}/offers`);
 
-  const { typeformId, envelopeId, envelopeURL } = offer;
+  const { typeformId, envelopeId } = offer;
+
+  const signerData: SignerData = {
+    email: currUser.emailAddresses[0].emailAddress,
+    name: `${currUser.firstName} ${currUser.lastName}`,
+    userId: currUser.username as string
+  };
+
+
+  const envelopeUrl = await getEnvelopeUrl(envelopeId as string, signerData);
+
 
   const response = await fetch(
     `${TYPEFORM_API_BASE_URL}/forms/${TYPEFORM_OFFER_FORM_ID}/responses?included_response_ids=${typeformId}`,
@@ -139,7 +152,9 @@ export default async function Offer({
               focus:ring-light-gray focus:ring-opacity-75 transition duration-300
               ease-in-out transform hover:-translate-y-1 hover:scale-10"
           >
-            Generate Documents
+            <Link href={envelopeUrl} target="_blank">
+              <p className="hover:text-gray-300">Generate Documents</p>
+            </Link>
           </button>
         </div>
       </div>
