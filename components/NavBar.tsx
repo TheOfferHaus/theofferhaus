@@ -6,6 +6,7 @@ import { User, currentUser } from "@clerk/nextjs/server";
 
 const NavBar = async () => {
   const currUser = (await currentUser()) as User;
+  const makeOfferURL = currUser ? "/address-validate" : "/intro";
 
   return (
     <nav className="w-full bg-custom-white">
@@ -14,8 +15,12 @@ const NavBar = async () => {
           <Link className="px-3 py-2 hover:text-primary-dark" href="/">
             Home
           </Link>
-          <Link className="px-3 py-2 hover:text-primary-dark" href="/quiz">
-            Quiz
+          <Link
+            className="px-3 py-2 hover:text-primary-dark"
+            href={makeOfferURL}
+            target={currUser && "_blank"}
+          >
+            Make an Offer
           </Link>
           {currUser && (
             <Link
