@@ -15,6 +15,8 @@ const config: Config = {
       "off-white": "#F2F1EB",
       "custom-white": "#fffdf7",
       "dark-gray": "#4F4F4D",
+      "success-green": "#5cb85c",
+      "completed-blue": "#0077B5",
     },
     container: {
       center: true,

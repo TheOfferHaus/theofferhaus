@@ -15,7 +15,7 @@ export default async function Payment(data: {
 }) {
   const user = await currentUser();
 
-  if (!user) return redirect("/"); // will use forbidden page or other route protection methods
+  if (!user) return redirect("/");
 
   let stripeCustomerId: string;
   try {

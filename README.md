@@ -96,6 +96,15 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 14. We recommend you have a separate terminal tab running localtunnel
 ***NOTE: When a user is created in the app, anyone with an active webhook will see that user added to their own database***
 
+## Adding localtunnel URL to Typeform Webhook in Order to Receive the Response Data
+1. Navigate to Typeform Dashboard
+2. Go to The Offer Haus Offer Quiz
+3. Click on the Connect tab
+4. Click on the Webhooks tab
+5. Click Add a Webhook
+6. Paste in your localtunnel URL and add `/api/typeform` to the end of it
+7. Click 'Save Webbook' and make sure to also click the Webhook ON slider to enable it
+
 ## Setting Up Docusign
 0. Run `npm install`
 1. Run `npm run migrate:add add-model-for-docusign-access-tokens`
@@ -107,3 +116,16 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 7. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
 
 You only have to do the above a single time, it should refresh automatically afterwards.
+
+## THINGS TO DO EVERY TIME YOU START UP THE APP:
+1. Run `lt --port 3000` to generate your new localtunnel URL for that work session
+2. Navigate to Clerk webhook dashboard and update your endpoint with the new URL (if you've made one before).
+   If not, follow Steps 5-14 in 'Setting Up Clerk To Add User to Personal Database on Signup'
+3. Follow Steps 1-4 in 'Adding localtunnel URL to Typeform Webhook in Order to Receive the Response Data'.
+   If you already have your old URL there, you can just update it, otherwise follow Steps 5-7.
+
+## THINGS TO DO EVERY TIME YOU RUN `npm run migrate:reset`
+0. Restart app with `npm run dev`
+1. Steps 3-7 of Setting Up Docusign
+
+
