@@ -10,7 +10,7 @@ export default function FaqBody() {
         <p className="font-extrabold text-lg mb-1">Go to</p>
         <hr className="mb-4" />
         {FAQs.map((f, i) => (
-          <a href={`#${i}`}>
+          <a href={`#${i}`} key={i}>
             <div className="hover:underline mb-3">
               {f.question}
             </div>
@@ -19,7 +19,7 @@ export default function FaqBody() {
       </div>
       <div className="md:col-span-3 md:mx-12 mx-8">
         {FAQs.map((f, i) => (
-          <div id={`${i}`}>
+          <div id={`${i}`} key={i}>
             <FaqCard faq={f} />
           </div>
         ))}
