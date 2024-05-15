@@ -18,7 +18,7 @@ const CountUpWidget = () => {
             *In the U.S. with a median home value of $340,000&nbsp;and an
             average commission rate of 5.49%, buyers are&nbsp;paying
             $47,916,720,000 in fees&nbsp;yearly.
-            That's&nbsp;$1,519.42&nbsp;per&nbsp;second&nbsp;in&nbsp;fees!
+            That&apos;'s&nbsp;$1,519.42&nbsp;per&nbsp;second&nbsp;in&nbsp;fees!
           </CardDescription>
         </div>
       </Card>
