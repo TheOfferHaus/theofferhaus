@@ -109,3 +109,12 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 7. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
 
 You only have to do the above a single time, it should refresh automatically afterwards.
+
+## THINGS TO DO EVERY TIME YOU START UP THE APP:
+1. Steps 1-7 of Adding localtunnel URL to Typeform Webhook in Order to Receive the Response Data
+
+## THINGS TO DO EVERY TIME YOU RUN `npm run migrate:reset`
+0. Restart app with `npm run dev`
+1. Steps 3-7 of Setting Up Docusign
+
+
