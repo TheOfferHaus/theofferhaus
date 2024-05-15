@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/AdminDashboard/AdminUsersTable/data-table";
-import {columns} from "@/components/AdminDashboard/AdminUsersTable/columns";
+import { columns } from "@/components/AdminDashboard/AdminUsersTable/columns";
 import type { User } from "@/lib/adminDashboard/types";
 import { getAdminDashBoardUsers } from "@/lib/adminDashboard/utils";
 
@@ -8,7 +8,7 @@ export default async function AdminDashboard() {
   const users: User[] = await getAdminDashBoardUsers();
 
   return (
-    <div className="mx-12 my-10">
+    <div className="flex flex-col min-h-screen mx-12 py-12">
       <DataTable columns={columns} data={users} />
     </div>
   );
