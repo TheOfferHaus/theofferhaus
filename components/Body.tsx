@@ -31,7 +31,7 @@ const Body = () => {
           <div>
             <div className="flex justify-center items-center mb-2">
               <span className="mr-2 text-primary-dark">✔</span>
-              <span>{`Simple price. You won't find any HUGE fees.`}</span>
+              <span>Simple price. You won't find any HUGE fees.</span>
             </div>
           </div>
           <div>
