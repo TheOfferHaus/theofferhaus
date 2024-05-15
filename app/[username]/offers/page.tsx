@@ -18,7 +18,7 @@ const prisma = new PrismaClient();
 export default async function Offers({
   params,
 }: {
-  params: { username: string };
+  params: { username: string; };
 }) {
   const { username } = params;
   const currUser = (await currentUser()) as User;
@@ -60,8 +60,8 @@ export default async function Offers({
         <button
           className="mt-5 px-4 py-2 bg-custom-white text-black font-semibold rounded-lg shadow-md
               hover:bg-black hover:text-white focus:outline-none focus:ring-2
-              focus:ring-light-gray focus:ring-opacity-75 transition duration-300
-              ease-in-out transform hover:-translate-y-1 hover:scale-10"
+              focus:ring-light-gray focus:ring-opacity-75 animation: : transition
+              duration-150 ease-in-out transform hover:scale-95"
         >
           <Link href="/address-validate" target="_blank">
             <p className="hover:text-gray-300">Make new offer</p>
