@@ -135,7 +135,7 @@ export default class FormDataExtractor {
 
   /** Formats typeform date into proper format.
   *
-  * Typeform formates dates as YYYY-MM-DD, this function modifies
+  * Typeform formats dates as YYYY-MM-DD, this function modifies
   * them to be formatted like MM-DD-YYYY
   *
   * @param {string} typeformDate - A date in the format YYYY-MM-DD
