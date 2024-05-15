@@ -15,12 +15,8 @@ export async function POST(req: NextRequest) {
   await prisma.user.create({
     data: {
       username: body.data.username,
-<<<<<<< HEAD
-      clerkId: body.data.id
-    }
-=======
+      clerkId: body.data.id,
     },
->>>>>>> main
   });
 
   return NextResponse.json({ created: true }, { status: 201 });
