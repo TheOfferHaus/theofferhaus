@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/AdminDashboard/AdminUsersTable/data-table";
-import { columns } from "@/components/AdminDashboard/AdminUsersTable/columns";
+import {columns} from "@/components/AdminDashboard/AdminUsersTable/columns";
 import type { User } from "@/lib/adminDashboard/types";
 import { getAdminDashBoardUsers } from "@/lib/adminDashboard/utils";
 
