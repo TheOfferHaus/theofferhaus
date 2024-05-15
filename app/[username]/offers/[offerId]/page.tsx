@@ -12,6 +12,7 @@ import { SignerData } from "@/config";
 import { getEnvelopeUrl } from "@/lib/docusign/serverActions";
 import Link from "next/link";
 
+
 const prisma = new PrismaClient();
 
 // TODO: Negotiation Due Date and Appraisal Due Date will need to be incorporated
@@ -42,16 +43,16 @@ export default async function Offer({
 
   const { typeformId, envelopeId } = offer;
 
+  // generate envelopeUrl for the docusign documents
   const signerData: SignerData = {
     email: currUser.emailAddresses[0].emailAddress,
     name: `${currUser.firstName} ${currUser.lastName}`,
     userId: currUser.username as string
   };
 
-
   const envelopeUrl = await getEnvelopeUrl(envelopeId as string, signerData);
 
-
+  // get the response data from the form submission related to this offer
   const response = await fetch(
     `${TYPEFORM_API_BASE_URL}/forms/${TYPEFORM_OFFER_FORM_ID}/responses?included_response_ids=${typeformId}`,
     {
