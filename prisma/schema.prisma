@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  username              String      @id @unique
-  isAdmin               Boolean     @default(false) @map("is_admin")
-  createdAt             DateTime    @default(now()) @map("created_at")
-  updatedAt             DateTime    @updatedAt      @map("updated_at")
-  stripeId              String?                     @map("stripe_id")
+  username     String      @id @unique
+  clerkId      String      @unique         @map("clerk_id")
+  isAdmin      Boolean     @default(false) @map("is_admin")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt      @map("updated_at")
+  stripeId     String?                     @map("stripe_id")
   offerFormInProgress   Boolean     @default(false) @map("offer_form_in_progress")
-  offers                Offer[]
+  offers       Offer[]
+
 
   @@map("users")
 }
