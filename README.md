@@ -50,7 +50,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 7. Add `/api/typeform` to the end of the url
 8. Click 'Save Webhook' and make sure to also click the Webhook ON slider to enable it. ***NOTE: When a typeform submission is made, all active webhooks will receive the resulting request.***
 
-### Set up Stripe
+### Set up Docusign
+1. Navigate to http://localhost:PORT/admin/docusign
+2. Click on "Get token"
+3. Sign in to docusign using theofferhaus@gmail.com
+4. You should be redirected to http://localhost:PORT/admin/docusign
+5. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
+
+### Set up Stripe (Only need if working on Stripe payments)
 #### Set up the Stripe command line interface to listen for webhook events
 1. `brew install stripe/stripe-cli/stripe`
 2. `stripe login`
@@ -62,7 +69,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 8. Copy webhook signing secret from the terminal into your .env.local with the key STRIPE_WEBHOOK_SECRET
 9. Run a test payment to trigger a webhook. Alternatively you can use the command `stripe trigger <event>` to trigger a specific event type.
 
-#### Additional info:
+## Additional info:
 - Access the payment page with the following URLs:
    - Offer price: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
    - Full package price: http://localhost:3000/payment?price_id=price_1PDYmLRrTWD9lwhqo9kMOWBi
@@ -79,13 +86,6 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
    Zip: any
 
 - Additional test payment methods can be found here: https://docs.stripe.com/testing
-
-### Set up Docusign
-1. Navigate to http://localhost:PORT/admin/docusign
-2. Click on "Get token"
-3. Sign in to docusign using theofferhaus@gmail.com
-4. You should be redirected to http://localhost:PORT/admin/docusign
-5. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
 
 ### Run app
 1. Run `npm run dev`
