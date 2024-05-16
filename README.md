@@ -67,11 +67,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
    - Offer price: http://localhost:3000/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV
    - Full package price: http://localhost:3000/payment?price_id=price_1PDYmLRrTWD9lwhqo9kMOWBi
 - To make a test payment, you can use the following credit card info:
+
    Card number: 4242 4242 4242 4242
+
    MM/YY: any future date
+
    CVC: any three numbers
+
    Name: any
+
    Zip: any
+
 - Additional test payment methods can be found here: https://docs.stripe.com/testing
 
 ### Set up Docusign
