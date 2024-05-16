@@ -64,14 +64,14 @@ const Body = () => {
               </li>
               <li>
                 -Ability to upgrade to <b>Full Platform</b> if you choose for an
-                additional $399.00
+                additional $400.00
               </li>
             </ul>
           </CardContent>
           <CardFooter>
-            <Link href="#">
+            <Link href="https://theofferhaus.vercel.app/payment?price_id=price_1PC4LDRrTWD9lwhqkYBSUPmV">
               <button className="bg-primary-medium text-custom-white transition duration-150 ease-in-out transform hover:scale-95 rounded-lg p-4 shadow-md">
-                $99.00 For Offer Package
+                $100.00 For Offer Package
               </button>
             </Link>
           </CardFooter>
@@ -111,9 +111,9 @@ const Body = () => {
             </ul>
           </CardContent>
           <CardFooter>
-            <Link href="#">
+            <Link href="https://theofferhaus.vercel.app/payment?price_id=price_1PDYmLRrTWD9lwhqo9kMOWBi">
               <button className="bg-primary-medium text-custom-white transition duration-150 ease-in-out transform hover:scale-95 rounded-lg p-4 shadow-md">
-                $499.00 Full Platform Package
+                $400.00 Full Platform Package
               </button>
             </Link>
           </CardFooter>
