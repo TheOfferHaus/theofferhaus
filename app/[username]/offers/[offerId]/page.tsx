@@ -45,6 +45,7 @@ export default async function Offer({
             alt="PropertyMap"
             fill={true}
             style={{ objectFit: "contain" }}
+            priority={true}
           />
         </div>
 
