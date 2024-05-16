@@ -108,7 +108,7 @@ Additional test payment methods can be found here: https://docs.stripe.com/testi
 0. Run `npm install`
 1. Run `npm run migrate:add add-model-for-docusign-access-tokens`
 2. Run `npm run migrate:reset`
-3. Navigate to http://localhost:PORT/admin/docusign
+3. Navigate to http://localhost:PORT/admin/dev
 4. Click on "Get token"
 5. Sign in to docusign using theofferhaus@gmail.com
 6. You should be redirected to http://localhost:PORT/admin/docusign
