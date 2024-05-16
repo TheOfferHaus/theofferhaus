@@ -113,7 +113,7 @@ const Body = () => {
           <CardFooter>
             <Link href={`/payment?price_id=${process.env.FULL_PACKAGE_PRICE_ID}`}>
               <button className="bg-primary-medium text-custom-white transition duration-150 ease-in-out transform hover:scale-95 rounded-lg p-4 shadow-md">
-                $400.00 Full Platform Package
+                $400.00 Upgrade to Full Platform Package
               </button>
             </Link>
           </CardFooter>
