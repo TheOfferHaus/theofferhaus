@@ -1,8 +1,13 @@
-
 import OregonFormDataExtractor from "@/lib/docusign/FormDataExtractors/OregonFormDataExtractor";
-import { getEnvelopeUrl, makeEnvelope, sendEnvelopeEmail } from "@/lib/docusign/serverActions";
-import { updateOfferOnFormSubmission, setOfferFormInProgressFalse } from "./databaseHelpers";
-import { sign } from "crypto";
+import {
+  getEnvelopeUrl,
+  makeEnvelope,
+  sendEnvelopeEmail,
+} from "@/lib/docusign/serverActions";
+import {
+  updateOfferOnFormSubmission,
+  setOfferFormInProgressFalse,
+} from "./databaseHelpers";
 
 /**
  * Webhook endpoint for receiving data from Typeform.
@@ -11,7 +16,10 @@ import { sign } from "crypto";
 export async function POST(request: Request) {
   try {
     const formData = await request.json();
-    const { username, property_id, offer_id, email, full_name } = formData.form_response.hidden;
+    const { username, property_id, offer_id, email, full_name } =
+      formData.form_response.hidden;
+
+    await setOfferFormInProgressFalse(username);
 
     const formattedData =
       OregonFormDataExtractor.getFormattedFormDataForDocusign(
@@ -30,8 +38,13 @@ export async function POST(request: Request) {
 
     console.log(await getEnvelopeUrl(envelopeId, signerData));
 
-    await updateOfferOnFormSubmission(offer_id, envelopeId, formData.event_id, property_id);
-    await setOfferFormInProgressFalse(username);
+    await updateOfferOnFormSubmission(
+      offer_id,
+      envelopeId,
+      formData.form_response.token,
+      property_id,
+      Number(formattedData.offer_amount_num)
+    );
 
     return new Response("Webhook processed successfully!", {
       status: 200,
@@ -43,5 +56,4 @@ export async function POST(request: Request) {
       status: 400,
     });
   }
-
 }

@@ -2,11 +2,20 @@ import { currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import CountdownTimer from "@/components/CountdownTimer";
+import { TYPEFORM_API_BASE_URL, TYPEFORM_OFFER_FORM_ID } from "@/constants";
+import { getFormattedOfferDetails, getSignerData } from "./offerDetailHelpers";
+import { getEnvelopeUrl } from "@/lib/docusign/serverActions";
+import Link from "next/link";
+
 import Image from "next/image";
 
 const prisma = new PrismaClient();
 
-/** Component for offer detail, includes offer/property info from typeform fields and links to offer documents*/
+// TODO: Negotiation Due Date and Appraisal Due Date will need to be incorporated
+//       after the required Typeform question changes/additions are made
+
+/** Component for offer detail page, includes offer/property info from typeform
+ * fields and links to offer documents*/
 
 export default async function Offer({
   params,
@@ -26,9 +35,26 @@ export default async function Offer({
     },
   });
 
+  // redirect to offer index page if offer cannot be found
   if (!offer) redirect(`${currUser.username}/offers`);
 
-  const { typeformId, envelopeId, envelopeURL } = offer;
+  const { typeformId, envelopeId } = offer;
+
+  const signerData = getSignerData(currUser);
+  const envelopeUrl = await getEnvelopeUrl(envelopeId as string, signerData);
+
+  // get the response data from the form submission related to this offer
+  const response = await fetch(
+    `${TYPEFORM_API_BASE_URL}/forms/${TYPEFORM_OFFER_FORM_ID}/responses?included_response_ids=${typeformId}`,
+    {
+      headers: {
+        authorization: `Bearer ${process.env.TYPEFORM_BEARER_TOKEN}`,
+      },
+    }
+  );
+
+  const formData = await response.json();
+  const formattedOfferDetails = getFormattedOfferDetails(formData);
 
   return (
     <div className="mx-auto text-center">
@@ -58,14 +84,16 @@ export default async function Offer({
                 </span>
                 &nbsp;
                 <span className="italic">
-                  <CountdownTimer targetDate={new Date("5/15/2024")} />
+                  {/* <CountdownTimer targetDate={new Date("5/15/2024")} /> */}
+                  TO BE IMPLEMENTED
                 </span>
               </h3>
               <h3 className="AppraisalDueDate mb-4">
                 <span className="sm:text-2xl text-xl">Appraisal Due Date:</span>{" "}
                 &nbsp;
                 <span className="italic">
-                  <CountdownTimer targetDate={new Date("5/16/2024")} />
+                  {/* <CountdownTimer targetDate={new Date("5/16/2024")} /> */}
+                  TO BE IMPLEMENTED
                 </span>
               </h3>
               <h3 className="InspectionDueDate">
@@ -74,7 +102,11 @@ export default async function Offer({
                 </span>{" "}
                 &nbsp;
                 <span className="italic">
-                  <CountdownTimer targetDate={new Date("5/17/2024")} />
+                  <CountdownTimer
+                    targetDate={
+                      formattedOfferDetails["inspection_date"] as Date
+                    }
+                  />
                 </span>
               </h3>
             </div>
@@ -84,24 +116,34 @@ export default async function Offer({
                   Current Offer Amount:
                 </span>{" "}
                 &nbsp;
-                <span className="italic">{`$${offer.price}`}</span>
+                <span className="italic">{`$${formattedOfferDetails[
+                  "offer_amount_num"
+                ].toLocaleString()}`}</span>
               </h3>
               <h3 className="ClosingDueDate mb-4">
                 <span className="sm:text-2xl text-xl">Closing Date:</span>{" "}
                 &nbsp;
                 <span className="italic">
-                  <CountdownTimer targetDate={new Date("5/14/2024")} />
+                  <CountdownTimer
+                    targetDate={
+                      formattedOfferDetails["closing_time_deadline"] as Date
+                    }
+                  />
                 </span>
               </h3>
               <h3 className="mb-4">
                 <span className="sm:text-2xl text-xl">Down Payment:</span>{" "}
                 &nbsp;
-                <span className="italic">{`$150000`}</span>
+                <span className="italic">{`$${formattedOfferDetails[
+                  "down_payment_amount_num"
+                ].toLocaleString()}`}</span>
               </h3>
               <h3>
                 <span className="sm:text-2xl text-xl">Earnest Money:</span>{" "}
                 &nbsp;
-                <span className="italic">{`$50000`}</span>
+                <span className="italic">
+                  {formattedOfferDetails["earnest_money"] ? "Yes" : "N/A"}
+                </span>
               </h3>
             </div>
           </div>
@@ -114,7 +156,9 @@ export default async function Offer({
               focus:ring-light-gray focus:ring-opacity-75 animation: : transition
               duration-150 ease-in-out transform hover:scale-95"
           >
-            Generate Documents
+            <Link href={envelopeUrl} target="_blank">
+              <p className="hover:text-gray-300">View Documents</p>
+            </Link>
           </button>
         </div>
       </div>
