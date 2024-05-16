@@ -127,7 +127,7 @@ export default async function Offer({
               ease-in-out transform hover:-translate-y-1 hover:scale-10"
           >
             <Link href={envelopeUrl} target="_blank">
-              <p className="hover:text-gray-300">Generate Documents</p>
+              <p className="hover:text-gray-300">View Documents</p>
             </Link>
           </button>
         </div>
