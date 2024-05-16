@@ -5,10 +5,8 @@ import CountdownTimer from "@/components/CountdownTimer";
 import {
   TYPEFORM_API_BASE_URL,
   TYPEFORM_OFFER_FORM_ID,
-  OFFER_DETAIL_REFERENCES,
 } from "@/constants";
-import { TypeformAnswerObject, OfferDetailObject } from "@/types/types";
-import { SignerData } from "@/config";
+import { getFormattedOfferDetails, getSignerData } from "./offerDetailHelpers";
 import { getEnvelopeUrl } from "@/lib/docusign/serverActions";
 import Link from "next/link";
 
@@ -18,7 +16,7 @@ const prisma = new PrismaClient();
 // TODO: Negotiation Due Date and Appraisal Due Date will need to be incorporated
 //       after the required Typeform question changes/additions are made
 
-/** Component for offer detail, includes offer/property info from typeform
+/** Component for offer detail page, includes offer/property info from typeform
  * fields and links to offer documents*/
 
 export default async function Offer({
@@ -39,17 +37,12 @@ export default async function Offer({
     },
   });
 
+  // redirect to offer index page if offer cannot be found
   if (!offer) redirect(`${currUser.username}/offers`);
 
   const { typeformId, envelopeId } = offer;
 
-  // generate envelopeUrl for the docusign documents
-  const signerData: SignerData = {
-    email: currUser.emailAddresses[0].emailAddress,
-    name: `${currUser.firstName} ${currUser.lastName}`,
-    userId: currUser.username as string
-  };
-
+  const signerData = getSignerData(currUser);
   const envelopeUrl = await getEnvelopeUrl(envelopeId as string, signerData);
 
   // get the response data from the form submission related to this offer
@@ -63,27 +56,7 @@ export default async function Offer({
   );
 
   const formData = await response.json();
-
-  const offerDetails: TypeformAnswerObject[] = formData.items[0].answers.filter(
-    (a: TypeformAnswerObject) => OFFER_DETAIL_REFERENCES.includes(a.field.ref)
-  );
-
-  const formattedOfferDetails: OfferDetailObject = {};
-
-  for (const detail of offerDetails) {
-    if (detail.type === "number") {
-      formattedOfferDetails[detail.field.ref] = detail.number as number;
-    }
-    if (detail.type === "text") {
-      formattedOfferDetails[detail.field.ref] = detail.text as string;
-    }
-    if (detail.type === "boolean") {
-      formattedOfferDetails[detail.field.ref] = detail.boolean as boolean;
-    }
-    if (detail.type === "date") {
-      formattedOfferDetails[detail.field.ref] = detail.date as Date;
-    }
-  }
+  const formattedOfferDetails = getFormattedOfferDetails(formData);
 
   return (
     <div className="grid grid-cols-2 pt-12">
@@ -95,21 +68,21 @@ export default async function Offer({
             alt="PropertyMap"
           />
         </div>
-        <div className="NegotiationDueDate mb-3">
+        <div className="NegotiationDueDate mb-4">
           <span>
             Negotiation Due Date: &nbsp;
             {/* <CountdownTimer targetDate={new Date("5/15/2024")} /> */}
             TO BE IMPLEMENTED
           </span>
         </div>
-        <div className="AppraisalDueDate mb-3">
+        <div className="AppraisalDueDate mb-4">
           <span>
             Appraisal Due Date: &nbsp;
             {/* <CountdownTimer targetDate={new Date("5/16/2024")} /> */}
             TO BE IMPLEMENTED
           </span>
         </div>
-        <div className="InspectionDueDate mb-3">
+        <div className="InspectionDueDate mb-4">
           <span>
             Inspection Due Date: &nbsp;
             <CountdownTimer
@@ -120,15 +93,15 @@ export default async function Offer({
       </div>
       <div className="AddressAndOfferInfo text-center">
         <div className="Address mt-0">
-          <h1 className="lg:text-3xl md:text-3xl sm:text-3xl text-2xl mb-3 mt-4 font-bold">
+          <h1 className="lg:text-3xl md:text-3xl sm:text-3xl text-2xl mb-4 mt-4 font-bold">
             {offer.property.address}
           </h1>
           <div className="text-xl font-extrabold">
-            <h2 className="mb-3">
+            <h2 className="mb-4">
               Current Offer Amount:{" "}
               {`$${formattedOfferDetails["offer_amount_num"].toLocaleString()}`}
             </h2>
-            <div className="ClosingDueDate mb-3">
+            <div className="ClosingDueDate mb-4">
               <span>
                 Closing Date: &nbsp;
                 <CountdownTimer
@@ -138,11 +111,11 @@ export default async function Offer({
                 />
               </span>
             </div>
-            <h2 className="mb-3">
+            <h2 className="mb-4">
               Down Payment:{" "}
               {`$${formattedOfferDetails["down_payment_amount_num"].toLocaleString()}`}
             </h2>
-            <h2 className="mb-3">
+            <h2 className="mb-4">
               Earnest Money:{" "}
               {formattedOfferDetails["earnest_money"] ? "Yes" : "N/A"}
             </h2>

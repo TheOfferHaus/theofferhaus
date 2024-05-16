@@ -17,7 +17,8 @@ async function updateOfferOnFormSubmission(
   offerId: string,
   envelopeId: string,
   typeformId: string,
-  propertyId: string) {
+  propertyId: string,
+  price: number) {
 
   await prisma.offer.update({
     where: {
@@ -27,6 +28,7 @@ async function updateOfferOnFormSubmission(
       envelopeId,
       typeformId,
       propertyId,
+      price,
     },
   });
 }
