@@ -6,7 +6,7 @@ export function DocumentsDataTable() {
   return (
     <ul
       role="list"
-      className="divide-y border border-dark-gray bg-custom-white"
+      className="divide-y border border-dark-gray bg-custom-white overflow-x-scroll"
     >
       {/* hardcoding documents for now - needs to be dynamically mapped from document source */}
       <Document name={"resume_back_end_developer.pdf"} link={"#"} />

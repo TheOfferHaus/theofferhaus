@@ -15,7 +15,7 @@ export default async function UserProfile(data: {
   const { clerkUser, offers } = await getClerkUserAndOffers(username);
 
   return (
-    <div className="m-12">
+    <div className="m-12 mb-20">
       <div className="px-4">
         <h3 className="text-4xl">{username}</h3>
         <p className="mt-4 text-xl">Personal details and documents.</p>
@@ -36,7 +36,7 @@ export default async function UserProfile(data: {
             title={"Offers"}
             description={<OffersDataTable columns={columns} data={offers} />}
           />
-          <Section title={"Documents"} description={<DocumentsDataTable />} />
+          <Section title={"Documents"} description={<DocumentsDataTable/>}/>
         </dl>
       </div>
     </div>
