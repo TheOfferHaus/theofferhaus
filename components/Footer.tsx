@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="mx-auto flex flex-col sm:flex-row items-center justify-between pl-4">
         <ul className="flex items-center font-medium mb-2 sm:mb-0">
           <li>
-            <a href="#" className="mr-3  hover:text-primary-dark md:mr-5">
+            <a href="/about" className="mr-3  hover:text-primary-dark md:mr-5">
               About Us
             </a>
           </li>
@@ -16,7 +16,7 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a href="#" className=" hover:text-primary-dark">
+            <a href="/contact" className=" hover:text-primary-dark">
               Contact
             </a>
           </li>
