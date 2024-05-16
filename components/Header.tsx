@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-/** Header component for landing page */
+/** Header component (configurable)*/
 
 const Header = ({
   imageSrc,
