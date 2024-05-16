@@ -1,15 +1,28 @@
-import type { User, Offer } from "@/lib/adminDashboard/types";
+import type { User as DashUser, Offer } from "@/lib/adminDashboard/types";
 import { clerkClient } from "@clerk/nextjs/server";
+import { User } from "@clerk/nextjs/server";
 import prisma from "@/prisma/userMethods";
 
 
-async function getAdminDashBoardUsers(): Promise<User[]> {
-  const userData = await clerkClient.users.getUserList({
-    orderBy: "-username",
-  });
+async function getAdminDashBoardUsers(): Promise<DashUser[]> {
+
+  const userCount = await clerkClient.users.getCount();
+  const numQueries = Math.ceil(userCount / 500);
+
+  const userData: User[] = [];
+
+  for (let i = 0; i < numQueries; i++) {
+    const usersResponse = await clerkClient.users.getUserList({
+      orderBy: "username",
+      offset: i * 500,
+      limit: 500 //max allowed by Clerk
+    });
+
+    userData.push(...usersResponse.data);
+  }
 
   const users = await Promise.all(
-    userData.data.map(async (user) => ({
+    userData.map(async (user) => ({
       username: user.username,
       lastName: user.lastName,
       firstName: user.firstName,
