@@ -33,7 +33,7 @@ export default async function OfferCard({ offer, knowCompleted }: { offer: Offer
             ? `/quiz?username=${username}&propertyId=${property.id}&offerId=${id}`
             : `/${username}/offers/${id}`
         }
-        target="_blank"
+        target={!typeformId? "_blank" : ""}
         rel="noopener noreferrer"
       >
         <Card className="pb-3">
