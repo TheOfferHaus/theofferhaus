@@ -1,11 +1,11 @@
 import FaqBody from "@/components/FaqBody";
-import FaqHeader from "@/components/FaqHeader";
+import Header from "@/components/Header";
 
 /** FAQs page */
 export default function Faqs() {
   return (
     <div>
-      <FaqHeader />
+      <Header imageSrc="/panorama-house.jpg" title="FAQs"/>
       <FaqBody />
     </div>
   );
