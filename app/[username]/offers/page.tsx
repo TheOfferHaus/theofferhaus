@@ -21,10 +21,15 @@ export default async function Offers({
   searchParams,
 }: {
   params: { username: string; };
-  searchParams: { validateRedirect: string; };
+  searchParams: {
+    validateRedirect: string;
+    from: string;
+  };
 }) {
   const { username } = params;
   const currUser = (await currentUser()) as User;
+
+  const cameFromTypeform = (searchParams.from === "typeform");
 
   if (username !== currUser.username) redirect(`/${currUser.username}/offers`);
 
@@ -57,7 +62,7 @@ export default async function Offers({
       {offers.length === 0 && <h3>You have no offers!</h3>}
       <div className="grid grid-cols-3 place-items-center">
         {offers.map((o) => (
-          <OfferCard key={o.id} offer={o} />
+          <OfferCard key={o.id} offer={o} knowCompleted={cameFromTypeform} />
         ))}
       </div>
       {!user.offerFormInProgress && (
