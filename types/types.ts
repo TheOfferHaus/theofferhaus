@@ -1,7 +1,7 @@
 type OfferObject = {
   property: {
-      id: string,
-      address: string;
+    id: string;
+    address: string;
   };
 } & {
   id: string;
@@ -13,13 +13,32 @@ type OfferObject = {
   buyerId: string;
   propertyId: string;
   status: string;
-}
+};
 
 type USStatesObject = {
-  [key: string] : string;
-}
+  [key: string]: string;
+};
+
+type TypeformAnswerObject = {
+  field: {
+    id: string;
+    type: string;
+    ref: string;
+  };
+  type: string;
+  boolean?: boolean;
+  date?: Date;
+  number?: number;
+  text?: string;
+};
+
+type OfferDetailObject = {
+  [key: string]: string | boolean | number | Date;
+};
 
 export type {
   OfferObject,
-  USStatesObject
-}
+  USStatesObject,
+  TypeformAnswerObject,
+  OfferDetailObject,
+};
