@@ -19,7 +19,7 @@ import {
  * Offers -> OfferCard
  */
 
-export default async function OfferCard({ offer }: { offer: OfferObject }) {
+export default async function OfferCard({ offer, knowCompleted }: { offer: OfferObject; knowCompleted: boolean; }) {
   const { id, property, typeformId } = offer;
   const { username } = (await currentUser()) as User;
 
@@ -45,12 +45,12 @@ export default async function OfferCard({ offer }: { offer: OfferObject }) {
           <CardDescription className="text-center text-lg">
             Offer ID: {id}
           </CardDescription>
-          {!typeformId ? (
-            <p className="text-success-green p-0 text-lg font-bold">
+          {!knowCompleted && !typeformId ? (
+            <p className="text-completed-blue p-0 text-lg font-bold">
               In Progress
             </p>
           ) : (
-            <p className="text-completed-blue p-0 text-lg font-bold">
+            <p className="text-success-green p-0 text-lg font-bold">
               Completed
             </p>
           )}
