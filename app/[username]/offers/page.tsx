@@ -25,7 +25,7 @@ export default async function Offers({
   const { username } = params;
   const currUser = (await currentUser()) as User;
 
-  const cameFromTypeform = (searchParams["from"] === "typeform");
+  const cameFromTypeform = (searchParams.from === "typeform");
 
   if (username !== currUser.username) redirect(`/${currUser.username}/offers`);
 
