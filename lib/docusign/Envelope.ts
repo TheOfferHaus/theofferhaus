@@ -169,7 +169,7 @@ export default class Envelope {
    * Retrieves a signing URL for a specified envelope and recipient.
    *
    * @param {string} returnUrl The URL to which the user will be redirected after signing.
-   * @param {RecipientData} recipientData The details of the recipient, including their email and username.
+   * @param {SignerData} signerData The details of the recipient, including their email and username.
    *
    * The payload for the POST request includes the returnUrl, a fixed 'none' authentication method, and the recipient's email and username.
    * It checks the response and if successful, extracts and returns the signing URL.
