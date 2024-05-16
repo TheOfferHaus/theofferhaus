@@ -20,8 +20,8 @@ export default async function Offers({
   params,
   searchParams,
 }: {
-  params: { username: string; };
-  searchParams: { validateRedirect: string; };
+  params: { username: string };
+  searchParams: { validateRedirect: string };
 }) {
   const { username } = params;
   const currUser = (await currentUser()) as User;
@@ -49,9 +49,13 @@ export default async function Offers({
   const offers = user.offers;
 
   return (
-    <div className="text-center">
-      {searchParams.validateRedirect === "true" && (<ToastAlertMessage message={"You currently have an application in progress!"} />)}
-      <h1 className="lg:text-5xl md:text-8xl sm:text-8xl text-6xl mb-3 mt-4">
+    <div className="text-center mb-12">
+      {searchParams.validateRedirect === "true" && (
+        <ToastAlertMessage
+          message={"You currently have an application in progress!"}
+        />
+      )}
+      <h1 className="lg:text-5xl md:text-8xl sm:text-8xl text-6xl mb-3 mt-6">
         My Offers
       </h1>
       {offers.length === 0 && <h3>You have no offers!</h3>}
@@ -62,13 +66,13 @@ export default async function Offers({
       </div>
       {!user.offerFormInProgress && (
         <button
-          className="mt-5 px-4 py-2 bg-custom-white text-black font-semibold rounded-lg shadow-md
+          className="mt-5 mb-20 px-6 py-4 bg-custom-white text-black font-semibold rounded-lg shadow-md
               hover:bg-black hover:text-white focus:outline-none focus:ring-2
               focus:ring-light-gray focus:ring-opacity-75 animation: : transition
               duration-150 ease-in-out transform hover:scale-95"
         >
           <Link href="/address-validate" target="_blank">
-            <p className="hover:text-gray-300">Make new offer</p>
+            <p className="hover:text-gray-300 text-xl">Make New Offer</p>
           </Link>
         </button>
       )}
