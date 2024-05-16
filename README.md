@@ -87,21 +87,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 4. You should be redirected to http://localhost:PORT/admin/docusign
 5. Check prisma studio to see if a token was added to your DB (contact coopnissa if it wasn't)
 
-## GETTING STARTED
+### Run app
+1. Run `npm run dev`
 
-To run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
-
-## EVERY TIME START UP APP (AFTER FIRST TIME SETUP)
-1. Run `lt --port 3000` or `ngrok http http://localhost:3000` to generate your new tunnel URL for that work session
-2. Navigate to Clerk webhook dashboard and update your endpoint with the new URL
-3. Navigate to Typeform webhook dashboard and update your endpoint with the new URL
-4. Follow steps 7-9 of 'Set up the Stripe command line interface to listen for webhook events'
+## EVERY TIME YOU START UP AT THE APP (AFTER FIRST TIME SETUP)
+1. Run `npm run dev`
+2. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
+3. Run `lt --port 3000` or `ngrok http http://localhost:3000` to generate your new tunnel URL for that work session
+4. Navigate to Clerk webhook dashboard and update your endpoint with the new URL
+5. Navigate to Typeform webhook dashboard and update your endpoint with the new URL
+6. Follow steps 7-9 of 'Set up the Stripe command line interface to listen for webhook events'
 
 ## EVERY TIME A NEW BRANCH IS MERGED
 1. Run `npm install`
