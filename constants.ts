@@ -1,7 +1,6 @@
 import { USStatesObject } from "./types/types";
 
-//const TYPEFORM_OFFER_FORM_ID = "vBOEFE8R";
-const TYPEFORM_OFFER_FORM_ID = "wA5lHKUs";
+const TYPEFORM_OFFER_FORM_ID = "vBOEFE8R";
 const TYPEFORM_INTEREST_FORM_ID = "g0qtEedy";
 const RADAR_VALIDATE_ADDRESS_API_URL =
   "https://api.radar.io/v1/addresses/validate";
