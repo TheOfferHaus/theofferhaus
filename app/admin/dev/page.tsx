@@ -21,7 +21,7 @@ export default function DocusignPage() {
 
       // Remove query param (if they refresh with the code param then it
       // will throw an error if the authorization code has expired)
-      router.push("http://localhost:3000/admin/docusign");
+      router.push(`${process.env.NEXT_PUBLIC_CONSENT_REDIRECT_URL}`);
     }
 
     if (searchParams.get('code')) {
