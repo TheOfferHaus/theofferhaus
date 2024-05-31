@@ -1,7 +1,7 @@
 import { USStatesObject } from "./types/types";
 
-const TYPEFORM_OFFER_FORM_ID = process.env.NEXT_PUBLIC_TYPEFORM_OFFER_FORM_ID;
-const TYPEFORM_INTEREST_FORM_ID = "g0qtEedy";
+const TYPEFORM_OFFER_FORM_ID : string = process.env.NEXT_PUBLIC_TYPEFORM_OFFER_FORM_ID!;
+const TYPEFORM_INTEREST_FORM_ID : string = process.env.NEXT_PUBLIC_TYPEFORM_INTRO_FORM_ID!;
 const RADAR_VALIDATE_ADDRESS_API_URL =
   "https://api.radar.io/v1/addresses/validate";
 
