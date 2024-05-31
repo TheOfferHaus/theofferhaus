@@ -116,5 +116,3 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 1. Run `npm run migrate:reset` to reseed database
 2. Steps 3-7 of 'Set Up Docusign'
 3. Follow 'EVERY TIME START UP APP'
-
-

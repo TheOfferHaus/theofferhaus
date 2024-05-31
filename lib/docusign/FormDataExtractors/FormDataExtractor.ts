@@ -133,17 +133,43 @@ export default class FormDataExtractor {
     );
   }
 
+  /** Formats typeform date into proper format.
+  *
+  * Typeform formats dates as YYYY-MM-DD, this function modifies
+  * them to be formatted like MM-DD-YYYY
+  *
+  * @param {string} typeformDate - A date in the format YYYY-MM-DD
+  * @returns {string} - A date formatted like MM-DD-YYYY
+   */
+  private static formatDate(typeformDate: string): string {
+    const yearMonthDay = typeformDate.split("-");
+    yearMonthDay.push(yearMonthDay.shift()!);
+    return yearMonthDay.join("-");
+  }
+
   /**
    * Extracts answers from the provided form data.
    * @param {Answer[]} answers - The answers from the form.
    * @returns {ExtractedAnswers} - Extracted answers mapped by field reference.
    */
   private static extractAnswers(answers: Answer[]): ExtractedAnswers {
+
     return Object.fromEntries(
-      answers.map((answer) => [
-        answer.field.ref,
-        answer.type === "choice" ? answer.choice!.label : answer[answer.type],
-      ])
+      answers.map((answer) => {
+        let usersAnswer;
+        if (answer.type === "date") {
+          usersAnswer = FormDataExtractor.formatDate(answer[answer.type]!);
+        } else if (answer.type === "choice") {
+          usersAnswer = answer.choice!.label;
+        } else {
+          usersAnswer = answer[answer.type];
+        }
+
+        return [
+          answer.field.ref,
+          usersAnswer,
+        ];
+      })
     );
   }
 

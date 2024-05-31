@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-/** Header component for landing page */
+/** Header component for about page */
 
-const FaqHeader = () => {
+const AboutHeader = () => {
   return (
     <div className="relative h-[24rem] w-screen">
       <div className="h-full">
@@ -18,11 +18,11 @@ const FaqHeader = () => {
 
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center bottom-8">
         <h1 className="lg:text-9xl md:text-8xl sm:text-8xl text-6xl text-custom-white mb-8">
-          FAQs
+          About
         </h1>
       </div>
     </div>
   );
 };
 
-export default FaqHeader;
+export default AboutHeader;

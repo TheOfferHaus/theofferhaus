@@ -2,15 +2,25 @@ import { currentUser, User } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import CountdownTimer from "@/components/CountdownTimer";
+import { TYPEFORM_API_BASE_URL, TYPEFORM_OFFER_FORM_ID } from "@/constants";
+import { getFormattedOfferDetails, getSignerData } from "./offerDetailHelpers";
+import { getEnvelopeUrl } from "@/lib/docusign/serverActions";
+import Link from "next/link";
+
+import Image from "next/image";
 
 const prisma = new PrismaClient();
 
-/** Component for offer detail, includes offer/property info from typeform fields and links to offer documents*/
+// TODO: Negotiation Due Date and Appraisal Due Date will need to be incorporated
+//       after the required Typeform question changes/additions are made
+
+/** Component for offer detail page, includes offer/property info from typeform
+ * fields and links to offer documents*/
 
 export default async function Offer({
   params,
 }: {
-  params: { offerId: string; };
+  params: { offerId: string };
 }) {
   const currUser = (await currentUser()) as User;
 
@@ -25,62 +35,130 @@ export default async function Offer({
     },
   });
 
+  // redirect to offer index page if offer cannot be found
   if (!offer) redirect(`${currUser.username}/offers`);
 
-  const { typeformId, envelopeId, envelopeURL } = offer;
+  const { typeformId, envelopeId } = offer;
+
+  const signerData = getSignerData(currUser);
+  const envelopeUrl = await getEnvelopeUrl(envelopeId as string, signerData);
+
+  // get the response data from the form submission related to this offer
+  const response = await fetch(
+    `${TYPEFORM_API_BASE_URL}/forms/${TYPEFORM_OFFER_FORM_ID}/responses?included_response_ids=${typeformId}`,
+    {
+      headers: {
+        authorization: `Bearer ${process.env.TYPEFORM_BEARER_TOKEN}`,
+      },
+    }
+  );
+
+  const formData = await response.json();
+  const formattedOfferDetails = getFormattedOfferDetails(formData);
 
   return (
-    <div className="grid grid-cols-2 pt-12">
-      <div className="MapAndDueDates text-center text-xl font-extrabold">
-        <div className="Map mb-20">
-          <img
-            className="h-auto w-2/4 mx-auto"
-            src="/example-map.jpg"
-            alt="PropertyMap"
-          />
-        </div>
-        <div className="NegotiationDueDate mb-3">
-          <span>
-            Negotiation Due Date: &nbsp;
-            <CountdownTimer targetDate={new Date("5/15/2024")} />
-          </span>
-        </div>
-        <div className="AppraisalDueDate mb-3">
-          <span>
-            Appraisal Due Date: &nbsp;
-            <CountdownTimer targetDate={new Date("5/16/2024")} />
-          </span>
-        </div>
-        <div className="InspectionDueDate mb-3">
-          <span>
-            Inspection Due Date: &nbsp;
-            <CountdownTimer targetDate={new Date("5/17/2024")} />
-          </span>
-        </div>
-      </div>
-      <div className="AddressAndOfferInfo text-center">
-        <div className="Address mt-0">
-          <h1 className="lg:text-3xl md:text-3xl sm:text-3xl text-2xl mb-3 mt-4 font-bold">
+    <div className="mx-auto text-center">
+      <div className="p-12 md:px-24 mb-12">
+        <div className="Address text-center md:mb-20 mb-12">
+          <h1 className="md:text-5xl sm:text-4xl text-3xl">
             {offer.property.address}
           </h1>
-          <div className="text-xl font-extrabold">
-            <h2 className="mb-3">Current Offer Amount: {`$${offer.price}`}</h2>
-            <div className="ClosingDueDate mb-3">
-              <span>
-                Closing Date: &nbsp;
-                <CountdownTimer targetDate={new Date("5/14/2024")} />
-              </span>
+        </div>
+
+        <div className="Map md:mb-24 mb-12 mx-auto relative md:h-[20rem] h-[20rem]">
+          <Image
+            src="/example-map.jpg"
+            alt="PropertyMap"
+            fill={true}
+            style={{ objectFit: "contain" }}
+            priority={true}
+          />
+        </div>
+
+        <div className="flex justify-center">
+          <div className="grid grid-cols-1 md:gap-12 md:grid-cols-2 sm:text-md text-sm">
+            <div className="DueDates mb-12 md:mb-0 text-left">
+              <h3 className="NegotiationDueDate mb-4">
+                <span className="sm:text-2xl text-xl">
+                  Negotiation Due Date:
+                </span>
+                &nbsp;
+                <span className="italic">
+                  {/* <CountdownTimer targetDate={new Date("5/15/2024")} /> */}
+                  TO BE IMPLEMENTED
+                </span>
+              </h3>
+              <h3 className="AppraisalDueDate mb-4">
+                <span className="sm:text-2xl text-xl">Appraisal Due Date:</span>{" "}
+                &nbsp;
+                <span className="italic">
+                  {/* <CountdownTimer targetDate={new Date("5/16/2024")} /> */}
+                  TO BE IMPLEMENTED
+                </span>
+              </h3>
+              <h3 className="InspectionDueDate">
+                <span className="sm:text-2xl text-xl">
+                  Inspection Due Date:
+                </span>{" "}
+                &nbsp;
+                <span className="italic">
+                  <CountdownTimer
+                    targetDate={
+                      formattedOfferDetails["inspection_date"] as Date
+                    }
+                  />
+                </span>
+              </h3>
             </div>
-            <h2 className="mb-3">Down Payment: {`$150000`}</h2>
-            <h2 className="mb-3">Earnest Money: {`$50000`}</h2>
+            <div className="OfferInfo text-left md:mx-auto mx-0">
+              <h3 className="mb-4">
+                <span className="sm:text-2xl text-xl">
+                  Current Offer Amount:
+                </span>{" "}
+                &nbsp;
+                <span className="italic">{`$${formattedOfferDetails[
+                  "offer_amount_num"
+                ].toLocaleString()}`}</span>
+              </h3>
+              <h3 className="ClosingDueDate mb-4">
+                <span className="sm:text-2xl text-xl">Closing Date:</span>{" "}
+                &nbsp;
+                <span className="italic">
+                  <CountdownTimer
+                    targetDate={
+                      formattedOfferDetails["closing_time_deadline"] as Date
+                    }
+                  />
+                </span>
+              </h3>
+              <h3 className="mb-4">
+                <span className="sm:text-2xl text-xl">Down Payment:</span>{" "}
+                &nbsp;
+                <span className="italic">{`$${formattedOfferDetails[
+                  "down_payment_amount_num"
+                ].toLocaleString()}`}</span>
+              </h3>
+              <h3>
+                <span className="sm:text-2xl text-xl">Earnest Money:</span>{" "}
+                &nbsp;
+                <span className="italic">
+                  {formattedOfferDetails["earnest_money"] ? "Yes" : "N/A"}
+                </span>
+              </h3>
+            </div>
           </div>
+        </div>
+
+        <div className="flex justify-center my-12">
           <button
-            className="mt-5 px-4 py-2 bg-custom-white text-black font-semibold rounded-lg shadow-md
-              hover:bg-black hover:text-white focus:outline-none focus:ring-2
+            className="md:mt-5 px-10 py-6 text-xl bg-custom-white text-black font-semibold rounded-lg shadow-md
+              hover:bg-black hover:text-white focus:outline-none
               focus:ring-light-gray focus:ring-opacity-75 animation: : transition
               duration-150 ease-in-out transform hover:scale-95"
           >
-            Generate Documents
+            <Link href={envelopeUrl} target="_blank">
+              <p className="hover:text-gray-300">View Documents</p>
+            </Link>
           </button>
         </div>
       </div>
