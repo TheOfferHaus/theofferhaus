@@ -50,48 +50,57 @@ export default function AddressValidationForm() {
       return;
     }
 
-    const params = new URLSearchParams({
-      city: formData.city,
-      stateCode: formData.stateCode,
-      postalCode: formData.postalCode,
-      countryCode: formData.countryCode,
-      number: formData.number,
-      street: formData.street,
-      unit: formData.unit,
-    });
+    /** SKIPPING VALIDATION.
+     * Delete following uncommented code + uncomment commented code to revert. */
 
-    let verificationData;
-
-    try {
-      const radarResponse = await fetch(
-        `${RADAR_VALIDATE_ADDRESS_API_URL}?${params.toString()}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `${process.env.NEXT_PUBLIC_RADAR_TEST_PUBLISHABLE_API_KEY}`,
-          },
-        }
-      );
-
-      verificationData = await radarResponse.json();
-    } catch (err) {
-      console.error(err);
-      return;
-    }
-
-    if (verificationData.result.verificationStatus !== "verified") {
-      toast.warning(
-        "Please make sure the address has been inputted correctly!"
-      );
-      return;
-    }
-
-    const propertyId = await createProperty(
-      verificationData.address.formattedAddress
-    );
+    const formattedAddress = `${formData.number} ${formData.street}, ${(formData.unit)? formData.unit + ', ' : ''} ${formData.city}, ${formData.stateCode} ${formData.postalCode} ${formData.countryCode}`;
+    const propertyId = await createProperty(formattedAddress);
     const offerId = await createOffer(propertyId);
     await setFormInProgressTrue();
     navigateToQuiz(propertyId, offerId);
+
+    // const params = new URLSearchParams({
+    //   city: formData.city,
+    //   stateCode: formData.stateCode,
+    //   postalCode: formData.postalCode,
+    //   countryCode: formData.countryCode,
+    //   number: formData.number,
+    //   street: formData.street,
+    //   unit: formData.unit,
+    // });
+
+    // let verificationData;
+
+    // try {
+    //   const radarResponse = await fetch(
+    //     `${RADAR_VALIDATE_ADDRESS_API_URL}?${params.toString()}`,
+    //     {
+    //       method: "GET",
+    //       headers: {
+    //         Authorization: `${process.env.NEXT_PUBLIC_RADAR_TEST_PUBLISHABLE_API_KEY}`,
+    //       },
+    //     }
+    //   );
+
+    //   verificationData = await radarResponse.json();
+    // } catch (err) {
+    //   console.error(err);
+    //   return;
+    // }
+
+    // if (verificationData.result.verificationStatus !== "verified") {
+    //   toast.warning(
+    //     "Please make sure the address has been inputted correctly!"
+    //   );
+    //   return;
+    // }
+
+    // const propertyId = await createProperty(
+    //   verificationData.address.formattedAddress
+    // );
+    // const offerId = await createOffer(propertyId);
+    // await setFormInProgressTrue();
+    // navigateToQuiz(propertyId, offerId);
   }
 
   /** updates inputValues. */
